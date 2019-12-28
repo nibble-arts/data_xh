@@ -29,9 +29,9 @@ if (function_exists('XH_registerStandardPluginMenuItems')) {
     XH_registerStandardPluginMenuItems(true);
 }
 
-if (function_exists('form_mail') 
-    && XH_wantsPluginAdministration('form_mail') 
-    || isset($form_mail) && $form_mail == 'true')
+if (function_exists('form') 
+    && XH_wantsPluginAdministration('form') 
+    || isset($form) && $form == 'true')
 {
 
 
@@ -40,7 +40,7 @@ if (function_exists('form_mail')
     switch ($admin) {
 
 	    case '':
-	        $o .= '<h1>Form Mailer</h1>';
+	        $o .= '<h1>Formular Plugin</h1>';
     		$o .= '<p>Version 0.9</p>';
             $o .= '<p>Copyright 2019</p>';
     		$o .= '<p><a href="http://www.nibble-arts.org" target="_blank">Thomas Winkler</a></p>';

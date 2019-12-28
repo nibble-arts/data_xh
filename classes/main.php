@@ -1,6 +1,6 @@
 <?php
 
-namespace fm;
+namespace form;
 
 
 class Main {
@@ -9,8 +9,9 @@ class Main {
 
 		// load plugin data
 		Session::load();
-		Config::init($config["form_mail"]);
-		Text::init($text["form_mail"]);
+		Config::init($config["form"]);
+		Text::init($text["form"]);
+		Tag::init();
 
 	}
 }

@@ -1,14 +1,14 @@
 <?php
 
-// define ('FORM_MAIL_PATH', $plugin_cf["form_mail"]["form_mail_path"]);
+// define ('FORM_PATH', $plugin_cf["form"]["form_path"]);
 
-define ('FORM_MAIL_FORMS', $plugin_tx['form_mail']['forms']);
+define ('FORM_FORMS', $plugin_tx['form']['forms']);
 
-define ('FORM_MAIL_FAIL_READ', $plugin_tx['form_mail']['fail_fileread']);
-define ('FORM_MAIL_FAIL_WRITE', $plugin_tx['form_mail']['fail_filewrite']);
-define ('FORM_MAIL_FAIL_EXISTS', $plugin_tx['form_mail']['fail_fileexists']);
+define ('FORM_FAIL_READ', $plugin_tx['form']['fail_fileread']);
+define ('FORM_FAIL_WRITE', $plugin_tx['form']['fail_filewrite']);
+define ('FORM_FAIL_EXISTS', $plugin_tx['form']['fail_fileexists']);
 
-define ('FORM_MAIL_SAVED', $tx['message']['saved']);
+define ('FORM_SAVED', $tx['message']['saved']);
 
 
 

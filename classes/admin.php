@@ -1,7 +1,7 @@
 <?php
 
 
-namespace fm;
+namespace form;
 
 
 class Admin {

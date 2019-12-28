@@ -9,16 +9,16 @@
 define("FORM_CONTENT_BASE", $pth["folder"]["content"]);
 define("FORM_DOWNLOADS_BASE", $pth["folder"]["downloads"]);
 
-define("FORM_MAIL_BASE", $pth["folder"]["plugin"]);
-define("FORM_MAIL_PATH", $plugin_cf["form_mail"]["form_mail_path"]);
+define("FORM_BASE", $pth["folder"]["plugin"]);
+define("FORM_PATH", $plugin_cf["form"]["form_path"]);
 
 
 
 // init class autoloader
 spl_autoload_register(function ($path) {
 
-	if ($path && strpos($path, "fm\\") !== false) {
-		$path = "classes/" . str_replace("fm\\", "", strtolower($path)) . ".php";
+	if ($path && strpos($path, "form\\") !== false) {
+		$path = "classes/" . str_replace("form\\", "", strtolower($path)) . ".php";
 		include_once $path; 
 	}
 });

@@ -6,7 +6,7 @@
  * init with config array
  */
 
-namespace fm;
+namespace form;
 
 class Config {
 

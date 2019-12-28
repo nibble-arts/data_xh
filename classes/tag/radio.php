@@ -2,7 +2,7 @@
 
 namespace form\tag;
 
-class Radio extends Tag {
+class Radio {
 	
 	public static function parse($html) {
 		

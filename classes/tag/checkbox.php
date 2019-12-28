@@ -2,7 +2,7 @@
 
 namespace form\tag;
 
-class Checkbox extends Tag {
+class Checkbox {
 	
 	public static function parse($html) {
 		
