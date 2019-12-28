@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>FORM_MAIL_XH - Anleitung</title>
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+
+<body>
+
+<article>
+<h1>FORM MAIL_XH – Anleitung</h1>
+
+<p>Mit dem Plugin lassen sich in einfacher Weise Formulare erstellen, die an eine voreingestellte Mailadresse versandt werden können. </p>
+
+<nav id="nav">
+<h2>Inhalt</h2>
+<ul>
+<!--<li><a href="#notice">Important Notice</a></li>-->
+<li><a href="#formdefine">Formular Definition</a></li>
+<li><a href="#formcall">Aufruf</a></li>
+<li><a href="#filters">Filters</a></li>
+<li><a href="#usage">Anwendung</a></li>
+</ul>
+</nav>
+
+<section id="formdefine">
+	<h2>Formular definieren</h2>
+	<p>Die Struktur der Formulare werden in einer einfachen INI-Datei definiert. Es stehen unterschiedliche Formate zur Verfügung, um auch ein komplexes Formular gestalten zu können.</p>
+
+	<h3>Format</h3>
+	<p>Die Formular-Definition muss dem INI-Datei-Format mit Gruppen und Key-Value Paaren entsprechen. Die Gruppen in Eckigen Klammern enthalten einen Textstring. Das Key-Value Paar format = ... bestimmt das Anzeigeformat:</p>
+
+	<ul>
+		<li>format = header: Der Textstring wird als Überschrift angezeigt</li>
+		<li>format = text: Der Textstring wird als Absatz angezeigt</li>
+	</ul>
+</section>
+
+<section id="formcall">
+	<h2>Formular aufrufen</h2>
+	<p>Als query kann entweder ein valider MySQL-String übergeben werden, oder der Name einer gespeicherten Query. Die gespeicherten Abfragen sind im Verzeichnig \queries\ des Plugins abgelegt.</p>
+</section>
+
+</article>
+
+</body>
+
+</html>

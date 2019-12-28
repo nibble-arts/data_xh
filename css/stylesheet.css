@@ -1,0 +1,71 @@
+.form_mail_table {
+	border: 1px solid #a0a0a0;
+	border-spacing: 0px;
+	border-collapse: collapse;  
+	width: 100%;
+}
+
+.form_mail_cell, .form_mail_head, .form_mail_text {
+	border: 1px solid #a0a0a0;
+	padding: 3px;
+}
+
+.form_mail_cell {
+	text-align: center;
+}
+
+.form_mail_head {
+	text-align: center;
+	font-weight: 500;
+}
+
+.form_mail_label {
+	font-weight: 500;
+}
+
+.form_mail_mandatory {
+	background-color: #f0f0a0;
+	color: #505000;
+}
+
+.form_mail_mand_ok {
+	background-color: #a0f0a0;
+}
+
+.form_mail_input {
+	font-weight: 500;
+}
+
+.form_mail_block {
+	width: 100%;
+	border: 1px solid #a0a0a0;
+}
+
+.form_mail_line {
+
+}
+
+.form_mail_title {
+	font-size: 100%;
+	font-weight: 500;
+	margin: 5px 0 8px 0;
+}
+
+.form_mail_list_cell {
+	border: 1px solid grey;
+	padding: 3px;
+	vertical-align: top;
+}
+
+.form_mail_list_table {
+	border: 1px solid grey;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+.form_mail_list_head {
+	writing-mode: vertical-lr;
+    white-space:nowrap;
+	text-orientation: mixed;
+	min-width: 25px;
+}
