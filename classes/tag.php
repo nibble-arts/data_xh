@@ -81,7 +81,7 @@ class Tag {
 			$node->appendChild($child);
 		}
 		
-		return $noise;
+		return $node;
 	}
 }
 

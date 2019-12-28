@@ -60,7 +60,7 @@ class Parse {
 					
 					// call tag class
 					$newNode = className($node);
-					$self::html->replaceNode($newNode, $node);
+					$self::html->replaceChild($newNode, $node);
 			}
 		}
 	}
