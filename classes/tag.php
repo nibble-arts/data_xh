@@ -69,7 +69,7 @@ class Tag {
 	public function get () {
 		
 		// create new node
-		$node = new DomElement($this->name);
+		$node = new DomNode($this->name);
 		
 		// add attributes
 		foreach ($this->attributes as $name => $val) {
