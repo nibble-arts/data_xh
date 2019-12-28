@@ -68,6 +68,7 @@ class Parse {
 	
 	// serialise dom document
 	private static function serialise () {
+		
 		if ($self::html) {
 			return $self::html->saveXML()
 		}
