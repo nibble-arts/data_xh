@@ -4,9 +4,12 @@ namespace form\tag;
 
 class Form {
 	
-	public static function parse($html) {
+	// power mode object
+	public static function parse($node) {
 		
-		return $html;
+		
+		
+		return $node;
 	}
 }
 
