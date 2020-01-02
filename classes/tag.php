@@ -42,7 +42,7 @@ class Tag {
 	// get/set attribute
 	public function attribute ($name, $value = false) {
 		
-		if {$value) {
+		if ($value) {
 			$this->attributes[$name] = $value;
 		}
 		else {
@@ -57,7 +57,7 @@ class Tag {
 	
 	
 	// remove attribute
-	public function removeAttr {$name) {
+	public function removeAttr ($name) {
 		
 		if ($this->attribute ($name)) {
 			unset ($this->attributes[$name]);

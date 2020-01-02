@@ -11,7 +11,8 @@ class Main {
 		Session::load();
 		Config::init($config["form"]);
 		Text::init($text["form"]);
-		Tag::init();
+		// Tag::init();
+		Parse::init();
 
 	}
 }

@@ -10,8 +10,8 @@ CMSimple-XH form plugin
 	<div name="data" hide="region">
 		
 		<form name="person" legend="Autor">
-			<input name="author" source="memberaccess:name" readonly mandatory/>
-			<input name="email" source="memberaccess:email" mandatory/>
+			<input name="author" source="memberaccess:name" readonly="true" mandatory="true"/>
+			<input name="email" source="memberaccess:email" mandatory="true"/>
 			<input name="user" source="database:user@actor=memberaccess.user"/>
 		</form>
 		
@@ -19,9 +19,9 @@ CMSimple-XH form plugin
 			
 			<subtitle>Neuen Film ablegen</subtitle>
 			
-			<input name="title” mandatory="new_film" check="count:3"/>
+			<input name="title" mandatory="new_film" check="count:3"/>
 			<input name="time" check="regex:[0-9]+" mandatory="new_film"/>
-			<textarea name="abstract" mandatory/>
+			<textarea name="abstract" mandatory="true"/>
 			
 			<checkbox name="fsk0"/>
 			

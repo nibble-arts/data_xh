@@ -24,11 +24,11 @@ spl_autoload_register(function ($path) {
 });
 
 
-fm\Main::init($plugin_cf, $plugin_tx);
+form\Main::init($plugin_cf, $plugin_tx);
 
 
 // plugin to create a form and send the result to an email address
-function form_mail($form="", $function="") {
+function form($form="", $function="") {
 
 	global $onload, $su, $f;
 
@@ -37,7 +37,18 @@ function form_mail($form="", $function="") {
 
 
 	// create form definition path and load entries
-	$path = FORM_CONTENT_BASE . FORM_MAIL_PATH . "/" . $form;
+	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form . ".xml";
+
+	form\Parse::load($path);
+
+
+	form\Parse::parse();
+echo form\Parse::serialise();
+die();
+
+
+
+
 	fm\Entries::load($path);
 
 

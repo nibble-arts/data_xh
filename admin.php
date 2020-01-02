@@ -19,7 +19,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
     exit;
 }
 
-define (FORM_MAIL_BASE, $pth["folder"]["plugin"]);
+define (FORM_BASE, $pth["folder"]["plugin"]);
 
 
 /*
