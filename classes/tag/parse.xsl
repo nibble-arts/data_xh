@@ -12,7 +12,7 @@
 	</xsl:template>
 
 
-	<!-- match the input nodes -->
+	<!-- match input nodes -->
 	<xsl:template match="input">
 
 		<div>
@@ -23,6 +23,21 @@
 
 				<xsl:apply-templates select="@* | node()"/>
 			</input>
+		</div>
+
+	</xsl:template>
+
+
+	<!-- match select nodes -->
+	<xsl:template match="select">
+
+		<div>
+			<select>
+				<option></option>
+				<option>
+					<xsl:value-of select="$value"/>
+				</option>
+			</select>
 		</div>
 
 	</xsl:template>

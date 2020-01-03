@@ -4,7 +4,7 @@ namespace form;
 
 class Parse {
 	
-	private static $tags = [];
+	private static $xslt;
 	private static $html = false;
 	
 	
@@ -12,47 +12,22 @@ class Parse {
 	// load list of available classes
 	public static function init () {
 		
-		if (file_exists (__DIR__ . "/tag")) {
-			//Todo check for classes
+		$path = __DIR__ . "/tag/parse.xsl";
 
-			$path = __DIR__ . "/tag/";
+		self::$xslt = new \DomDocument();
+		self::$xslt->load($path);
 
-			$dirs = scandir($path);
-
-			foreach ($dirs as $file) {
-
-				if (is_file($path . $file)) {
-					self::$tags[pathinfo($file, PATHINFO_FILENAME)] = file_get_contents($path . $file);
-				}
-			}
-		}
 	}
 	
 	
 	// load html string and create dom document
 	public static function load ($html) {
 
-		if (file_exists($html)) {
-			$html = file_get_contents($html);
-		}
-
 		self::$html = new \DomDocument("1.0", "UTF-8");
-		self::$html->loadXML($html);
-	}
-	
-	
-	// replace all tags from the tag class list
-	public static function parse () {
-		
-		// html loaded, iterate tag classes
-		if (self::$html) {
 
-			foreach (self::$tags as $tag=>$xsl) {
-				self::replace($tag, $xsl);
-			}
+		if (file_exists($html)) {
+			self::$html->load($html);
 		}
-		
-		return self::serialise ();
 	}
 	
 	
@@ -68,37 +43,44 @@ class Parse {
 	
 	
 	// replace node using the tag class
-	private static function replace ($tag, $xsl_string) {
+	public static function parse () {
 			
 		// hey nodes
 		$nodes = self::$html->getElementsByTagName($tag);
+		$datas = [];
 
-		// tag found
-		if ($nodes->length && in_array($tag, array_keys(self::$tags))) {
 
-			// iterate nodes
-			foreach ($nodes as $node) {
+		$xpath = new \DOMXpath(self::$html);
+		$sources = $xpath->query("//*[@source]");
 
-				// get source data
-				if ($source = $node->getAttribute("source")) {
-					debug("read source ".$source);
+		// collect external data
+		foreach ($sources as $source) {
+//TODO call extern reference
 
-					$xml = '<data><option>Region 1</option><option>Region 2</option></data>';
-				}
-
-debug($xsl_string);
-				$xsl = new \DomDocument();
-				$xsl->load($xsl_string);
-debug($xsl->saveXML());
-				$t = new \XSLTProcessor();
-				$t->importStylesheet($xsl);
-				$t->transformToXml(self::$html);
-// debug($t);
-				// call tag class
-				// $newNode = $className::parse($node, $source);
-				// self::$html->replaceChild($newNode, $node);
-			}
+			$datas[$source->nodeName][] = $source->getAttribute("source");
 		}
+
+
+		// create and call xslt processor
+		$t = new \XSLTProcessor();
+		$t->importStylesheet($xsl);
+
+		// add source data as parameters
+		foreach ($datas as $tag => $data) {
+			$param[$tag] = '<' . $tag . '>' . implode($data) . '</' . $tag . '>';
+		}
+
+		// set data as parameters
+		$t->setParameter('', $param);
+
+		// transform
+		$result = $t->transformToXml(self::$html);
+debug($result);
+		// create new result dom xml
+		$new_xml = new \DomDocument("1.0", "UTF-8");
+		$new_xml->loadXML($result);
+
+		self::$html = $new_xml;
 	}
 }
 

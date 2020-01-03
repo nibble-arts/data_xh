@@ -13,16 +13,15 @@
 
 
 	<!-- match the input nodes -->
-	<xsl:template match="input">
+	<xsl:template match="select">
 
 		<div>
-			<input>
-				<xsl:attribute name="value">
+			<select>
+				<option></option>
+				<option>
 					<xsl:value-of select="$value"/>
-				</xsl:attribute>
-
-				<xsl:apply-templates select="@* | node()"/>
-			</input>
+				</option>
+			</select>
 		</div>
 
 	</xsl:template>
