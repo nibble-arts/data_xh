@@ -8,8 +8,23 @@
 }
 
 .form_label {
-	font-size: 85%;
+	font-size: 100%;
+	float: left;
+	margin-right: 10px;
+}
+
+.form_legend {
+	font-size: 100%;
 	font-style: italic;
+}
+
+.form_value {
+}
+
+.form_block {
+	border: 1px dashed grey;
+	padding: 5px;
+	margin: 10px 0 10px 0;
 }
 
 form {
@@ -23,5 +38,5 @@ form {
 }
 
 .form_mand_ok {
-	background-color: green;
+	background-color: #d0ffd0;
 }

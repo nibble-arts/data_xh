@@ -74,7 +74,7 @@ class Parse {
 
 
 
-			$d = "@0|Region 1@1|Region 2@2|Region 3@3|Region 4@4|Region 5@5|Region 6@6";
+			$d = "Region auswählen|Region 1@1|Region 2@2|Region 3@3|Region 4@4|Region 5@5|Region 6@6";
 
 			// save source data as data attribute
 			$datas[$uuid] = $d;

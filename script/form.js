@@ -13,8 +13,8 @@ function form_init() {
 	
 
 	// hide optional fields
-	jQuery('*[optional]')
-		.hide();
+	// jQuery('*[optional]')
+	// 	.hide();
 
 
 	jQuery("*[mandatory]")
@@ -57,6 +57,7 @@ function form_init() {
 
 
 			form_check_submit();
+			update_hide();
 	});
 
 
@@ -114,10 +115,11 @@ function form_init() {
 				}
 			}
 			form_check_submit();
+			update_hide();
 		});
 
 
-	// bind event on film list selection
+	// bind event on selection
 	jQuery('select')
 
 		.change(function (e) {
@@ -125,7 +127,18 @@ function form_init() {
 			// select = jQuery('select[name="filmblock"]').attr("fields");
 			sel = jQuery('select option:selected');
 
-console.log(sel);
+
+			if (sel[0].value) {
+				jQuery(this)
+					.removeClass("form_mandatory")
+					.addClass("form_mand_ok");
+			}
+
+			else {
+				jQuery(this)
+					.removeClass("form_mand_ok")
+					.addClass("form_mandatory");
+			}
 
 			// // add group field data to form
 			// form_insert_data(select, sel);
@@ -138,24 +151,36 @@ console.log(sel);
 }
 
 
+function update_mandatory() {
+
+}
+
+
+// update hidden blocks
 function update_hide() {
 
 	var hides = jQuery('[hide]');
 
+	// iterate tags with hide attributes
 	jQuery.each(hides, function (k, v) {
-		has_data(jQuery(v).attr("hide"));
+		set_hide(jQuery(v).attr("hide"));
 	})
 }
 
 
-// check if area with name has all data
-function has_data(name) {
+// check if area with name has all mandatory data
+function set_hide(name) {
 
-}
+	source = jQuery("[hide='"+name+"']");
+	nodes = jQuery("[cond='"+name+"'][mandatory]");
 
+	if (nodes.length == jQuery(".form_mand_ok[cond='"+name+"']").length) {
+		jQuery(source).show();
+	}
 
-function get_data(name) {
-
+	else {
+		jQuery(source).hide();
+	}
 }
 
 
