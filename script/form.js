@@ -1,5 +1,10 @@
 
-function form_mail_init() {
+function form_init() {
+
+
+
+	jQuery('[hide]')
+		.hide();
 
 
 	// disable submit on init
@@ -13,25 +18,25 @@ function form_mail_init() {
 
 
 	jQuery("*[mandatory]")
-		.addClass("form_mail_mandatory");
+		.addClass("form_mandatory");
 
 
 	// listen to form changes
-	jQuery('.form_mail_cell')
+	jQuery('.form_cell')
 
 		.change(function(e) {
 
 			// set mandatory field green
 			if(jQuery(this).attr("mandatory")) {
 				jQuery(this)
-					.removeClass("form_mail_mandatory")
-					.addClass("form_mail_mand_ok")
+					.removeClass("form_mandatory")
+					.addClass("form_mand_ok")
 					.attr("done");
 
 				jQuery(this)
 					.siblings()
-						.removeClass("form_mail_mandatory")
-						.addClass("form_mail_mand_ok");
+						.removeClass("form_mandatory")
+						.addClass("form_mand_ok");
 			}
 
 			// enable optional fields
@@ -51,12 +56,12 @@ function form_mail_init() {
 			}
 
 
-			form_mail_check_submit();
+			form_check_submit();
 	});
 
 
 	// listen to input change
-	jQuery('.form_mail_input')
+	jQuery('.form_input')
 
 		.keyup(function (e) {
 
@@ -77,14 +82,14 @@ function form_mail_init() {
 
 						if (val.length >= check_ary[1]) {
 							jQuery(this)
-								.removeClass("form_mail_mandatory")
-								.addClass("form_mail_mand_ok");
+								.removeClass("form_mandatory")
+								.addClass("form_mand_ok");
 						}
 
 						else {
 							jQuery(this)
-								.removeClass("form_mail_mand_ok")
-								.addClass("form_mail_mandatory");
+								.removeClass("form_mand_ok")
+								.addClass("form_mandatory");
 						}
 						break;
 
@@ -96,72 +101,66 @@ function form_mail_init() {
 
 						if (reg != null) {
 							jQuery(this)
-								.removeClass("form_mail_mandatory")
-								.addClass("form_mail_mand_ok");
+								.removeClass("form_mandatory")
+								.addClass("form_mand_ok");
 						}
 
 						else {
 							jQuery(this)
-								.removeClass("form_mail_mand_ok")
-								.addClass("form_mail_mandatory");
+								.removeClass("form_mand_ok")
+								.addClass("form_mandatory");
 						}
 						break;
 				}
 			}
-			form_mail_check_submit();
+			form_check_submit();
 		});
 
-
-	// hide film lists
-	form_mail_hide_lists();
 
 	// bind event on film list selection
-	jQuery('select[name="filmblock"]')
+	jQuery('select')
 
 		.change(function (e) {
 
-			select = jQuery('select[name="filmblock"]').attr("fields");
-			sel = jQuery('select[name="filmblock"] option:selected').text();
+			// select = jQuery('select[name="filmblock"]').attr("fields");
+			sel = jQuery('select option:selected');
 
+console.log(sel);
 
-			// add group field data to form
-			form_mail_insert_data(select, sel);
+			// // add group field data to form
+			// form_insert_data(select, sel);
 
-			form_mail_show_list(sel);
+			update_hide();
 		});
+
+
+	update_hide();
 }
 
 
-function form_mail_hide_lists() {
+function update_hide() {
 
-	if (jQuery('.selector').length) {
-		jQuery('[name^="fm_filmlist"]').hide();
-		jQuery('#form_mail_form').hide();
-	}
+	var hides = jQuery('[hide]');
+
+	jQuery.each(hides, function (k, v) {
+		has_data(jQuery(v).attr("hide"));
+	})
 }
 
 
-function form_mail_show_list(n) {
+// check if area with name has all data
+function has_data(name) {
 
-	// hide form
-	form_mail_hide_lists();
+}
 
-	// select film list
-	jQuery('[name="fm_filmlist_' + n + '"]')
-		.show()
-		.change(function (e) {
 
-			data = jQuery(this);
+function get_data(name) {
 
-			form_mail_insert_data(data.find("select").attr("fields"), data.find("select option:selected").attr("value"));
-
-			jQuery('#form_mail_form').show();
-		});
 }
 
 
 // insert data into form
-function form_mail_insert_data(fields, values) {
+function form_insert_data(fields, values) {
 
 	fields = fields.split("|");
 	values = values.split("|");
@@ -171,18 +170,18 @@ function form_mail_insert_data(fields, values) {
 
 		jQuery('*[name="'+fields[idx]+'"]')
 			.attr("value", values[idx])
-			.removeClass("form_mail_mandatory")
-			.addClass("form_mail_mand_ok");
+			.removeClass("form_mandatory")
+			.addClass("form_mand_ok");
 
 	})
 }
 
 
-function form_mail_check_submit() {
+function form_check_submit() {
 
 	// check all mandatory
 	// enable submit
-	if(jQuery('.form_mail_mandatory:visible').length == 0) {
+	if(jQuery('.form_mandatory:visible').length == 0) {
 		jQuery('input[type="submit"]')
 			.removeAttr("disabled","disabled");
 	}

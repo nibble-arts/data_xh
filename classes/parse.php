@@ -31,6 +31,17 @@ class Parse {
 	}
 	
 	
+	// check if data exists
+	public static function exists() {
+
+		if (!self::$html) {
+			return false;
+		}
+
+		return true;
+	}
+
+
 	// serialise dom document
 	public static function serialise () {
 
@@ -54,28 +65,32 @@ class Parse {
 		$sources = $xpath->query("//*[@source]");
 
 		// collect external data
-		foreach ($sources as $source) {
+		foreach ($sources as $idx => $source) {
+
+			// get source definition
+			$source_string = $source->getAttribute("source");
+
 //TODO call extern reference
 
-			$datas[$source->nodeName][] = $source->getAttribute("source");
+
+
+			$d = "@0|Region 1@1|Region 2@2|Region 3@3|Region 4@4|Region 5@5|Region 6@6";
+
+			// save source data as data attribute
+			$datas[$uuid] = $d;
+
+			$source->setAttribute("source", $d);
+
 		}
 
 
 		// create and call xslt processor
 		$t = new \XSLTProcessor();
-		$t->importStylesheet($xsl);
-
-		// add source data as parameters
-		foreach ($datas as $tag => $data) {
-			$param[$tag] = '<' . $tag . '>' . implode($data) . '</' . $tag . '>';
-		}
-
-		// set data as parameters
-		$t->setParameter('', $param);
+		$t->importStylesheet(self::$xslt);
 
 		// transform
 		$result = $t->transformToXml(self::$html);
-debug($result);
+// debug($result);
 		// create new result dom xml
 		$new_xml = new \DomDocument("1.0", "UTF-8");
 		$new_xml->loadXML($result);

@@ -5,14 +5,14 @@ CMSimple-XH form plugin
 
 <form target="file:nennung">
 	<title>Wettbewerbs-Nennung</title>
-	<select name="region" source="file:regionen"></select>
+	<select label="Region auswählen" name="region" source="file:regionen"></select>
 	
 	<div name="data" hide="region">
 		
 		<form name="person" legend="Autor">
-			<input name="author" source="memberaccess:name" readonly="true" mandatory="true"/>
-			<input name="email" source="memberaccess:email" mandatory="true"/>
-			<input name="user" source="database:user@actor=memberaccess.user"/>
+			<input label="Name" name="author" source="memberaccess:name" readonly="true" mandatory="true"/>
+			<input label="E-Mail" name="email" source="memberaccess:email" mandatory="true"/>
+			<input label="Benutzername" name="user" source="database:user@actor=memberaccess.user"/>
 		</form>
 		
 		<form name="new_film" target="database:film" legend="Film">
