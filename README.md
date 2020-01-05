@@ -33,8 +33,23 @@ Fixed options can directly be added using option tags as children. If fixed opti
 
 #### source expression
 Supported external sources are files and the database plugin.
-	file: file_name
-	database: field=value@table
+
+	access:attribute
+	file: field@file_name
+	mysql:query_string@mysql_name
+
+The value before the @ defines the value, field or query, the value after the character the target.
+
+With the access type the data of the memberaccess plugin can be used when the user is logged in.
+
+The target of a file is the file name of an ini file stored in the content area.
+
+The target for a MySQL query is an ini file at the same directory containing the sql access data.
+
+The files use the prefixes file. or mysql. for the corresponding source files.
+
+	file:actor=4@file.actor.ini
+	mysql:select * from actor where actor.id = 4
 
 To use the content of a form field in the source expression, the field name has to be used with a leading $-character. The field will be dynamically updated, when the corresponding data changes.
 
