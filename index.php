@@ -13,12 +13,17 @@ define("FORM_BASE", $pth["folder"]["plugin"]);
 define("FORM_PATH", $plugin_cf["form"]["form_path"]);
 
 
-
 // init class autoloader
+// include "autoload.php";
+// autoload("form");
+
 spl_autoload_register(function ($path) {
 
 	if ($path && strpos($path, "form\\") !== false) {
+
 		$path = "classes/" . str_replace("form\\", "", strtolower($path)) . ".php";
+		$path = str_replace("\\", "/", $path);
+		
 		include_once $path; 
 	}
 });
@@ -38,6 +43,15 @@ function form($form="", $function="") {
 
 	// create form definition path and load entries
 	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form . ".xml";
+
+
+	// check for memberaccess plugin
+	if (class_exists("ma\Access") &&
+		ma\Access::user()) {
+
+
+	}
+
 
 	form\Parse::load($path);
 	form\Parse::parse();

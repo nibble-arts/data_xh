@@ -7,7 +7,7 @@ class Source {
 	public static function fetch ($definition = false) {
 		
 		if ($definition) {
-			self::parse($definition);
+			return self::parse($definition);
 		}
 	}
 	
@@ -19,8 +19,8 @@ class Source {
 		$parts = explode (":", $definition);
 		
 		if (count ($parts) > 1) {
-			$className = "\\source\\" . trim($parts[0]);
-			
+			$className = "form\\source\\" . ucfirst(trim($parts[0]));
+
 			// call source class
 			if (class_exists($className)) {
 				$ret = $className::fetch(trim($parts[1]));

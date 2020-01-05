@@ -2,7 +2,7 @@
 function form_init() {
 
 
-
+	// hide all hidden blocks
 	jQuery('[hide]')
 		.hide();
 
@@ -16,7 +16,7 @@ function form_init() {
 	// jQuery('*[optional]')
 	// 	.hide();
 
-
+	// 
 	jQuery("*[mandatory]")
 		.addClass("form_mandatory");
 
@@ -57,7 +57,7 @@ function form_init() {
 
 
 			form_check_submit();
-			update_hide();
+			update_mandatory();
 	});
 
 
@@ -115,7 +115,7 @@ function form_init() {
 				}
 			}
 			form_check_submit();
-			update_hide();
+			update_mandatory();
 		});
 
 
@@ -140,19 +140,27 @@ function form_init() {
 					.addClass("form_mandatory");
 			}
 
-			// // add group field data to form
-			// form_insert_data(select, sel);
-
-			update_hide();
+			update_mandatory();
 		});
 
 
-	update_hide();
+	update_mandatory();
 }
 
 
 function update_mandatory() {
 
+	nodes = jQuery("[mandatory]");
+
+	// iterate nodes
+	jQuery.each(nodes, function (k, v) {
+
+		switch (v.nodeName) {
+
+		}
+	})
+
+	update_hide();
 }
 
 
