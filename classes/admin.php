@@ -25,7 +25,7 @@ class Admin {
 
 	// render form data in list
 	// optional: group by field name
-	public static function render($form) {
+	public static function render($form, $filter = false) {
 
 		$ret = "";
 		$csv = "";

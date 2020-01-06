@@ -33,37 +33,22 @@ form\Main::init($plugin_cf, $plugin_tx);
 
 
 // plugin to create a form and send the result to an email address
-function form($form="", $function="") {
+function form($form = "", $function = "", $filter = false) {
 
 	global $onload, $su, $f;
 
-	// init memberaccess integration
-	// fm\Memberaccess::init();
+
+//	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
+//	form\Entries::load($path);
 
 
 	// create form definition path and load entries
 	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form . ".xml";
 
 
-	// check for memberaccess plugin
-	if (class_exists("ma\Access") &&
-		ma\Access::user()) {
-
-
-	}
-
-
+	// load form and parse
 	form\Parse::load($path);
-	form\Parse::parse();
-
-
-	// memberaccess integration
-	if(class_exists("ma\Access")) {
-		define("FORM_MAIL_ACCESS_SUPPORT", true);
-	}
-	else {
-		define("FORM_MAIL_ACCESS_SUPPORT", false);
-	}
+	form\Parse::parse($filter);
 
 
 	$ret = "";
@@ -77,24 +62,21 @@ function form($form="", $function="") {
 	$onload .= "form_init();";
 
 
+	// if form exist, render
 	if (form\Parse::exists()) {
 
 		switch (strtolower($function)) {
 
-
 			// admin
 			case "administration":
-				fm\Admin::fetch($path);
-				$ret .= fm\Admin::render($form);
+				form\Admin::fetch($path);
+				$ret .= form\Admin::render($form, $filter);
 				break;
 
 
 			// show form
 			default:
 				$ret .= form\Parse::serialise();
-
-
-// die($ret);
 				break;
 
 		}
@@ -108,7 +90,7 @@ function form($form="", $function="") {
 
 
 	// EXECUTE SEND ACTION
-	if (fm\Session::post("action") == "form_send") {
+	if (form\Session::post("action") == "form_send") {
 
 
 // 		// no setting in form definition
@@ -117,13 +99,13 @@ function form($form="", $function="") {
 
 // 			$settings = [
 // 				// "target" => "",
-// 				"sender" => fm\Config::mail_sender(),
-// 				"address" => fm\Config::mail_address(),
-// 				"subject" => fm\Config::mail_subject()
+// 				"sender" => form\Config::mail_sender(),
+// 				"address" => form\Config::mail_address(),
+// 				"subject" => form\Config::mail_subject()
 // 			];
 // 		}
 
-// 		$sender = new fm\Sender($settings["sender"], $form);
+// 		$sender = new form\Sender($settings["sender"], $form);
 // 		$sender->set_key_names(["Frage","Antwort"]);
 // 		$sender->add_data($_POST);
 
@@ -131,10 +113,10 @@ function form($form="", $function="") {
 
 
 // 		if ($res) {
-// 			$ret_send .= '<div class="xh_info">' . fm\Text::mail_sent() . '</div>';
+// 			$ret_send .= '<div class="xh_info">' . form\Text::mail_sent() . '</div>';
 // 		}
 // 		else {
-// 			$ret_send .= '<div class="xh_warning">' . fm\Text::mail_sent_fail(). '</div>';
+// 			$ret_send .= '<div class="xh_warning">' . form\Text::mail_sent_fail(). '</div>';
 // 		}
 
 // 		// create remember string

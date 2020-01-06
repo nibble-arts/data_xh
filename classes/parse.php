@@ -55,11 +55,7 @@ class Parse {
 	
 	// replace node using the tag class
 	public static function parse () {
-			
-		// hey nodes
-		$nodes = self::$html->getElementsByTagName($tag);
-		$datas = [];
-
+		
 
 		$xpath = new \DOMXpath(self::$html);
 		$sources = $xpath->query("//*[@source]");
@@ -68,11 +64,9 @@ class Parse {
 		foreach ($sources as $idx => $source) {
 
 			// get source definition
-			//TODO call extern reference
 			$d = Source::fetch($source->getAttribute("source"));
 			$source->setAttribute("source", $d);
 		}
-
 
 		// create and call xslt processor
 		$t = new \XSLTProcessor();
@@ -80,7 +74,7 @@ class Parse {
 
 		// transform
 		$result = $t->transformToXml(self::$html);
-// debug($result);
+
 		// create new result dom xml
 		$new_xml = new \DomDocument("1.0", "UTF-8");
 		$new_xml->loadXML($result);

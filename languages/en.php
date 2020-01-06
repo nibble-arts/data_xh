@@ -1,6 +1,13 @@
 <?php
 
 $plugin_tx['form']['forms']="Forms";
+$plugin_tx['form']['entry']="Entry";
+$plugin_tx['form']['entries']="Entries";
+$plugin_tx['form']['none']="no";
+
+$plugin_tx['form']['username']="Username";
+$plugin_tx['form']['time']="Time";
+$plugin_tx['form']['edit']="Edit entry";
 
 $plugin_tx['form']['fail_noform']="Form \"%s\" not found";
 $plugin_tx['form']['fail_formpath']="Form directory not found";

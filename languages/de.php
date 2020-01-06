@@ -2,7 +2,9 @@
 
 $plugin_tx['form']['forms']="Formulare";
 $plugin_tx['form']['entry']="Eintrag";
-$plugin_tx['form']['entries']="Bewertungen";
+$plugin_tx['form']['entries']="Einträge";
+$plugin_tx['form']['none']="keine";
+
 $plugin_tx['form']['username']="Benutzername";
 $plugin_tx['form']['time']="Zeit";
 $plugin_tx['form']['edit']="Eintrag bearbeiten";
