@@ -4,6 +4,8 @@ namespace form\source;
 
 class File {
 
+
+	// fetch data from file
 	public static function fetch ($definition) {
 
 		$ret = "";
@@ -27,6 +29,15 @@ class File {
 		}
 
 		return $ret;
+	}
+
+
+	// write file
+	// Entry $data
+	public static function write ($name, $data) {
+
+		debug($name);
+		debug($data);
 	}
 }
 

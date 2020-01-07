@@ -17,15 +17,25 @@
 	<!-- match form nodes -->
 	<!-- ************************************* -->
 	<!-- ************************************* -->
-<!-- 	<xsl:template match="form">
+	<xsl:template match="form">
 
-		<xsl:apply-templates select="@label"/>
+		<!-- <xsl:apply-templates select="@label"/> -->
 
-		<form class="form_form">
-			<xsl:copy-of select="."/>
+		<form class="form_form" method="post" action="">
+			<xsl:apply-templates select="@* | node()"/>
+
+			<input type="hidden" name="target">
+				<xsl:attribute name="value">
+					<xsl:value-of select="@target"/>
+				</xsl:attribute>
+			</input>
 		</form>
 
-	</xsl:template> -->
+	</xsl:template>
+
+
+	<xsl:template match="@target">
+	</xsl:template>
 
 
 	<!-- ************************************* -->
@@ -38,23 +48,8 @@
 		<div class="form_line">
 			<xsl:apply-templates select="@label | @legend"/>
 	
-
-			<input type="checkbox">
-				<xsl:attribute name="type">
-					<xsl:value-of select="'checkbox'"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="cond">
-					<xsl:value-of select="@cond"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="name">
-					<xsl:value-of select="@name"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="mandatory">
-					<xsl:value-of select="@mandatory"/>
-				</xsl:attribute>
+			<input  class="form_checkbox form_cell" type="checkbox">
+				<xsl:call-template name="attributes"/>
 			</input>
 		</div>
 
@@ -73,31 +68,18 @@
 
 			<input class="form_input">
 
-				<xsl:attribute name="type">
-					<xsl:value-of select="'text'"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="cond">
-					<xsl:value-of select="@cond"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="value">
-					<xsl:value-of select="@source"/>
-				</xsl:attribute>
-
-				<xsl:if test="@mandatory">
-					<xsl:attribute name="mandatory">
-						<xsl:value-of select="'mandatory'"/>
-					</xsl:attribute>
-				</xsl:if>
-
-				<xsl:if test="@check">
-					<xsl:attribute name="check">
-						<xsl:value-of select="@check"/>
-					</xsl:attribute>
-				</xsl:if>
+				<xsl:call-template name="attributes">
+					<xsl:with-param name="type" select="'text'"/>
+					<xsl:with-param name="value" select="@source"/>
+					<xsl:with-param name="node" select="."/>
+				</xsl:call-template>
 
 			</input>
+
+			<xsl:if test="@comment">
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@comment"/>
+			</xsl:if>
 		</div>
 
 	</xsl:template>
@@ -113,18 +95,11 @@
 		<div class="form_line">
 			<xsl:apply-templates select="@label | @legend"/>
 
-			<textarea>
-				<xsl:attribute name="name">
-					<xsl:value-of select="@name"/>
-				</xsl:attribute>
+			<textarea class="form_textarea form_cell">
 
-				<xsl:attribute name="cond">
-					<xsl:value-of select="@cond"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="mandatory">
-					<xsl:value-of select="'mandatory'"/>
-				</xsl:attribute>
+				<xsl:call-template name="attributes">
+					<xsl:with-param name="node" select="."/>
+				</xsl:call-template>
 
 				<xsl:value-of select="@source"/>
  				<xsl:text> </xsl:text>
@@ -144,14 +119,17 @@
 		<div class="form_line">
 			<!-- <xsl:apply-templates select="@label | @legend"/> -->
 
-			<input type="submit">
-				<xsl:attribute name="name">
-					<xsl:value-of select="@name"/>
-				</xsl:attribute>
+			<input  class="form_submit form_cell" type="submit">
 
-				<xsl:attribute name="value">
-					<xsl:value-of select="@label"/>
-				</xsl:attribute>
+				<xsl:call-template name="attributes">
+					<xsl:with-param name="value" select="@label"/>
+					<xsl:with-param name="name">
+						<xsl:text>_formsubmit_</xsl:text>
+						<!-- <xsl:value-of select="@name"/> -->
+					</xsl:with-param>
+					<xsl:with-param name="node" select="."/>
+				</xsl:call-template>
+
 			</input>
 		</div>
 
@@ -177,16 +155,23 @@
 
 
 	<xsl:template type="radio" match="option">
+
 		<xsl:param name="name"/>
 
 		<xsl:if test="position() &gt; 1">
 			<br/>
 		</xsl:if>
 
-		<input type="radio">
-			<xsl:attribute name="name">
-				<xsl:value-of select="$name"/>
-			</xsl:attribute>
+		<input class="form_radio form_cell" type="radio">
+
+			<xsl:call-template name="attributes">
+				<xsl:with-param name="name">
+					<xsl:text>_form_</xsl:text>
+					<xsl:value-of select="$name"/>
+				</xsl:with-param>
+
+				<xsl:with-param name="node" select="."/>
+			</xsl:call-template>
 
 			<xsl:value-of select="."/>
 		</input>
@@ -203,18 +188,11 @@
 		<div class="form_line">
 			<xsl:apply-templates select="@label | @legend"/>
 
-			<select>
-				<xsl:attribute name="name">
-					<xsl:value-of select="@name"/>
-				</xsl:attribute>
+			<select class="form_select form_cell">
 
-				<xsl:attribute name="mandatory">
-					<xsl:value-of select="@mandatory"/>
-				</xsl:attribute>
-
-				<xsl:attribute name="cond">
-					<xsl:value-of select="@cond"/>
-				</xsl:attribute>
+				<xsl:call-template name="attributes">
+					<xsl:with-param name="node" select="."/>
+				</xsl:call-template>
 
 				<xsl:call-template name="add_option">
 					<xsl:with-param name="data" select="@source"/>
@@ -328,5 +306,66 @@
 	</xsl:template>
 
 
-</xsl:stylesheet>
+	<!-- add attributes -->
+	<xsl:template name="attributes">
 
+		<xsl:param name="name"/>
+		<xsl:param name="type"/>
+		<xsl:param name="value"/>
+		<xsl:param name="node"/>
+
+		<!-- add fixed value -->
+		<xsl:if test="$type">
+			<xsl:attribute name="type">
+				<xsl:value-of select="$type"/>
+			</xsl:attribute>
+		</xsl:if>
+
+		<xsl:if test="$value">
+			<xsl:attribute name="value">
+				<xsl:value-of select="$value"/>
+			</xsl:attribute>
+		</xsl:if>
+
+
+		<!-- add node attributes -->
+		<xsl:attribute name="name">
+			<xsl:choose>
+				<xsl:when test="$name">
+					<xsl:value-of select="$name"/>
+				</xsl:when>
+
+				<xsl:otherwise>
+					<xsl:text>_form_</xsl:text>
+					<xsl:value-of select="@name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
+
+		<xsl:if test="@cond">
+			<xsl:attribute name="cond">
+				<xsl:value-of select="@cond"/>
+			</xsl:attribute>
+		</xsl:if>
+
+		<xsl:if test="@mandatory">
+			<xsl:attribute name="mandatory">
+				<xsl:value-of select="'mandatory'"/>
+			</xsl:attribute>
+		</xsl:if>
+
+		<xsl:if test="@check">
+			<xsl:attribute name="check">
+				<xsl:value-of select="@check"/>
+			</xsl:attribute>
+		</xsl:if>
+
+		<xsl:if test="@readonly">
+			<xsl:attribute name="readonly">
+				<xsl:value-of select="'readonly'"/>
+			</xsl:attribute>
+		</xsl:if>
+
+	</xsl:template>
+
+</xsl:stylesheet>

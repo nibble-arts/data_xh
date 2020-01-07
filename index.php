@@ -38,6 +38,9 @@ function form($form = "", $function = "", $filter = false) {
 	global $onload, $su, $f;
 
 
+	form\Main::action($form);
+
+
 //	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
 //	form\Entries::load($path);
 

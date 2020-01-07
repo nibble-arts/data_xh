@@ -14,13 +14,38 @@ class Entry {
 
 		$this->reset();
 
-		$this->data = $data["data"];
-		$this->legend = $data["legend"];
+		// is associative array
+		// split into data and legend 
+		if(array_keys($data) !== range(0, count($data) - 1)) {
+			$this->data = array_values($data);
+			$this->legend = array_keys($data);
+		}
+
+		else {
+			$this->data = $data["data"];
+			$this->legend = $data["legend"];
+		}
+
 		$this->meta = [];
 
 		// handle data without meta section
 		if (isset($data["meta"])) {
 			$this->meta = $data["meta"];
+		}
+
+		// add metadata
+		else {
+			$this->meta = [
+				"time" => "",
+				"timestamp" => time()
+			];
+
+
+//TODO
+			// if memberaccess plugin exists, add user
+			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
+				$this->meta["user"] = \ma\Access::user("username");
+			}
 		}
 	}
 
@@ -79,6 +104,57 @@ class Entry {
 		else {
 			return $this->meta;
 		}
+	}
+
+
+	// save entry to path
+	public function save ($path, $file) {
+
+		if (!file_exists($path)) {
+			mkdir($path, true);
+		}
+
+		file_put_contents($path.$file, $this->array2ini());
+	}
+
+
+	// render to ini string
+	private function array2ini () {
+
+		$idx = 0;
+		$data = [];
+		$legend = [];
+
+
+		for ($idx = 0; $idx < count($this->data); $idx++) {
+
+			$data[] = $idx . '="' . $this->data[$idx] . '"';
+			$legend[] = $idx . '="' . $this->legend[$idx] . '"';
+		}
+
+
+		// data section
+		$ini = "[data]\n";
+		$ini .= implode("\n", $data);
+		$ini .= "\n";
+
+		$ini .= "\n";
+		$ini .= "[legend]\n";
+		$ini .= implode("\n", $legend);
+		$ini .= "\n";
+
+		$ini .= "\n";
+		$ini .= "[meta]\n";
+		$ini .= "time=" . date("Y-m-dTH:i:s", time()) . "\n";
+		$ini .= "timestamp=" . time();
+
+		// add active user
+		if (class_exists("\ma\Access") && \ma\Access::user()) {
+			$ini .= "\n";
+			$ini .= "user=" . \ma\Access::user()->username() . "\n";
+		}
+
+		return $ini;
 	}
 }
 
