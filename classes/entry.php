@@ -41,7 +41,6 @@ class Entry {
 			];
 
 
-//TODO
 			// if memberaccess plugin exists, add user
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
 				$this->meta["user"] = \ma\Access::user("username");
@@ -110,11 +109,22 @@ class Entry {
 	// save entry to path
 	public function save ($path, $file) {
 
+		// create dir if not exists
 		if (!file_exists($path)) {
-			mkdir($path, true);
+
+			if (!mkdir($path, true)) {
+				Message::failure("fail_data_mkdir");
+				return false;
+			}
 		}
 
-		file_put_contents($path.$file, $this->array2ini());
+		if (!file_put_contents($path.$file, $this->array2ini())) {
+			Message::failure("fail_filewrite");
+		}
+
+		else {
+			Message::success("data_save");
+		}
 	}
 
 
@@ -145,7 +155,7 @@ class Entry {
 
 		$ini .= "\n";
 		$ini .= "[meta]\n";
-		$ini .= "time=" . date("Y-m-dTH:i:s", time()) . "\n";
+		$ini .= 'time="' . date("Y-m-dTH:i:s", time()) . "\"\n";
 		$ini .= "timestamp=" . time();
 
 		// add active user

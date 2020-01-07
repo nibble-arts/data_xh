@@ -10,14 +10,17 @@ $plugin_tx['form']['time']="Zeit";
 $plugin_tx['form']['edit']="Eintrag bearbeiten";
 
 $plugin_tx['form']['fail_noform']="Formular \"%s\" nicht gefunden";
+$plugin_tx['form']['fail_email']="Fehler beim versenden der Email";
 $plugin_tx['form']['fail_formpath']="Formular-Verzeichnis nicht gefunden";
 
+$plugin_tx['form']['fail_data_mkdir']="Formular-Verzeichnis konnte nicht erstellt werden";
+
 $plugin_tx['form']['fail_fileread']="File \"%s\" konnte nicht gelesen werden";
-$plugin_tx['form']['fail_filewrite']="File \"%s\" konnte nicht gespeichert werden";
+$plugin_tx['form']['fail_filewrite']="Fehler beim Speichern der Daten.";
 $plugin_tx['form']['fail_fileexists']="File \"%s\" existiert schon";
 
-$plugin_tx['form']['mail_sent']="Die Daten wurden erfolgreich gespeichert. Für eine neue Bewertung, nutzen Sie den unten stehenden Link.";
-$plugin_tx['form']['mail_sent_fail']="Fehler beim speichern der Daten.";
+$plugin_tx['form']['data_save']="Die Daten wurden erfolgreich gespeichert.";
+$plugin_tx['form']['email_sent']="Eine Email wurde versandt";
 
 $plugin_tx['form']['menu_main']="Formulare";
 $plugin_tx['form']['title_settings']="Abfrageeinstellungen";

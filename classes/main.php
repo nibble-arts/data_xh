@@ -39,6 +39,22 @@ class Main {
 			$entry = new Entry($data);
 			$entry->save(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/", time() ."_" . $form . ".ini");
 
+			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
+
+				$receiver = \ma\Access::user("email");
+				$subject = "Wettbewerbsnennung";
+				$message = "Ihre Nennung ist eingegangen";
+
+				$email = new Mail("noreply@filmautoren.at");
+
+				if ($email->send($receiver, $subject, $message)) {
+					Message::success("email_sent");
+				}
+				else {
+					Message::failure("fail_email");
+				}
+			}
+
 		}
 	}
 }

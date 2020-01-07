@@ -12,12 +12,13 @@ $plugin_tx['form']['edit']="Edit entry";
 $plugin_tx['form']['fail_noform']="Form \"%s\" not found";
 $plugin_tx['form']['fail_formpath']="Form directory not found";
 
+$plugin_tx['form']['fail_data_mkdir']="Error creating the form data directory";
+
 $plugin_tx['form']['fail_fileread']="File \"%s\" not readable";
-$plugin_tx['form']['fail_filewrite']="File \"%s\" cant be saved";
+$plugin_tx['form']['fail_filewrite']="File write error";
 $plugin_tx['form']['fail_fileexists']="File \"%s\" already exists";
 
-$plugin_tx['form']['mail_sent']="The mail was succesfully sent. Thank you for your participation.";
-$plugin_tx['form']['mail_sent_fail']="Error in sending the mail.";
+$plugin_tx['form']['data_save']="Data saved";
 
 $plugin_tx['form']['menu_main']="Forms";
 $plugin_tx['form']['title_settings']="Forms settings";

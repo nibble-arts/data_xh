@@ -65,6 +65,9 @@ function form($form = "", $function = "", $filter = false) {
 	$onload .= "form_init();";
 
 
+	$ret .= form\Message::render();
+
+
 	// if form exist, render
 	if (form\Parse::exists()) {
 
@@ -91,58 +94,7 @@ function form($form = "", $function = "", $filter = false) {
 		$ret .= '<div class="xh_fail">Form definition not found</div>';
 	}
 
-
-	// EXECUTE SEND ACTION
-	if (form\Session::post("action") == "form_send") {
-
-
-// 		// no setting in form definition
-// 		// use global settings
-// 		if (!$settings) {
-
-// 			$settings = [
-// 				// "target" => "",
-// 				"sender" => form\Config::mail_sender(),
-// 				"address" => form\Config::mail_address(),
-// 				"subject" => form\Config::mail_subject()
-// 			];
-// 		}
-
-// 		$sender = new form\Sender($settings["sender"], $form);
-// 		$sender->set_key_names(["Frage","Antwort"]);
-// 		$sender->add_data($_POST);
-
-// 		$res = $sender->send($settings["address"], $settings["subject"]);
-
-
-// 		if ($res) {
-// 			$ret_send .= '<div class="xh_info">' . form\Text::mail_sent() . '</div>';
-// 		}
-// 		else {
-// 			$ret_send .= '<div class="xh_warning">' . form\Text::mail_sent_fail(). '</div>';
-// 		}
-
-// 		// create remember string
-// 		$remember = $_POST;
-// 		$remember["action"] = "ma_remember";
-
-// // debug($remember);
-
-// 		foreach ($remember as $key => $val) {
-// 			$rem[] = $key . "=" . $val;
-// 		}
-
-
-// 		// return link
-// 		$ret_send .= '<p><a href="?' . $su . '&' . implode("&", $rem) . '">neue Bewertung</a></p>';
-
-// 		return $ret_send;
-	}
-
-	// return form
-	else {
-		return $ret;
-	}
+	return $ret;
 }
 
 
