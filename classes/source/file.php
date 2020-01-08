@@ -24,7 +24,7 @@ class File {
 			$ret = self::query();
 
 		}
-
+debug($ret);
 		return $ret;
 	}
 
@@ -41,6 +41,7 @@ class File {
 			$bool_or = [];
 
 			foreach ($and as $or) {
+				debug(self::get_records($or));
 				$bool_or = array_merge($bool_or, self::get_records($or));
 			}
 
@@ -58,8 +59,6 @@ class File {
 		// fetch data
 		foreach ($bool_and as $idx) {
 			$new = self::get_record($idx);
-			// $new["_id"] = $idx;
-
 			$ret[$idx] = $new;
 		}
 
@@ -104,6 +103,12 @@ class File {
 	// query data and return an array of record ids
 	private static function get_records ($query) {
 
+		// return all data
+		if ($query == "*") {
+			return array_keys(self::$data);
+		}
+
+		// get field/value pair
 		$equ = explode("=", $query);
 
 		if (count($equ) > 1) {
@@ -137,7 +142,7 @@ class File {
 		$ret = [];
 
 		preg_match("$([^\@]+)@([^\>]+)>?(.*)$", $definition, $matches);
-
+debug($matches);
 		self::$request["query"] = $matches[1];
 		self::$request["file"] = $matches[2];
 		self::$request["display"] = $matches[3];

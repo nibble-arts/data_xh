@@ -5,7 +5,7 @@ namespace form;
 class Source {
 	
 	public static function fetch ($definition = false) {
-		
+
 		if ($definition) {
 			return self::parse($definition);
 		}
@@ -15,7 +15,7 @@ class Source {
 	// Parse source definition
 	private static function parse($definition) {
 		$ret = "";
-		
+
 		$parts = explode (":", $definition);
 		
 		if (count ($parts) > 1) {

@@ -8,7 +8,6 @@ class Main {
 	// init plugin
 	public static function init($config, $text) {
 
-
 		// load plugin data
 		Session::load();
 		Config::init($config["form"]);
