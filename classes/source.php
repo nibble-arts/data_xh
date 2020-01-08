@@ -19,6 +19,7 @@ class Source {
 		$parts = explode (":", $definition);
 		
 		if (count ($parts) > 1) {
+			
 			$className = "form\\source\\" . ucfirst(trim($parts[0]));
 
 			// call source class

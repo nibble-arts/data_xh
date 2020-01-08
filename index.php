@@ -30,10 +30,11 @@ spl_autoload_register(function ($path) {
 
 
 form\Main::init($plugin_cf, $plugin_tx);
+form\Api::fetch(form\Session::param("source"));
 
 
 // plugin to create a form and send the result to an email address
-function form($form = "", $function = "", $filter = false) {
+function form($form = "", $function = "", $attr = false) {
 
 	global $onload, $su, $f;
 
@@ -51,7 +52,7 @@ function form($form = "", $function = "", $filter = false) {
 
 	// load form and parse
 	form\Parse::load($path);
-	form\Parse::parse($filter);
+	form\Parse::parse($attr);
 
 
 	$ret = "";
@@ -76,7 +77,7 @@ function form($form = "", $function = "", $filter = false) {
 			// admin
 			case "administration":
 				form\Admin::fetch($path);
-				$ret .= form\Admin::render($form, $filter);
+				$ret .= form\Admin::render($form, $attr);
 				break;
 
 
