@@ -38,6 +38,8 @@ class Main {
 			$entry = new Entry($data);
 			$entry->save(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/", time() ."_" . $form . ".ini");
 
+
+//TODO get metadata from xml
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
 
 				$receiver = \ma\Access::user("email");

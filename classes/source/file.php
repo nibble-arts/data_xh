@@ -10,7 +10,10 @@ class File {
 
 	// fetch data from file
 	// definition format:
-	//  	field=value@file>disp1,disp2,...
+	//  	field=value^,field=value@file>disp1,disp2,...
+	//		^ boolean and
+	//		, boolean or
+	//		or before and, no brackets
 	public static function fetch ($definition) {
 
 		$ret = "";
@@ -41,7 +44,7 @@ debug($ret);
 			$bool_or = [];
 
 			foreach ($and as $or) {
-				debug(self::get_records($or));
+				// debug(self::get_records($or));
 				$bool_or = array_merge($bool_or, self::get_records($or));
 			}
 
@@ -70,7 +73,13 @@ debug($ret);
 	// optional fields array, select fields to return
 	private static function get_record ($idx, $fields = false) {
 
-		$disp = array_filter(explode(",", self::$request["display"]));
+		// get field list and format
+		preg_match("$([^\>]+)>?(.*)$", self::$request["display"], $matches);
+
+		$fields = $matches[1];
+		$format = $matches[2];
+
+		$disp = array_filter(explode(",", $fields));
 
 		// get record data
 		if (isset(self::$data[$idx])) {
@@ -94,6 +103,11 @@ debug($ret);
 		// return all data
 		else {
 			$ret = $data;
+		}
+
+		// format fields
+		if ($format) {
+			self::format($ret, $format);
 		}
 
 		return $ret;
@@ -124,7 +138,6 @@ debug($ret);
 
 		foreach (self::$data as $key => $entry) {
 //TODO add truncation
-
 			if (isset($entry[$field]) && ($entry[$field] == $value || $value == "*")) {
 
 				// add value
@@ -142,7 +155,7 @@ debug($ret);
 		$ret = [];
 
 		preg_match("$([^\@]+)@([^\>]+)>?(.*)$", $definition, $matches);
-debug($matches);
+
 		self::$request["query"] = $matches[1];
 		self::$request["file"] = $matches[2];
 		self::$request["display"] = $matches[3];
@@ -156,7 +169,7 @@ debug($matches);
 	//   array[ and [ or, or ], and [ or, or ] ]
 	private static function split_query ($query) {
 
-		$bool = explode(" ", $query);
+		$bool = explode("^", $query);
 
 		for ($i = 0;$i < count($bool); $i++) {
 
@@ -164,6 +177,77 @@ debug($matches);
 		}
 
 		return $bool;
+	}
+
+
+	// format fields by format string
+	//		fields in curly brackets are replaced by the vale
+	private static function format ($fields, $format) {
+
+		$ret = "";
+		$cursor = 0;
+		$check = $format;
+
+
+preg_match_all("$\{([^\{]+)\}$", $check, $matches, PREG_OFFSET_CAPTURE);
+debug($matches[1]);
+
+		foreach ($matches[1] as $match) {
+
+			$name = $match[0];
+			$start = $match[1];
+			$len = strlen($match[0]);
+
+debug($name." ".$pos." ".$len);
+
+			// add leading part
+			$ret .= substr($format, $cursor, $start - $cursor);
+
+			// replace {field} by dada
+			if (isset($fields[$name])) {
+				$ret .= $fields[$name];
+			}
+
+			$cursor = $start + $len;
+		}
+
+
+debug("result: ".$ret);
+return;
+
+$i=0;
+		while ($i<10) {
+
+			preg_match_all("$\{([^\{]+)\}$", $check, $matches, PREG_OFFSET_CAPTURE);
+
+			if (count($matches)) {
+debug($matches[1]);
+
+				$search = $matches[0][0];
+				$name = $matches[1][1];
+				$pos = $matches[0][1];
+				$len = strlen($search);
+
+debug($pos." ".$len);
+
+				// replace {field} by dada
+				if (isset($fields[$name])) {
+					$ret .= substr($check, 0, $len - 1);
+					$ret .= $fields[$name];
+				}
+
+				$check = substr($check, $pos + $len); 
+			}
+			else {
+				break;
+			}
+$i++;
+		}
+
+		$ret .= $check;
+
+
+debug("result: ".$ret);
 	}
 
 
