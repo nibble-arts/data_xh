@@ -34,6 +34,7 @@ function update() {
 		switch (v.nodeName) {
 
 			case "SELECT":
+				update_sel_content(jQuery(v));
 				update_select(jQuery(v));
 				break;
 
@@ -148,67 +149,126 @@ function update_input_radio(obj, val, check) {
 }
 
 
-// update select fields
-function update_select(obj) {
+// update select content via ajax
+function update_sel_content(obj) {
 
 	var ajax = jQuery(obj).attr("ajax");
+	var ajaxVal = obj.attr("ajaxVal");
+	var update = false;
+	var ajaxCnt = 0;
 
 	// dynamic update parameter found
 	if (ajax) {
 
 		m = ajax.match(/\$([^\@\,\^]+)/gm);
 
-		// iterate values
-		jQuery.each(m, function (k, v) {
+		// variables found
+		if (m.length > 0) {
 
-			val =jQuery("[name='_form_" + v.substring(1) + "']").val();
-			ajax = ajax.replace(v, val);
+			// iterate values
+			jQuery.each(m, function (k, v) {
 
-		});
+				val = jQuery("[name='_form_" + v.substring(1) + "']").val();
 
-		// make ajax call
-		jQuery.ajax({
-			"url": "?source=" + ajax,
-			"dataType": "json",
-			"success": function(result) {
+				// value found
+				if (val) {
 
-				// remove options
-				obj.empty();
+					// check for new values
+					if (ajaxVal) {
+						ajaxVal = ajaxVal.split("|");
+						ajaxCnt = ajaxVal.length;
 
-				// add options
-				if (result != "") {
+						if (val == ajaxVal[k]) {
+							update++;
+						}
+					}
 
-					jQuery.each(result, function () {
+					// update ajax attribute string
+					ajax = ajax.replace(v, val);
 
-						obj.append("<option value=\"" + this.number + "\">" + this.name + " (" + this.number + ")</option>");
-						obj.removeAttr("disabled");
+					// add value
+					if (obj.attr("ajaxVal")) {
+						obj.attr("ajaxVal", obj.attr("ajaxVal") + "|" + val);
+					}
 
-						// obj.removeAttr("ajax");
-					})
+					// set value
+					else {
+
+						obj.attr("ajaxVal", val);
+					}
 
 				}
 
-				// no data > disable
-				else {
-					obj.addAttr("disabled", "disabled");
-				}
+			});
+
+
+console.log(update+" "+ajaxCnt);
+			// is new data
+			if (update && update != ajaxCnt) {
+
+
+				// make ajax call
+				jQuery.ajax({
+					"url": "?source=" + ajax,
+					"dataType": "json",
+					"success": function(result) {
+
+						// add options
+						if (result != "") {
+
+							// remove options
+							obj.empty();
+							obj.append("<option></option>");
+
+							jQuery.each(result, function () {
+
+								obj.append("<option value=\"" + this.number + "\">" + this.name + " (" + this.number + ")</option>");
+								obj.removeAttr("disabled");
+								// obj.removeAttr("ajaxVal");
+
+								// obj.removeAttr("ajax");
+							})
+
+						}
+
+						// no data > disable
+						else {
+							// remove options
+							obj.empty();
+							obj.removeAttr("ajaxVal");
+							// obj.addAttr("disabled", "disabled");
+						}
+
+						update_select(obj);
+					}
+				});
 			}
-		});
+
+		}
 	}
+}
+
+
+// update select fields
+function update_select(obj) {
 
 	// select = jQuery('select[name="filmblock"]').attr("fields");
 	sel = obj.children('option:selected');
 
-	if (sel[0].value) {
-		jQuery(obj)
-			.removeClass("form_mandatory")
-			.addClass("form_mand_ok");
-	}
+	// has children
+	if (sel.length) {
 
-	else {
-		jQuery(obj)
-			.removeClass("form_mand_ok")
-			.addClass("form_mandatory");
+		if (sel[0].value) {
+			jQuery(obj)
+				.removeClass("form_mandatory")
+				.addClass("form_mand_ok");
+		}
+
+		else {
+			jQuery(obj)
+				.removeClass("form_mand_ok")
+				.addClass("form_mandatory");
+		}
 	}
 }
 
