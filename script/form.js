@@ -151,6 +151,51 @@ function update_input_radio(obj, val, check) {
 // update select fields
 function update_select(obj) {
 
+	var ajax = jQuery(obj).attr("ajax");
+
+	// dynamic update parameter found
+	if (ajax) {
+
+		m = ajax.match(/\$([^\@\,\^]+)/gm);
+
+		// iterate values
+		jQuery.each(m, function (k, v) {
+
+			val =jQuery("[name='_form_" + v.substring(1) + "']").val();
+			ajax = ajax.replace(v, val);
+
+		});
+
+		// make ajax call
+		jQuery.ajax({
+			"url": "?source=" + ajax,
+			"dataType": "json",
+			"success": function(result) {
+
+				// remove options
+				obj.empty();
+
+				// add options
+				if (result != "") {
+
+					jQuery.each(result, function () {
+
+						obj.append("<option value=\"" + this.number + "\">" + this.name + " (" + this.number + ")</option>");
+						obj.removeAttr("disabled");
+
+						// obj.removeAttr("ajax");
+					})
+
+				}
+
+				// no data > disable
+				else {
+					obj.addAttr("disabled", "disabled");
+				}
+			}
+		});
+	}
+
 	// select = jQuery('select[name="filmblock"]').attr("fields");
 	sel = obj.children('option:selected');
 

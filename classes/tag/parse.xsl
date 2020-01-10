@@ -186,6 +186,7 @@
 	<xsl:template match="select">
 
 		<div class="form_line">
+
 			<xsl:apply-templates select="@label | @legend"/>
 
 			<select class="form_select form_cell">
@@ -342,6 +343,12 @@
 			</xsl:choose>
 		</xsl:attribute>
 
+		<xsl:if test="@ajax">
+			<xsl:attribute name="ajax">
+				<xsl:value-of select="@ajax"/>
+			</xsl:attribute>
+		</xsl:if>
+
 		<xsl:if test="@cond">
 			<xsl:attribute name="cond">
 				<xsl:value-of select="@cond"/>
@@ -357,6 +364,12 @@
 		<xsl:if test="@check">
 			<xsl:attribute name="check">
 				<xsl:value-of select="@check"/>
+			</xsl:attribute>
+		</xsl:if>
+
+		<xsl:if test="@disabled">
+			<xsl:attribute name="disabled">
+				<xsl:value-of select="@disabled"/>
 			</xsl:attribute>
 		</xsl:if>
 

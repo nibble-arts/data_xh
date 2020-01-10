@@ -28,6 +28,7 @@ class Parse {
 		if (file_exists($html)) {
 			self::$html->load($html);
 		}
+
 	}
 	
 	
@@ -65,8 +66,31 @@ class Parse {
 
 			// get source definition
 			$d = Source::fetch($source->getAttribute("source"));
-			$source->setAttribute("source", $d);
+
+			// replace source attribute with data
+			if ($d) {
+				$source->setAttribute("source", $d);
+			}
+
+			// set ajax attribute
+			// remove source
+			// deactivate field
+			else {
+
+				$newAttr = self::$html->createAttribute("ajax");
+				$newAttr->value = Source::get_query();
+
+				$source->appendChild($newAttr);
+
+				$newAttr = self::$html->createAttribute("disabled");
+				$newAttr->value = "disabled";
+
+				$source->appendChild($newAttr);
+
+				$source->removeAttribute("source");
+			}
 		}
+
 
 		// create and call xslt processor
 		$t = new \XSLTProcessor();

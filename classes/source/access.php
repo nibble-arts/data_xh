@@ -11,7 +11,7 @@ class Access {
 
 		if (class_exists ("\ma\Access") && \ma\Access::logged()) {
 
-			return \ma\Access::user($attribute);
+			return ["data" => \ma\Access::user($attribute)];
 		}
 	}
 }

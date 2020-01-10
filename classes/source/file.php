@@ -27,8 +27,11 @@ class File {
 			$ret = self::query();
 
 		}
-debug($ret);
-		return $ret;
+
+		return [
+			"data" => $ret,
+			"request" => self::$request
+		];
 	}
 
 
@@ -44,7 +47,6 @@ debug($ret);
 			$bool_or = [];
 
 			foreach ($and as $or) {
-				// debug(self::get_records($or));
 				$bool_or = array_merge($bool_or, self::get_records($or));
 			}
 
@@ -65,6 +67,10 @@ debug($ret);
 			$ret[$idx] = $new;
 		}
 
+		if (self::$request["format"]) {
+			$ret = implode("|", $ret);
+		}
+
 		return $ret;
 	} 
 
@@ -73,11 +79,8 @@ debug($ret);
 	// optional fields array, select fields to return
 	private static function get_record ($idx, $fields = false) {
 
-		// get field list and format
-		preg_match("$([^\>]+)>?(.*)$", self::$request["display"], $matches);
-
-		$fields = $matches[1];
-		$format = $matches[2];
+		$fields = self::$request["display"];
+		$format = self::$request["format"];
 
 		$disp = array_filter(explode(",", $fields));
 
@@ -107,7 +110,7 @@ debug($ret);
 
 		// format fields
 		if ($format) {
-			self::format($ret, $format);
+			$ret = self::format($ret, $format);
 		}
 
 		return $ret;
@@ -154,11 +157,23 @@ debug($ret);
 
 		$ret = [];
 
-		preg_match("$([^\@]+)@([^\>]+)>?(.*)$", $definition, $matches);
+		preg_match("/([^\@]+)@([^\>]+)>?(.*)/", $definition, $matches);
+
+		self::$request["type"] = "file";
 
 		self::$request["query"] = $matches[1];
 		self::$request["file"] = $matches[2];
 		self::$request["display"] = $matches[3];
+		self::$request["format"] = "";
+
+		// split display and format
+		preg_match("$([^\>]+)>?(.*)$", self::$request["display"], $matches);
+
+		// format
+		if ($matches[2]) {
+			self::$request["display"] = $matches[1];
+			self::$request["format"] = $matches[2];
+		}
 
 	}
 
@@ -188,66 +203,31 @@ debug($ret);
 		$cursor = 0;
 		$check = $format;
 
+		// match {field_name}
+		preg_match_all("$\{([^\{]+)\}$", $check, $matches, PREG_OFFSET_CAPTURE);
 
-preg_match_all("$\{([^\{]+)\}$", $check, $matches, PREG_OFFSET_CAPTURE);
-debug($matches[1]);
-
+		// iterate found fields
 		foreach ($matches[1] as $match) {
 
 			$name = $match[0];
 			$start = $match[1];
 			$len = strlen($match[0]);
 
-debug($name." ".$pos." ".$len);
-
 			// add leading part
-			$ret .= substr($format, $cursor, $start - $cursor);
+			$ret .= substr($format, $cursor, $start - $cursor-1);
 
 			// replace {field} by dada
 			if (isset($fields[$name])) {
 				$ret .= $fields[$name];
 			}
 
-			$cursor = $start + $len;
+			$cursor = $start + $len + 1;
 		}
 
+		// add rest
+		$ret .= substr($format, $cursor);
 
-debug("result: ".$ret);
-return;
-
-$i=0;
-		while ($i<10) {
-
-			preg_match_all("$\{([^\{]+)\}$", $check, $matches, PREG_OFFSET_CAPTURE);
-
-			if (count($matches)) {
-debug($matches[1]);
-
-				$search = $matches[0][0];
-				$name = $matches[1][1];
-				$pos = $matches[0][1];
-				$len = strlen($search);
-
-debug($pos." ".$len);
-
-				// replace {field} by dada
-				if (isset($fields[$name])) {
-					$ret .= substr($check, 0, $len - 1);
-					$ret .= $fields[$name];
-				}
-
-				$check = substr($check, $pos + $len); 
-			}
-			else {
-				break;
-			}
-$i++;
-		}
-
-		$ret .= $check;
-
-
-debug("result: ".$ret);
+		return $ret;
 	}
 
 
