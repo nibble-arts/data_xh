@@ -26,7 +26,7 @@ function form_init() {
 // update mandatory and submit buttons, hide
 function update() {
 
-	nodes = jQuery("[mandatory]");
+	var nodes = jQuery("[mandatory]");
 
 	// iterate nodes
 	jQuery.each(nodes, function (k, v) {
@@ -74,7 +74,10 @@ function update_input(obj) {
 
 // update input type="text"
 function update_input_text(obj, val, check) {
-
+	
+	var check_ary;
+	var reg;
+	
 	if (check) {
 
 		check_ary = check.split(":");
@@ -153,21 +156,24 @@ function update_input_radio(obj, val, check) {
 function update_sel_content(obj) {
 
 	var ajax = jQuery(obj).attr("ajax");
-	var ajaxVal = obj.attr("ajaxVal");
+	var ajaxVal = (obj.attr("ajaxVal") ? obj.attr("ajaxVal") : false);
 	var update = false;
-	var ajaxCnt = 0;
+	var variables;
+	var val;
 
 	// dynamic update parameter found
 	if (ajax) {
-
-		m = ajax.match(/\$([^\@\,\^]+)/gm);
+		
+		// find variables format $varname
+		variables = ajax.match(/\$([^\@\,\^]+)/gm);
 
 		// variables found
-		if (m.length > 0) {
+		if (variables.length > 0) {
 
 			// iterate values
-			jQuery.each(m, function (k, v) {
-
+			jQuery.each(variables, function (k, v) {
+				
+				// get form field value by variable name
 				val = jQuery("[name='_form_" + v.substring(1) + "']").val();
 
 				// value found
@@ -175,11 +181,13 @@ function update_sel_content(obj) {
 
 					// check for new values
 					if (ajaxVal) {
+						
+						// split multiple values
 						ajaxVal = ajaxVal.split("|");
-						ajaxCnt = ajaxVal.length;
-
-						if (val == ajaxVal[k]) {
-							update++;
+						
+						// value has changed
+						if (val != ajaxVal[k]) {
+							update = true;
 						}
 					}
 
@@ -193,18 +201,15 @@ function update_sel_content(obj) {
 
 					// set value
 					else {
-
 						obj.attr("ajaxVal", val);
 					}
-
 				}
-
 			});
 
 
-console.log(update+" "+ajaxCnt);
-			// is new data
-			if (update && update != ajaxCnt) {
+			// no stored values or values changed
+			// fetch values via ajax
+			if (!ajaxVal || update) {
 
 
 				// make ajax call
@@ -213,22 +218,19 @@ console.log(update+" "+ajaxCnt);
 					"dataType": "json",
 					"success": function(result) {
 
-						// add options
+						// add options to select
 						if (result != "") {
 
 							// remove options
 							obj.empty();
+							obj.removeAttr("disabled");
+							
+							// add empty first option
 							obj.append("<option></option>");
 
 							jQuery.each(result, function () {
-
 								obj.append("<option value=\"" + this.number + "\">" + this.name + " (" + this.number + ")</option>");
-								obj.removeAttr("disabled");
-								// obj.removeAttr("ajaxVal");
-
-								// obj.removeAttr("ajax");
 							})
-
 						}
 
 						// no data > disable
@@ -236,14 +238,13 @@ console.log(update+" "+ajaxCnt);
 							// remove options
 							obj.empty();
 							obj.removeAttr("ajaxVal");
-							// obj.addAttr("disabled", "disabled");
+							obj.attr("disabled", "disabled");
 						}
 
 						update_select(obj);
 					}
 				});
 			}
-
 		}
 	}
 }
@@ -253,7 +254,7 @@ console.log(update+" "+ajaxCnt);
 function update_select(obj) {
 
 	// select = jQuery('select[name="filmblock"]').attr("fields");
-	sel = obj.children('option:selected');
+	var sel = obj.children('option:selected');
 
 	// has children
 	if (sel.length) {
@@ -288,8 +289,8 @@ function update_hide() {
 // check if area with name has all mandatory data
 function set_hide(name) {
 
-	source = jQuery("[hide='"+name+"']");
-	nodes = jQuery("[cond='"+name+"'][mandatory]");
+	var source = jQuery("[hide='"+name+"']");
+	var nodes = jQuery("[cond='"+name+"'][mandatory]");
 
 	if (nodes.length == jQuery(".form_mand_ok[cond='"+name+"']").length) {
 		jQuery(source).show();
@@ -304,8 +305,8 @@ function set_hide(name) {
 // insert data into form
 function form_insert_data(fields, values) {
 
-	fields = fields.split("|");
-	values = values.split("|");
+	var fields = fields.split("|");
+	var values = values.split("|");
 
 	// iterate fields
 	jQuery.each(values, function (idx) {
@@ -314,7 +315,6 @@ function form_insert_data(fields, values) {
 			.attr("value", values[idx])
 			.removeClass("form_mandatory")
 			.addClass("form_mand_ok");
-
 	})
 }
 
