@@ -101,5 +101,4 @@ class Entries {
 
 		return false;
 	}
-
 }

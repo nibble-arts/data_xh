@@ -40,11 +40,13 @@ class Main {
 
 
 //TODO get metadata from xml
+			
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
 
 				$receiver = \ma\Access::user("email");
 				$subject = "Wettbewerbsnennung";
-				$message = "Ihre Nennung ist eingegangen";
+
+				$message = "Ihre Nennung ist eingegangen\n\n" . $entry->render();
 
 				$email = new Mail("noreply@filmautoren.at");
 

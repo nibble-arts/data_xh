@@ -26,20 +26,24 @@ function form_init() {
 // update mandatory and submit buttons, hide
 function update() {
 
+	update_content();
+
 	var nodes = jQuery("[mandatory]");
+	var obj;
 
 	// iterate nodes
 	jQuery.each(nodes, function (k, v) {
 
+		obj = jQuery(v);
+
 		switch (v.nodeName) {
 
 			case "SELECT":
-				update_sel_content(jQuery(v));
-				update_select(jQuery(v));
+				update_select(obj);
 				break;
 
 			case "INPUT":
-				update_input(jQuery(v));
+				update_input(obj);
 				break;
 		}
 	});
@@ -152,11 +156,36 @@ function update_input_radio(obj, val, check) {
 }
 
 
+// update content
+function update_content() {
+
+	var nodes = jQuery("[ajax]");
+	var obj;
+
+	// iterate nodes
+	jQuery.each(nodes, function (k, v) {
+
+		obj = jQuery(v);
+
+		switch (v.nodeName) {
+
+			case "SELECT":
+				update_sel_content(obj);
+				break;
+
+			case "INPUT":
+				break;
+		}
+	});
+}
+
+
 // update select content via ajax
 function update_sel_content(obj) {
 
-	var ajax = jQuery(obj).attr("ajax");
-	var ajaxVal = (obj.attr("ajaxVal") ? obj.attr("ajaxVal") : false);
+	var ajax = jQuery(obj).attr("ajax"); // ajax api string
+	var ajaxvalue; // ajax value field name
+	var ajaxVal = (obj.attr("ajaxVal") ? obj.attr("ajaxVal") : false); // ajax variable values
 	var update = false;
 	var variables;
 	var val;
@@ -228,8 +257,10 @@ function update_sel_content(obj) {
 							// add empty first option
 							obj.append("<option></option>");
 
+							ajaxvalue = obj.attr("ajaxvalue");
+
 							jQuery.each(result, function () {
-								obj.append("<option value=\"" + this.number + "\">" + this.name + " (" + this.number + ")</option>");
+								obj.append("<option value=\"" + this[ajaxvalue] + "\">" + this.name + "</option>");
 							})
 						}
 

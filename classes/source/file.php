@@ -22,10 +22,9 @@ class File {
 		$path = FORM_CONTENT_BASE . FORM_PATH . "/file." . self::$request["file"] . ".ini";
 
 		if (file_exists($path)) {
-			
+
 			self::$data = parse_ini_file($path, true);
 			$ret = self::query();
-
 		}
 
 		return [

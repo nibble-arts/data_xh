@@ -170,6 +170,11 @@
 					<xsl:value-of select="$name"/>
 				</xsl:with-param>
 
+				<xsl:with-param name="value">
+					<!-- <xsl:text>_form_</xsl:text> -->
+					<xsl:value-of select="."/>
+				</xsl:with-param>
+
 				<xsl:with-param name="node" select="."/>
 			</xsl:call-template>
 
@@ -209,7 +214,6 @@
 	<xsl:template name="add_option">
 
 		<xsl:param name="data"/>
-
 
 		<!-- extract first string -->
 		<xsl:variable name="content">
@@ -310,6 +314,7 @@
 	<!-- add attributes -->
 	<xsl:template name="attributes">
 
+		<xsl:param name="id"/>
 		<xsl:param name="name"/>
 		<xsl:param name="type"/>
 		<xsl:param name="value"/>
@@ -322,9 +327,17 @@
 			</xsl:attribute>
 		</xsl:if>
 
-		<xsl:if test="$value">
+		<xsl:if test="$value or @value">
 			<xsl:attribute name="value">
-				<xsl:value-of select="$value"/>
+				<xsl:choose>
+					<xsl:when test="$value">
+						<xsl:value-of select="$value"/>
+					</xsl:when>
+
+					<xsl:otherwise>
+						<xsl:value-of select="@value"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:attribute>
 		</xsl:if>
 
@@ -343,9 +356,29 @@
 			</xsl:choose>
 		</xsl:attribute>
 
+		<xsl:if test="$id or @id">
+			<xsl:attribute name="id">
+				<xsl:choose>
+					<xsl:when test="$id">
+						<xsl:value-of select="$id"/>
+					</xsl:when>
+
+					<xsl:otherwise>
+						<xsl:value-of select="@id"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</xsl:if>
+
 		<xsl:if test="@ajax">
 			<xsl:attribute name="ajax">
 				<xsl:value-of select="@ajax"/>
+			</xsl:attribute>
+		</xsl:if>
+
+		<xsl:if test="@sourcevalue">
+			<xsl:attribute name="ajaxvalue">
+				<xsl:value-of select="@sourcevalue"/>
 			</xsl:attribute>
 		</xsl:if>
 

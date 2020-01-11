@@ -17,16 +17,16 @@ class Mail {
 	// send mail
 	public function send($receiver, $subject, $message) {
 
-		return mail($receiver, $subject, $message, $this->mail_header());
+		return mail($receiver, $subject, $message, $this->mail_header($receiver));
 	}
 
 
 	// create mail header
-	private function mail_header() {
+	private function mail_header($to) {
 
 		$mail_header  = 'MIME-Version: 1.0' . "\r\n";
 		$mail_header .= 'Content-type: text/plain; charset=utf-8' . "\r\n";
-		// $mail_header .= "To: <$to>" . "\r\n";
+		$mail_header .= "To: <$to>" . "\r\n";
 		$mail_header .= 'From: ' . $this->sender . "\r\n";
 
 		return $mail_header;

@@ -166,6 +166,22 @@ class Entry {
 
 		return $ini;
 	}
+
+
+	// render entry as text
+	public function render () {
+
+		$ret = "\n";
+
+		while (($keyval = $this->get()) !== false) {
+			$ret .= ucfirst(key($keyval)) . ": " . $keyval[key($keyval)] . "\n";
+		}
+
+		$ret .= "\nUser: " . $this->meta("user") . " - Time: " . View::htime($this->meta("timestamp"));
+
+		return $ret;
+	}
+
 }
 
 ?>
