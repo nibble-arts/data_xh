@@ -31,8 +31,9 @@ class View {
 				$ret .= '<th class="form_list_head">' . Text::username() . '</th>'; // count field
 				$ret .= '<th class="form_list_head">' . Text::time() . '</th>'; // count field
 
+
 				foreach (Entries::get(0)->legend() as $value) {
-					
+
 					$ret .= '<th class="form_list_head">';
 						$ret .= ucfirst(str_replace("_", " ", $value));
 					$ret .= '</th>';

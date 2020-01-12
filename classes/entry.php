@@ -9,23 +9,24 @@ class Entry {
 	private $meta;
 
 	private $cursor;
+ 
 
+ 	// format: key = value
 	public function __construct($data) {
 
 		$this->reset();
 
 		// is associative array
 		// split into data and legend 
-		if(array_keys($data) !== range(0, count($data) - 1)) {
-			$this->data = array_values($data);
-			$this->legend = array_keys($data);
-		}
+		// if(array_keys($data) !== range(0, count($data) - 1)) {
+		// 	$this->data = array_values($data);
+		// 	$this->legend = array_keys($data);
+		// }
 
-		else {
-// debug($data);
+		// else {
 			$this->data = $data["data"];
 			$this->legend = $data["legend"];
-		}
+		// }
 
 		$this->meta = [];
 
