@@ -40,3 +40,27 @@ form {
 .form_mand_ok {
 	background-color: #d0ffd0;
 }
+
+.form_list_table {
+	border: 1px solid #a0a0a0;
+	border-spacing: 0px;
+	border-collapse: collapse;  
+	width: 100%;
+}
+
+.form_list_cell, .form_list_head {
+	border: 1px solid #a0a0a0;
+	padding: 3px;
+}
+
+.form_list_head {
+	writing-mode: vertical-lr;
+    white-space:nowrap;
+	text-orientation: mixed;
+	min-width: 25px;
+}
+
+.form_list_cell {
+	text-align: center;
+	vertical-align: top;
+}

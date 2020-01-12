@@ -38,11 +38,10 @@ class Admin {
 // TODO filter and sort
 		if ($filter) {
 			
-			$keyval = explode (":", $filter);
+			$keyval = explode ("=", $filter);
 			
 			// filter entries by key=value
 			if (count ($keyval) > 1) {
-				debug($keyval);
 				Entries::filter($keyval[0], $keyval[1]);
 			}
 		}

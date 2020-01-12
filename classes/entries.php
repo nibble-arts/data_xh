@@ -67,6 +67,9 @@ class Entries {
 				switch ($filter[0]) {
 
 					case "data":
+						if ($entry->find($filter[1], $value)) {
+							$filtered[] = $entry;
+						}
 						break;
 
 

@@ -5,32 +5,29 @@ namespace form;
 class Entry {
 
 	private $data;
-	private $legend;
 	private $meta;
 
 	private $cursor;
  
 
+	// $data: [data => [key => value, ...], meta => []]
  	// format: key = value
 	public function __construct($data) {
 
 		$this->reset();
 
-		// is associative array
-		// split into data and legend 
-		// if(array_keys($data) !== range(0, count($data) - 1)) {
-		// 	$this->data = array_values($data);
-		// 	$this->legend = array_keys($data);
-		// }
-
-		// else {
+		// data has data section
+		if (isset($data["data"])) {
 			$this->data = $data["data"];
-			$this->legend = $data["legend"];
-		// }
+			$this->meta = [];
+		}
 
-		$this->meta = [];
+		// use key => value array as data
+		else {
+			$this->data = $data;
+		}
 
-		// handle data without meta section
+		// data has meta section
 		if (isset($data["meta"])) {
 			$this->meta = $data["meta"];
 		}
@@ -41,7 +38,6 @@ class Entry {
 				"time" => "",
 				"timestamp" => time()
 			];
-
 
 			// if memberaccess plugin exists, add user
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
@@ -57,33 +53,60 @@ class Entry {
 	}
 
 
-	// get key value pair
+	// get key value pair by index
 	public function get ($idx = false) {
 
-		// return key => value by idx
+		// get key by id
 		if ($idx !== false) {
-			if (isset($this->data[$idx]) && isset($this->legend[$idx])) {
-				return [$this->legend[$idx] => $this->data[$idx]];
-			}
+			$key = $this->legend($idx);
 		}
 
-		// return key => value using cursor
-		elseif ($this->cursor < count($this->data)) {
+		// get key by cursor
+		else {
+			$key = $this->legend($this->cursor++);
+		}
 
-			if (isset($this->data[$this->cursor]) && isset($this->legend[$this->cursor])) {
-				$this->cursor++;
-				return [$this->legend[$this->cursor-1] => $this->data[$this->cursor-1]];
-			}
+		// return key => value by idx
+		if ($key !== false) {
+			return [$key => $this->data[$key]];
 		}
 
 		return false;
 	}
 
 
+	// find key = value
+//TODO add truncation
+	public function find ($key, $value) {
+
+		if (isset($this->data[$key]) && $this->data[$key] == $value) {
+			return $this->data[$key];
+		}
+
+		else return false;
+	}
 
 	// get legend array
-	public function legend() {
-		return $this->legend;
+	public function legend($idx = false) {
+
+		// return legend entry by id
+		if ($idx !== false) {
+
+			if ($idx < count($this->data)) {
+				return array_keys($this->data)[$idx];
+			}
+
+			else {
+				return false;
+			}
+		}
+
+		// return legend array
+		else {
+			return array_keys($this->data);
+		}
+
+		return array_keys($this->data);
 	}
 
 	
@@ -133,26 +156,17 @@ class Entry {
 	// render to ini string
 	private function array2ini () {
 
-		$idx = 0;
 		$data = [];
-		$legend = [];
+		$initemp = [];
 
-
-		for ($idx = 0; $idx < count($this->data); $idx++) {
-
-			$data[] = $idx . '="' . $this->data[$idx] . '"';
-			$legend[] = $idx . '="' . $this->legend[$idx] . '"';
+		// create key = value lines
+		while (($entry = $this->get()) !== false) {
+			$initemp[] = key($entry) . '="' . $entry[key($entry)] . '"';
 		}
-
 
 		// data section
 		$ini = "[data]\n";
-		$ini .= implode("\n", $data);
-		$ini .= "\n";
-
-		$ini .= "\n";
-		$ini .= "[legend]\n";
-		$ini .= implode("\n", $legend);
+		$ini .= implode("\n", $initemp);
 		$ini .= "\n";
 
 		$ini .= "\n";

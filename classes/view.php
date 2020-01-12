@@ -32,6 +32,7 @@ class View {
 				$ret .= '<th class="form_list_head">' . Text::time() . '</th>'; // count field
 
 
+				// create headline from legend
 				foreach (Entries::get(0)->legend() as $value) {
 
 					$ret .= '<th class="form_list_head">';
