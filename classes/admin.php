@@ -20,17 +20,31 @@ class Admin {
 		self::$path = $path;
 		self::$legend = false;
 
+// load entries
+		Entries::load($path);
+		
 	}
 
 
 	// render form data in list
-	// optional: group by field name
+	// optional: filter by field value
+	// filter=field:value
 	public static function render($form, $filter = false) {
 
 		$ret = "";
 		$csv = "";
 		$csv_ary = [];
 
+// TODO filter and sort
+		if ($filter) {
+			
+			$keyval = explode (":", $filter);
+			
+			// filter entries by key=value
+			if (count ($keyval) > 1) {
+				Entries::filter($keyval[0]), $keyval[1]);
+			}
+		}
 
 		// render list of entries
 		$ret = View::list();
@@ -42,6 +56,9 @@ class Admin {
 			mkdir(FORM_DOWNLOADS_BASE . FORM_MAIL_PATH, 0777, true);
 		}
 
+
+// TODO create download files
+// add links to formatted output
 		// write data
 		file_put_contents(FORM_DOWNLOADS_BASE . FORM_MAIL_PATH . '/' . $form . '_result_utf8.csv', $csv);
 
