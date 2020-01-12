@@ -76,7 +76,7 @@ function form($form = "", $function = "", $attr = false) {
 
 			// admin
 			case "administration":
-				form\Admin::fetch($path);
+				form\Admin::fetch(FORM_CONTENT_BASE . FORM_PATH . "/");
 				$ret .= form\Admin::render($form, $attr);
 				break;
 

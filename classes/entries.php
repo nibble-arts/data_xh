@@ -17,7 +17,7 @@ class Entries {
 			
 			foreach($dir as $file) {
 
-				if (!is_dir($path . '/' . $file)) {
+				if (pathinfo($path . '/' . $file, PATHINFO_EXTENSION) == "ini") {
 
 					$data = parse_ini_file($path . '/' . $file, true);
 

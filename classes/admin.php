@@ -42,7 +42,8 @@ class Admin {
 			
 			// filter entries by key=value
 			if (count ($keyval) > 1) {
-				Entries::filter($keyval[0]), $keyval[1]);
+				debug($keyval);
+				Entries::filter($keyval[0], $keyval[1]);
 			}
 		}
 

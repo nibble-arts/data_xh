@@ -22,6 +22,7 @@ class Entry {
 		}
 
 		else {
+// debug($data);
 			$this->data = $data["data"];
 			$this->legend = $data["legend"];
 		}
