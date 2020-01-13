@@ -60,15 +60,19 @@ class Admin {
 		}
 
 
-		// write data
-		file_put_contents(FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result_utf8.csv', $csv);
+		if ($csv) {
+			
+			// write data
+			file_put_contents(FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result_utf8.csv', $csv);
 
-		file_put_contents(FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result.csv', mb_convert_encoding($csv, "Windows-1252"));
+			file_put_contents(FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result.csv', mb_convert_encoding($csv, "Windows-1252"));
 
-		// add download link
-		$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result.csv">Als CSV-File herunterladen</a></p>';
+			// add download link
+			$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result.csv">Als CSV-File herunterladen</a></p>';
 
-		$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
+			$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
+		}
+
 
 		return $ret;
 	}

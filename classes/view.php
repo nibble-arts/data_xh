@@ -88,29 +88,32 @@ class View {
 		$csv = "";
 		$csv_ary = [];
 
-		foreach (Entries::get(0)->legend() as $value) {
+		if (Entries::get()) {
 
-			$csv_ary[] = '"' . $value . '"';
-		}
+			foreach (Entries::get(0)->legend() as $value) {
 
-		$csv = implode(";", $csv_ary) . "\n";
-		$csv_ary = [];
+				$csv_ary[] = '"' . $value . '"';
+			}
+
+			$csv = implode(";", $csv_ary) . "\n";
+			$csv_ary = [];
 
 
-		// create lines
-		foreach (Entries::get() as $idx => $line) {
+			// create lines
+			foreach (Entries::get() as $idx => $line) {
 
-			if ($line != "") {
+				if ($line != "") {
 
-				$line->reset();
+					$line->reset();
 
-				// iterate keys
-				while ($value = $line->get()) {
-					$csv_ary[] = '"' . $value[key($value)] . '"';
+					// iterate keys
+					while ($value = $line->get()) {
+						$csv_ary[] = '"' . $value[key($value)] . '"';
+					}
+
+					$csv .= implode(";", $csv_ary) . "\n";
+					$csv_ary = [];
 				}
-
-				$csv .= implode(";", $csv_ary) . "\n";
-				$csv_ary = [];
 			}
 		}
 
