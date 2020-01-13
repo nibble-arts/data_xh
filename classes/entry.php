@@ -10,8 +10,9 @@ class Entry {
 	private $cursor;
  
 
+	// two variants for construction 
 	// $data: [data => [key => value, ...], meta => []]
- 	// format: key = value
+	// $data: [key => value, ...]
 	public function __construct($data) {
 
 		$this->reset();
@@ -188,6 +189,7 @@ class Entry {
 	public function render () {
 
 		$ret = "\n";
+		$this->reset();
 
 		while (($keyval = $this->get()) !== false) {
 			$ret .= ucfirst(key($keyval)) . ": " . $keyval[key($keyval)] . "\n";
