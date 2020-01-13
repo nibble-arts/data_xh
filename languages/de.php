@@ -13,6 +13,7 @@ $plugin_tx['form']['fail_noform']="Formular \"%s\" nicht gefunden";
 $plugin_tx['form']['fail_formpath']="Formular-Verzeichnis nicht gefunden";
 
 $plugin_tx['form']['fail_data_mkdir']="Formular-Verzeichnis konnte nicht erstellt werden";
+$plugin_tx['form']['fail_download_mkdir']="Download-Verzeichnis konnte nicht erstellt werden";
 
 $plugin_tx['form']['fail_fileread']="File \"%s\" konnte nicht gelesen werden";
 $plugin_tx['form']['fail_filewrite']="Fehler beim speichern der Daten.";

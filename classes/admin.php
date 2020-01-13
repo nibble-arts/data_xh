@@ -33,7 +33,6 @@ class Admin {
 
 		$ret = "";
 		$csv = "";
-		$csv_ary = [];
 
 // TODO filter and sort
 		if ($filter) {
@@ -41,33 +40,35 @@ class Admin {
 			$keyval = explode ("=", $filter);
 			
 			// filter entries by key=value
-			if (count ($keyval) > 1) {
-				Entries::filter($keyval[0], $keyval[1]);
+			preg_match("/([^\:]+):([^\=]+)[\=]?(.*)/", $filter, $matches);
+			
+			if (count ($matches) > 2) {
+				Entries::filter($matches[1], $matches[2], $matches[3]);
 			}
 		}
 
 		// render list of entries
 		$ret = View::list();
-
+		$csv = View::csv();
 
 		// save csv file
 		// create download directory
-		if (!file_exists(FORM_DOWNLOADS_BASE . FORM_MAIL_PATH)) {
-			mkdir(FORM_DOWNLOADS_BASE . FORM_MAIL_PATH, 0777, true);
+		if (!file_exists(FORM_DOWNLOADS_BASE . FORM_PATH)) {
+			if (!mkdir(FORM_DOWNLOADS_BASE . FORM_PATH, 0777, true)) {
+				Message::failure("fail_download_mkdir");
+			}
 		}
 
 
-// TODO create download files
-// add links to formatted output
 		// write data
-		file_put_contents(FORM_DOWNLOADS_BASE . FORM_MAIL_PATH . '/' . $form . '_result_utf8.csv', $csv);
+		file_put_contents(FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result_utf8.csv', $csv);
 
-		file_put_contents(FORM_DOWNLOADS_BASE . FORM_MAIL_PATH . '/' . $form . '_result.csv', mb_convert_encoding($csv, "Windows-1252"));
+		file_put_contents(FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result.csv', mb_convert_encoding($csv, "Windows-1252"));
 
 		// add download link
-		$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_MAIL_PATH . '/' . $form . '_result.csv">Als CSV-File herunterladen</a></p>';
+		$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result.csv">Als CSV-File herunterladen</a></p>';
 
-		$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_MAIL_PATH . '/' . $form . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
+		$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . FORM_PATH . '/' . $form . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
 
 		return $ret;
 	}

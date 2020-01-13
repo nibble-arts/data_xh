@@ -51,23 +51,24 @@ class Entries {
 	}
 
 
-	// filter entries by key
-	// key: meta:field, value
-	//      data:legend, value
-	public static function filter($key, $value) {
+	// filter entries by key, value
+	// type: data or meta
+	// key: meta:field 				uses the memberaccess user nameas value
+	//      data: key = value 		compares the key value
+	public static function filter($type, $key, $value) {
 
 		$filter = explode(":", $key);
 		$filtered = [];
 
 		// valid key
-		if (count($filter) == 2) {
+		if ($type && $key) {
 
 			foreach (self::$entries as $entry) {
 
-				switch ($filter[0]) {
+				switch ($type) {
 
 					case "data":
-						if ($entry->find($filter[1], $value)) {
+						if ($entry->find($key, $value)) {
 							$filtered[] = $entry;
 						}
 						break;
@@ -75,12 +76,18 @@ class Entries {
 
 					// filter by meta entry
 					case "meta":
-						if ($entry->meta($filter[1]) == $value) {
+
+						// memberaccess supported
+						// get username
+						if ($key == "user" && class_exists("\ma\Access") && \ma\Access::user()) {
+							$value = \ma\Access::user()->username();
+						}
+
+						if ($entry->meta($key) == $value) {
 							$filtered[] = $entry;
 						}
 
 						break;
-
 				}
 			}
 		}
@@ -90,7 +97,7 @@ class Entries {
 
 
 	// sort entries by key and direction
-	public static function sort($order, $dir) {
+	public static function sort($key, $order, $dir) {
 
 	}
 

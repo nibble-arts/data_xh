@@ -38,12 +38,7 @@ class View {
 					$ret .= '<th class="form_list_head">';
 						$ret .= ucfirst(str_replace("_", " ", $value));
 					$ret .= '</th>';
-
-					$csv_ary[] = '"' . $value . '"';
 				}
-
-				$csv = implode(";", $csv_ary) . "\n";
-				$csv_ary = [];
 
 
 				// create lines
@@ -73,14 +68,10 @@ class View {
 								$ret .= '<td class="form_list_cell">';
 									$ret .= $value[key($value)];
 								$ret .= "</td>";
-
-								$csv_ary[] = '"' . $value[key($value)] . '"';
 							}
 
 						$ret .= "<tr>";
 
-						$csv .= implode(";", $csv_ary) . "\n";
-						$csv_ary = [];
 					}
 				}
 
@@ -88,6 +79,42 @@ class View {
 		}
 
 		return $ret;
+	}
+
+
+	// get csv data
+	public static function csv () {
+
+		$csv = "";
+		$csv_ary = [];
+
+		foreach (Entries::get(0)->legend() as $value) {
+
+			$csv_ary[] = '"' . $value . '"';
+		}
+
+		$csv = implode(";", $csv_ary) . "\n";
+		$csv_ary = [];
+
+
+		// create lines
+		foreach (Entries::get() as $idx => $line) {
+
+			if ($line != "") {
+
+				$line->reset();
+
+				// iterate keys
+				while ($value = $line->get()) {
+					$csv_ary[] = '"' . $value[key($value)] . '"';
+				}
+
+				$csv .= implode(";", $csv_ary) . "\n";
+				$csv_ary = [];
+			}
+		}
+
+		return $csv;
 	}
 
 

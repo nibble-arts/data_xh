@@ -13,6 +13,7 @@ $plugin_tx['form']['fail_noform']="Form \"%s\" not found";
 $plugin_tx['form']['fail_formpath']="Form directory not found";
 
 $plugin_tx['form']['fail_data_mkdir']="Error creating the form data directory";
+$plugin_tx['form']['fail_download_mkdir']="Error creating the form download directory";
 
 $plugin_tx['form']['fail_fileread']="File \"%s\" not readable";
 $plugin_tx['form']['fail_filewrite']="File write error";
