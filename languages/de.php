@@ -9,6 +9,9 @@ $plugin_tx['form']['username']="Benutzername";
 $plugin_tx['form']['time']="Zeit";
 $plugin_tx['form']['edit']="Eintrag bearbeiten";
 
+$plugin_tx['form']['email_sent']="Eine Email wurde versandt";
+$plugin_tx['form']['email_fail']="Fehler beim Versenden der Email";
+
 $plugin_tx['form']['fail_noform']="Formular \"%s\" nicht gefunden";
 $plugin_tx['form']['fail_formpath']="Formular-Verzeichnis nicht gefunden";
 

@@ -2,6 +2,9 @@
 
 /* the session class provide access to the
  * http parameters and the cookies.
+ * @version: 1.1
+ * @author: Thomas H Winkler
+ * @copyright: 2018-2020
  */
  
 namespace form;
@@ -119,7 +122,16 @@ class Session {
 		}
 	}
 	
+
+	// remove POST
+	public static function remove_http() {
+
+		self::$get = false;
+		self::$post = false;
+		self::$params = false;
+	}
 	
+
 	// get GET and POSt parameter
 	public static function param($name) {
 		

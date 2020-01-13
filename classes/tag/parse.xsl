@@ -48,9 +48,22 @@
 		<div class="form_line">
 			<xsl:apply-templates select="@label | @legend"/>
 	
-			<input  class="form_checkbox form_cell" type="checkbox">
+			<input type="hidden" value="off">
+				<xsl:attribute name="name">
+					<xsl:text>_form_</xsl:text>
+					<xsl:value-of select="@name"/>
+				</xsl:attribute>
+			</input>
+
+			<input class="form_checkbox form_cell" type="checkbox">
 				<xsl:call-template name="attributes"/>
 			</input>
+
+			<xsl:if test="@comment">
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@comment"/>
+			</xsl:if>
+
 		</div>
 
 	</xsl:template>
@@ -81,6 +94,25 @@
 				<xsl:value-of select="@comment"/>
 			</xsl:if>
 		</div>
+
+	</xsl:template>
+
+
+	<!-- ************************************* -->
+	<!-- ************************************* -->
+	<!-- match hidden nodes -->
+	<!-- ************************************* -->
+	<!-- ************************************* -->
+	<xsl:template match="hidden">
+
+		<input>
+
+			<xsl:call-template name="attributes">
+				<xsl:with-param name="type" select="'hidden'"/>
+				<xsl:with-param name="value" select="@source"/>
+			</xsl:call-template>
+
+		</input>
 
 	</xsl:template>
 
@@ -149,6 +181,11 @@
 			<xsl:apply-templates type="radio" select="option">
 				<xsl:with-param name="name" select="@name"/>
 			</xsl:apply-templates>
+
+			<xsl:if test="@comment">
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@comment"/>
+			</xsl:if>
 		</div>
 
 	</xsl:template>
@@ -175,8 +212,16 @@
 					<xsl:value-of select="."/>
 				</xsl:with-param>
 
+
+
 				<xsl:with-param name="node" select="."/>
 			</xsl:call-template>
+
+			<xsl:if test="position() = 1">
+				<xsl:attribute name="checked">
+					<xsl:text>checked</xsl:text>
+				</xsl:attribute>
+			</xsl:if>
 
 			<xsl:value-of select="."/>
 		</input>
@@ -206,6 +251,11 @@
 					<xsl:with-param name="data" select="@source"/>
 				</xsl:call-template>
 			</select>
+
+			<xsl:if test="@comment">
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="@comment"/>
+			</xsl:if>
 		</div>
 
 	</xsl:template>

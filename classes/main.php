@@ -39,7 +39,7 @@ class Main {
 			$entry->save(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/", time() ."_" . $form . ".ini");
 
 
-//TODO get metadata from xml
+//TODO get email metadata from xml
 			
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
 
@@ -54,10 +54,11 @@ class Main {
 					Message::success("email_sent");
 				}
 				else {
-					Message::failure("fail_email");
+					Message::failure("email_fail");
 				}
 			}
 
+			Session::remove_http();
 		}
 	}
 }
