@@ -16,6 +16,12 @@ class Entry {
 	public function __construct($data) {
 
 		$this->reset();
+		$this->meta = [
+				"__created" => time(),
+				"__creator" => "",
+				"__modified" => time(),
+				"__modifier" => ""
+			];
 
 		// data has data section
 		if (isset($data["data"])) {
@@ -36,13 +42,14 @@ class Entry {
 		// add metadata
 		else {
 			$this->meta = [
-				"time" => "",
-				"timestamp" => time()
+				"__created" => time(),
+				"__creator" => "",
+				"__modifier" => ""
 			];
 
 			// if memberaccess plugin exists, add user
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
-				$this->meta["user"] = \ma\Access::user("username");
+				$this->meta["__creator"] = \ma\Access::user("username");
 			}
 		}
 	}
@@ -76,6 +83,18 @@ class Entry {
 	}
 
 
+	// get value by key
+	public function get_by_key($key) {
+		
+		if (isset($this->data[$key])) {
+			
+			return $this->data[$key];
+		}
+		
+		return false;
+	}
+	
+	
 	// find key = value
 //TODO add truncation
 	public function find ($key, $value) {
@@ -87,7 +106,7 @@ class Entry {
 		else return false;
 	}
 
-	// get legend array
+	// get array of keys
 	public function legend($idx = false) {
 
 		// return legend entry by id
@@ -117,8 +136,8 @@ class Entry {
 		// return key value
 		if ($key) {
 
-			if (isset($this->meta[$key])) {
-				return $this->meta[$key];
+			if (isset($this->meta["__" . $key])) {
+				return $this->meta["__" . $key];
 			}
 			else {
 				return false;
@@ -132,30 +151,8 @@ class Entry {
 	}
 
 
-	// save entry to path
-	public function save ($path, $file) {
-
-		// create dir if not exists
-		if (!file_exists($path)) {
-
-			if (!mkdir($path, true)) {
-				Message::failure("fail_data_mkdir");
-				return false;
-			}
-		}
-
-		if (!file_put_contents($path.$file, $this->array2ini())) {
-			Message::failure("fail_filewrite");
-		}
-
-		else {
-			Message::success("data_save");
-		}
-	}
-
-
 	// render to ini string
-	private function array2ini () {
+	private function ini () {
 
 		$data = [];
 		$initemp = [];
@@ -165,20 +162,19 @@ class Entry {
 			$initemp[] = key($entry) . '="' . $entry[key($entry)] . '"';
 		}
 
-		// data section
-		$ini = "[data]\n";
+		// data
 		$ini .= implode("\n", $initemp);
-		$ini .= "\n";
 
+		// metadata
 		$ini .= "\n";
-		$ini .= "[meta]\n";
-		$ini .= 'time="' . date("Y-m-dTH:i:s", time()) . "\"\n";
-		$ini .= "timestamp=" . time();
+		$ini .= "__created=" . $this->meta["__created"];
+		$ini .= "__modifier=" . $this->meta["__modifier"];
+		$ini .= "__modified=" . time();
 
 		// add active user
 		if (class_exists("\ma\Access") && \ma\Access::user()) {
 			$ini .= "\n";
-			$ini .= "user=" . \ma\Access::user()->username() . "\n";
+			$ini .= "__creator=" . \ma\Access::user()->username() . "\n";
 		}
 
 		return $ini;
