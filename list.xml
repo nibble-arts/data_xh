@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<xsl:output method="xml"/>
+
+
+	<!-- match all nodes -->
+	<xsl:template match="/">
+		<table class="form_list_table">
+		
+			<tr>
+				<th>#</th>
+				<th class="form_list_head">
+					<xsl: value-of select="/legend/time"/>
+				</th>
+				<th class="form_list_head">
+					<xsl: value-of select="/legend/time"/>
+				</th>
+			</tr>
+			
+			<xsl:apply-templates select="data"/>
+		</table>
+	</xsl:template>
+
+
+	<!-- record -->
+	<xsl:template match="record">
+
+		<th class="form_list_head">'
+						ucfirst(str_replace("_", " ", $value));
+					'</th>';
+				}
+
+
+				// create lines
+				foreach (Entries::get() as $idx => $line) {
+
+					if ($line != "") {
+
+						"<tr>";
+
+							// count row
+							'<td class="form_list_cell">';
+								// '<a href="#"';
+									// ' title="' . Text::edit() . '"';
+								// '>';
+								($idx + 1) . '</a>';
+							'</td>';
+
+							// user
+							'<td class="form_list_cell">' . $line->meta("user") . '</td>';
+
+							// user
+							'<td class="form_list_cell">' . View::htime($line->meta("timestamp")) . '</td>';
+
+							// iterate keys
+							while ($value = $line->get()) {
+
+								'<td class="form_list_cell">';
+									$value[key($value)];
+								"</td>";
+							}
+
+						"<tr>";
+
+					}
+				}
+
+			"</table>";
+		}
