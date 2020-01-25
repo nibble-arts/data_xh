@@ -6,6 +6,29 @@ namespace form;
 class View {
 
 
+	// format data using xsl transformation
+	public static function formatted ($xsl) {
+
+        // Converts PHP Array to XML with the root element being 'root-element-here'
+        $xml = Array2XML::createXML('data', self::$elements);
+
+		// load xsl
+		$xsl_path = Config::form_content . $xsl;
+
+		$xslt = new \DomDocument();
+		$xslt->load($xsl_path);
+		
+		// create and call xslt processor
+		$t = new \XSLTProcessor();
+		$t->importStylesheet($xslt);
+
+		// transform
+		$result = $t->transformToXml($xml);
+
+	    return $result;
+	}
+
+
 	// render the entries as list
 	public static function list() {
 

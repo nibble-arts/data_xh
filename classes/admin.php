@@ -29,7 +29,7 @@ class Admin {
 	// render form data in list
 	// optional: filter by field value
 	// filter=field:value
-	public static function render($form, $filter = false) {
+	public static function render($form, $xsl, $filter = false) {
 
 		$ret = "";
 		$csv = "";
@@ -47,8 +47,8 @@ class Admin {
 			}
 		}
 
-		// render list of entries
-		$ret = View::list();
+		// render entries
+		$ret = View::formatted($xsl);
 		$csv = View::csv();
 
 		// save csv file
