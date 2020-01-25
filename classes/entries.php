@@ -15,14 +15,15 @@ class Entries {
 
 			$dir = scandir($path);
 			
-			foreach($dir as $file) {
+			foreach($dir as $idx => $file) {
 
 				if (pathinfo($path . '/' . $file, PATHINFO_EXTENSION) == "ini") {
 
 					$data = parse_ini_file($path . '/' . $file, true);
 
 					if($data) {
-						self::$entries[] = new Entry($data);
+						self::$entries["_" . $idx] = $data;
+						// self::$entries[] = new Entry($data);
 					}
 				}
 			}

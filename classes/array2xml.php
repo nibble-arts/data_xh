@@ -37,7 +37,7 @@ namespace form;
 class Array2XML {
 
     private static $xml = null;
-  private static $encoding = 'UTF-8';
+    private static $encoding = 'UTF-8';
 
     /**
      * Initialize the root XML node [optional]
@@ -46,7 +46,7 @@ class Array2XML {
      * @param $format_output
      */
     public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true) {
-        self::$xml = new DomDocument($version, $encoding);
+        self::$xml = new \DomDocument($version, $encoding);
         self::$xml->formatOutput = $format_output;
 		self::$encoding = $encoding;
     }
@@ -82,7 +82,7 @@ class Array2XML {
             if(isset($arr['@attributes'])) {
                 foreach($arr['@attributes'] as $key => $value) {
                     if(!self::isValidTagName($key)) {
-                        throw new Exception('[Array2XML] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
+                        throw new \Exception('[Array2XML] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
                     }
                     $node->setAttribute($key, self::bool2str($value));
                 }
@@ -108,9 +108,11 @@ class Array2XML {
         if(is_array($arr)){
             // recurse to get the node for that key
             foreach($arr as $key=>$value){
+
                 if(!self::isValidTagName($key)) {
-                    throw new Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
+                    throw new \Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
                 }
+
                 if(is_array($value) && is_numeric(key($value))) {
                     // MORE THAN ONE NODE OF ITS KIND;
                     // if the new array is numeric index, means it is array of nodes of the same kind
@@ -160,6 +162,7 @@ class Array2XML {
      * Ref: http://www.w3.org/TR/xml/#sec-common-syn
      */
     private static function isValidTagName($tag){
+
         $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
         return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
     }

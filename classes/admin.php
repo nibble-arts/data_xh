@@ -22,17 +22,26 @@ class Admin {
 
 // load entries
 		Entries::load($path);
-		
+
 	}
 
 
 	// render form data in list
 	// optional: filter by field value
 	// filter=field:value
-	public static function render($form, $xsl, $filter = false) {
+	public static function render($form, $attr = false) {
 
 		$ret = "";
 		$csv = "";
+		$filter = false;
+		$xsl = false;
+
+		if (isset($attr["filter"])) {
+			$filter = $attr["filter"];
+		}
+
+		$xsl = $attr . ".xsl";
+
 
 // TODO filter and sort
 		if ($filter) {
@@ -49,7 +58,16 @@ class Admin {
 
 		// render entries
 		$ret = View::formatted($xsl);
-		$csv = View::csv();
+		// $csv = View::csv();
+
+
+
+
+
+
+		return $ret;
+
+
 
 		// save csv file
 		// create download directory

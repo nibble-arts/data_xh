@@ -9,11 +9,12 @@ class View {
 	// format data using xsl transformation
 	public static function formatted ($xsl) {
 
+// debug(Entries::get());
         // Converts PHP Array to XML with the root element being 'root-element-here'
-        $xml = Array2XML::createXML('data', self::$elements);
+        $xml = Array2XML::createXML('records', Entries::get());
 
 		// load xsl
-		$xsl_path = Config::form_content . $xsl;
+		$xsl_path = Config::form_content() . $xsl;
 
 		$xslt = new \DomDocument();
 		$xslt->load($xsl_path);
