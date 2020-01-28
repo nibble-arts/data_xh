@@ -18,7 +18,7 @@ class Main {
 	}
 
 
-	// execute action
+	// execute save action
 	public static function action ($form) {
 
 		// check for action

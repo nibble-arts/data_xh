@@ -46,6 +46,7 @@ class Array2XML {
      * @param $format_output
      */
     public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true) {
+
         self::$xml = new \DomDocument($version, $encoding);
         self::$xml->formatOutput = $format_output;
 		self::$encoding = $encoding;
@@ -58,6 +59,7 @@ class Array2XML {
      * @return DomDocument
      */
     public static function &createXML($node_name, $arr=array()) {
+
         $xml = self::getXMLRoot();
         $xml->appendChild(self::convert($node_name, $arr));
 
@@ -78,14 +80,18 @@ class Array2XML {
         $node = $xml->createElement($node_name);
 
         if(is_array($arr)){
+
             // get the attributes first.;
             if(isset($arr['@attributes'])) {
                 foreach($arr['@attributes'] as $key => $value) {
+
                     if(!self::isValidTagName($key)) {
                         throw new \Exception('[Array2XML] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
                     }
+
                     $node->setAttribute($key, self::bool2str($value));
                 }
+
                 unset($arr['@attributes']); //remove the key from the array once done.
             }
 
@@ -96,20 +102,25 @@ class Array2XML {
                 unset($arr['@value']);    //remove the key from the array once done.
                 //return from recursion, as a note with value cannot have child nodes.
                 return $node;
-            } else if(isset($arr['@cdata'])) {
+            }
+
+            else if(isset($arr['@cdata'])) {
                 $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
+
                 unset($arr['@cdata']);    //remove the key from the array once done.
                 //return from recursion, as a note with cdata cannot have child nodes.
                 return $node;
             }
-        }
+        // }
 
         //create subnodes using recursion
-        if(is_array($arr)){
+        // if(is_array($arr)){
+
             // recurse to get the node for that key
             foreach($arr as $key=>$value){
 
                 if(!self::isValidTagName($key)) {
+
                     throw new \Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
                 }
 
@@ -120,11 +131,14 @@ class Array2XML {
                     foreach($value as $k=>$v){
                         $node->appendChild(self::convert($key, $v));
                     }
-                } else {
+                }
+
+                else {
                     // ONLY ONE NODE OF ITS KIND
                     $node->appendChild(self::convert($key, $value));
                 }
                 unset($arr[$key]); //remove the key from the array once done.
+
             }
         }
 

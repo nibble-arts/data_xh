@@ -9,12 +9,12 @@
 	<!-- match all nodes -->
 	<xsl:template match="/">
 
-<xsl:copy-of select="."/>
+<!-- <xsl:copy-of select="."/> -->
 
-<!-- 		<table class="form_list_table">
+		<table class="form_list_table">
 				<xsl:apply-templates select="//data"/>
 		</table>
- -->
+
 	</xsl:template>
 
 
@@ -40,7 +40,7 @@
 							<xsl:text>?</xsl:text>
 							<xsl:value-of select="$url"/>
 							<xsl:text>&amp;id=</xsl:text>
-							<xsl:value-of select="//meta[$id]/id"/>
+							<xsl:value-of select="//stat[$id]/id"/>
 						</xsl:attribute>
 
 						<xsl:value-of select="text()"/>

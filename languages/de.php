@@ -21,6 +21,7 @@ $plugin_tx['form']['fail_download_mkdir']="Download-Verzeichnis konnte nicht ers
 $plugin_tx['form']['fail_fileread']="File \"%s\" konnte nicht gelesen werden";
 $plugin_tx['form']['fail_filewrite']="Fehler beim speichern der Daten.";
 $plugin_tx['form']['fail_fileexists']="File \"%s\" existiert schon";
+$plugin_tx['form']['fail_noformat']="Das Ausgabeformat existiert nicht";
 
 $plugin_tx['form']['data_save']="Die Daten wurden erfolgreich gespeichert.";
 

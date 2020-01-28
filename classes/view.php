@@ -7,33 +7,53 @@ class View {
 
 
 	// format data using xsl transformation
-	public static function formatted ($xsl) {
+	public static function formatted ($form, $xsl) {
 
 		global $su;
 
 
-debug(Entries::get());
+// debug(Entries::get());
 
-        // Converts PHP Array to XML with the root element being 'root-element-here'
-        $xml = Array2XML::createXML('records', Entries::get());
-
-		// load xsl
 		$xsl_path = Config::form_content() . $xsl;
 
-		$xslt = new \DomDocument();
-		$xslt->load($xsl_path);
-		
-		// create and call xslt processor
-		$t = new \XSLTProcessor();
-		$t->importStylesheet($xslt);
 
-		// set attributes
-		$t->setParameter("", "url", $su);
+		if (file_exists($xsl_path)) {
 
-		// transform
-		$result = $t->transformToXml($xml);
+	        // Converts PHP Array to XML with the root element being 'root-element-here'
+	        $xml = Array2XML::createXML('records', Entries::get());
 
-	    return $result;
+			// load xsl
+
+			$xslt = new \DomDocument();
+			$xslt->load($xsl_path);
+			
+			// create and call xslt processor
+			$t = new \XSLTProcessor();
+			$t->importStylesheet($xslt);
+
+			// set attributes
+			if (Config::url_detail()) {
+				$t->setParameter("", "url", Config::url_detail());
+			}
+			else {
+				$t->setParameter("", "url", $su);
+			}
+
+			$t->setParameter("", "form", $form);
+
+
+			// transform
+			$result = $t->transformToXml($xml);
+
+		    return $result;
+		}
+
+		else {
+			Message::failure("fail_noformat");
+
+			return $result;
+		}
+
 	}
 
 
@@ -97,10 +117,10 @@ debug(Entries::get());
 							$ret .= '</td>';
 
 							// user
-							$ret .= '<td class="form_list_cell">' . $line->meta("user") . '</td>';
+							$ret .= '<td class="form_list_cell">' . $line->stat("user") . '</td>';
 
 							// user
-							$ret .= '<td class="form_list_cell">' . View::htime($line->meta("timestamp")) . '</td>';
+							$ret .= '<td class="form_list_cell">' . View::htime($line->stat("timestamp")) . '</td>';
 
 							// iterate keys
 							while ($value = $line->get()) {

@@ -39,7 +39,13 @@ function form($form = "", $function = "", $attr = false) {
 	global $onload, $su, $f;
 
 
+	// execute form actions
 	form\Main::action($form);
+
+
+// TODO parse parameters
+// form("definition","disp:format/print:format","filter")
+
 
 
 //	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
@@ -77,7 +83,7 @@ function form($form = "", $function = "", $attr = false) {
 			// admin
 			case "administration":
 				form\Admin::fetch(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/");
-				$ret .= form\Admin::render($attr);
+				$ret .= form\Admin::render($form, $attr);
 				break;
 
 
