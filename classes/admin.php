@@ -29,32 +29,35 @@ class Admin {
 	// render form data in list
 	// optional: filter by field value
 	// filter=field:value
-	public static function render($form, $attr = false) {
+	public static function render($attr) {
 
 		$ret = "";
 		$csv = "";
 		$filter = false;
 		$xsl = false;
 
-		if (isset($attr["filter"])) {
-			$filter = $attr["filter"];
+		if (isset($attr["format"])) {
+			$xsl = $attr["format"];
 		}
 
-		$xsl = $attr . ".xsl";
-
+		else {
+			return false;
+		}
 
 // TODO filter and sort
-		if ($filter) {
-			
-			$keyval = explode ("=", $filter);
+		if (isset($attr["filter"])) {
+
+			$keyval = explode ("=", $attr["filter"]);
 			
 			// filter entries by key=value
-			preg_match("/([^\:]+):([^\=]+)[\=]?(.*)/", $filter, $matches);
+			preg_match("/([^\:]+):([^\=]+)[\=]?(.*)/", $attr["filter"], $matches);
 			
 			if (count ($matches) > 2) {
 				Entries::filter($matches[1], $matches[2], $matches[3]);
 			}
 		}
+
+		$xsl = $xsl . ".xsl";
 
 		// render entries
 		$ret = View::formatted($xsl);

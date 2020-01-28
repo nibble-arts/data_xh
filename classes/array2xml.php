@@ -161,7 +161,12 @@ class Array2XML {
      * Check if the tag name or attribute name contains illegal characters
      * Ref: http://www.w3.org/TR/xml/#sec-common-syn
      */
-    private static function isValidTagName($tag){
+    private static function isValidTagName(&$tag){
+
+        // check for [a-z_] at beginn
+        if (!preg_match('/[a-z_]/i', $tag)) {
+            $tag = "idx_" . $tag;
+        }
 
         $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
         return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;

@@ -9,7 +9,11 @@ class View {
 	// format data using xsl transformation
 	public static function formatted ($xsl) {
 
-// debug(Entries::get());
+		global $su;
+
+
+debug(Entries::get());
+
         // Converts PHP Array to XML with the root element being 'root-element-here'
         $xml = Array2XML::createXML('records', Entries::get());
 
@@ -23,10 +27,22 @@ class View {
 		$t = new \XSLTProcessor();
 		$t->importStylesheet($xslt);
 
+		// set attributes
+		$t->setParameter("", "url", $su);
+
 		// transform
 		$result = $t->transformToXml($xml);
 
 	    return $result;
+	}
+
+
+	private static function array2xml(array $data, \SimpleXMLElement $xml)
+	{
+	    foreach ($data as $k => $v) {
+	        is_array($v) ? self::array2xml($v, $xml->addChild($k)) : $xml->addChild($k, $v);
+	    }
+	    return $xml;
 	}
 
 

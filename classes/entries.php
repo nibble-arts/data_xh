@@ -14,16 +14,19 @@ class Entries {
 		if (file_exists($path)) {
 
 			$dir = scandir($path);
-			
-			foreach($dir as $idx => $file) {
+
+			$idx = 0;
+			foreach($dir as $file) {
 
 				if (pathinfo($path . '/' . $file, PATHINFO_EXTENSION) == "ini") {
 
 					$data = parse_ini_file($path . '/' . $file, true);
 
 					if($data) {
-						self::$entries["_" . $idx] = $data;
+						self::$entries[$idx] = $data;
 						// self::$entries[] = new Entry($data);
+
+						$idx++;
 					}
 				}
 			}
@@ -84,7 +87,7 @@ class Entries {
 							$value = \ma\Access::user()->username();
 						}
 
-						if ($entry->meta($key) == $value) {
+						if (isset($entry["meta"][$key]) && $entry["meta"][$key] == $value) {
 							$filtered[] = $entry;
 						}
 
