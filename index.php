@@ -34,13 +34,55 @@ form\Api::fetch(form\Session::param("source"));
 
 
 // plugin to create a form and send the result to an email address
-function form($form = "", $function = "", $attr = false) {
+function form($form = false, $format = false, $filter = false) {
 
 	global $onload, $su, $f;
 
+	$ret = "";
+	$xsl = false; // output format
+	$target = false; // output target (json, display, printer)
 
 	// execute form actions
 	form\Main::action($form);
+
+	// check form name
+	if (!$form) {
+		form\Message::failure("fail_noform");
+	}
+
+	elseif ($format) {
+
+		// parse format: format[@target] - target is optional (display is default)
+		if (preg_match('/([a-z0-9_]+)\@?(.*)/i', $format, $match)) {
+
+			$xsl = $match[1];
+			$target = $match[2];
+
+		}
+
+
+		// load data
+		$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
+		form\Entries::load($path);
+
+
+		// return script include
+		$ret .= '<script type="text/javascript" src="' . FORM_BASE . 'script/form.js"></script>';
+
+
+		// parse xml > add sources
+		// form\Parse::load($path);
+		// form\Parse::parse($attr);
+
+
+		form\Admin::fetch(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/");
+		$ret .= form\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
+	}
+
+	else {
+		form\Message::failure("fail_noformat");
+	}
+
 
 
 // TODO parse parameters
@@ -48,34 +90,30 @@ function form($form = "", $function = "", $attr = false) {
 
 
 
-//	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
-//	form\Entries::load($path);
 
 
-	// create form definition path and load entries
+
+
+
+/*	// create form definition path and load entries
 	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form . ".xml";
 
 
-	// load form and parse
-	form\Parse::load($path);
-	form\Parse::parse($attr);
 
 
 	$ret = "";
 	$ret_send = "";
 
 
-	// return script include
-	$ret .= '<script type="text/javascript" src="' . FORM_BASE . 'script/form.js"></script>';
 
 	// add to onload
-	$onload .= "form_init();";
+	$onload .= "form_init();";*/
 
 
 	$ret .= form\Message::render();
 
 
-	// if form exist, render
+/*	// if form exist, render
 	if (form\Parse::exists()) {
 
 		switch (strtolower($function)) {
@@ -99,7 +137,7 @@ function form($form = "", $function = "", $attr = false) {
 	// no form definition found
 	else {
 		$ret .= '<div class="xh_fail">Form definition not found</div>';
-	}
+	}*/
 
 	return $ret;
 }

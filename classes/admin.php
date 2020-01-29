@@ -35,7 +35,9 @@ class Admin {
 		$csv = "";
 		$filter = false;
 		$xsl = false;
+		$target = false;
 
+		// get format
 		if (isset($attr["format"])) {
 			$xsl = $attr["format"];
 		}
@@ -44,14 +46,19 @@ class Admin {
 			return false;
 		}
 
-// TODO filter and sort
+		// get target
+		if (isset($attr["target"])) {
+			$target = $attr["target"];
+		}
+
+		// TODO filter and sort
 		if (isset($attr["filter"])) {
 
 			$keyval = explode ("=", $attr["filter"]);
-			
+debug($filter);
 			// filter entries by key=value
 			preg_match("/([^\:]+):([^\=]+)[\=]?(.*)/", $attr["filter"], $matches);
-			
+debug($matches);			
 			if (count ($matches) > 2) {
 				Entries::filter($matches[1], $matches[2], $matches[3]);
 			}
@@ -63,13 +70,22 @@ class Admin {
 		$ret = View::formatted($form, $xsl);
 		// $csv = View::csv();
 
-// echo $ret;
-// die();
+		switch ($target) {
 
-		$ret .= Message::render();
+			case "printer":
+			case "print":
+
+				echo $ret;
+				die();
+				break;
+
+			default:
+
+				$ret .= Message::render();
+				return $ret;
+		}
 
 
-		return $ret;
 
 
 

@@ -7,6 +7,7 @@ class View {
 
 
 	// format data using xsl transformation
+	// file name format for xsl > $form.name.xsl
 	public static function formatted ($form, $xsl) {
 
 		global $su;
@@ -14,7 +15,7 @@ class View {
 
 // debug(Entries::get());
 
-		$xsl_path = Config::form_content() . $xsl;
+		$xsl_path = Config::form_content() . $form . "." . $xsl;
 
 
 		if (file_exists($xsl_path)) {
@@ -49,7 +50,7 @@ class View {
 		}
 
 		else {
-			Message::failure("fail_noformat");
+			Message::failure("failformat");
 
 			return $result;
 		}
@@ -66,80 +67,81 @@ class View {
 	}
 
 
+//deprecated
 	// render the entries as list
-	public static function list() {
+	// public static function list() {
 
-		// display count of entries
-		$ret = '<p>';
+	// 	// display count of entries
+	// 	$ret = '<p>';
 
-			if (Entries::count() !== false) {
-				$ret .= Entries::count();
-			}
-			else {
-				$ret .= Text::none();
-			}
+	// 		if (Entries::count() !== false) {
+	// 			$ret .= Entries::count();
+	// 		}
+	// 		else {
+	// 			$ret .= Text::none();
+	// 		}
 
-		$ret .= ' ' . Text::entries() . '</p>';
-
-
-		if (Entries::get(0)) {
-
-			$ret .= '<table class="form_list_table">';
-
-				// create header
-				$ret .= '<th>#</th>'; // count field
-				$ret .= '<th class="form_list_head">' . Text::username() . '</th>'; // count field
-				$ret .= '<th class="form_list_head">' . Text::time() . '</th>'; // count field
+	// 	$ret .= ' ' . Text::entries() . '</p>';
 
 
-				// create headline from legend
-				foreach (Entries::get(0)->legend() as $value) {
+	// 	if (Entries::get(0)) {
 
-					$ret .= '<th class="form_list_head">';
-						$ret .= ucfirst(str_replace("_", " ", $value));
-					$ret .= '</th>';
-				}
+	// 		$ret .= '<table class="form_list_table">';
+
+	// 			// create header
+	// 			$ret .= '<th>#</th>'; // count field
+	// 			$ret .= '<th class="form_list_head">' . Text::username() . '</th>'; // count field
+	// 			$ret .= '<th class="form_list_head">' . Text::time() . '</th>'; // count field
 
 
-				// create lines
-				foreach (Entries::get() as $idx => $line) {
+	// 			// create headline from legend
+	// 			foreach (Entries::get(0)->legend() as $value) {
 
-					if ($line != "") {
+	// 				$ret .= '<th class="form_list_head">';
+	// 					$ret .= ucfirst(str_replace("_", " ", $value));
+	// 				$ret .= '</th>';
+	// 			}
 
-						$ret .= "<tr>";
 
-							// count row
-							$ret .= '<td class="form_list_cell">';
-								// $ret .= '<a href="#"';
-									// $ret .= ' title="' . Text::edit() . '"';
-								// $ret .= '>';
-								$ret .= ($idx + 1) . '</a>';
-							$ret .= '</td>';
+	// 			// create lines
+	// 			foreach (Entries::get() as $idx => $line) {
 
-							// user
-							$ret .= '<td class="form_list_cell">' . $line->stat("user") . '</td>';
+	// 				if ($line != "") {
 
-							// user
-							$ret .= '<td class="form_list_cell">' . View::htime($line->stat("timestamp")) . '</td>';
+	// 					$ret .= "<tr>";
 
-							// iterate keys
-							while ($value = $line->get()) {
+	// 						// count row
+	// 						$ret .= '<td class="form_list_cell">';
+	// 							// $ret .= '<a href="#"';
+	// 								// $ret .= ' title="' . Text::edit() . '"';
+	// 							// $ret .= '>';
+	// 							$ret .= ($idx + 1) . '</a>';
+	// 						$ret .= '</td>';
 
-								$ret .= '<td class="form_list_cell">';
-									$ret .= $value[key($value)];
-								$ret .= "</td>";
-							}
+	// 						// user
+	// 						$ret .= '<td class="form_list_cell">' . $line->stat("user") . '</td>';
 
-						$ret .= "<tr>";
+	// 						// user
+	// 						$ret .= '<td class="form_list_cell">' . View::htime($line->stat("timestamp")) . '</td>';
 
-					}
-				}
+	// 						// iterate keys
+	// 						while ($value = $line->get()) {
 
-			$ret .= "</table>";
-		}
+	// 							$ret .= '<td class="form_list_cell">';
+	// 								$ret .= $value[key($value)];
+	// 							$ret .= "</td>";
+	// 						}
 
-		return $ret;
-	}
+	// 					$ret .= "<tr>";
+
+	// 				}
+	// 			}
+
+	// 		$ret .= "</table>";
+	// 	}
+
+	// 	return $ret;
+	// }
 
 
 	// get csv data
