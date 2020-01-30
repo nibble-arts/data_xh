@@ -28,7 +28,7 @@ class Admin {
 
 	// render form data in list
 	// optional: filter by field value
-	// filter=field:value
+	// filter=field:key=value ^ and | or
 	public static function render($form, $attr) {
 
 		$ret = "";
@@ -55,10 +55,10 @@ class Admin {
 		if (isset($attr["filter"])) {
 
 			$keyval = explode ("=", $attr["filter"]);
-debug($filter);
+
 			// filter entries by key=value
 			preg_match("/([^\:]+):([^\=]+)[\=]?(.*)/", $attr["filter"], $matches);
-debug($matches);			
+debug($matches);
 			if (count ($matches) > 2) {
 				Entries::filter($matches[1], $matches[2], $matches[3]);
 			}

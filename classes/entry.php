@@ -5,13 +5,13 @@ namespace form;
 class Entry {
 
 	private $data;
-	private $meta;
+	private $stat;
 
 	private $cursor;
  
 
 	// two variants for construction 
-	// $data: [data => [key => value, ...], meta => []]
+	// $data: [data => [key => value, ...], stat => []]
 	// $data: [key => value, ...]
 	public function __construct($data) {
 
@@ -20,7 +20,7 @@ class Entry {
 		// data has data section
 		if (isset($data["data"])) {
 			$this->data = $data["data"];
-			$this->meta = [];
+			$this->stat = [];
 		}
 
 		// use key => value array as data
@@ -28,21 +28,21 @@ class Entry {
 			$this->data = $data;
 		}
 
-		// data has meta section
-		if (isset($data["meta"])) {
-			$this->meta = $data["meta"];
+		// data has stat section
+		if (isset($data["stat"])) {
+			$this->stat = $data["stat"];
 		}
 
-		// add metadata
+		// add statdata
 		else {
-			$this->meta = [
+			$this->stat = [
 				"time" => "",
 				"timestamp" => time()
 			];
 
 			// if memberaccess plugin exists, add user
 			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
-				$this->meta["user"] = \ma\Access::user("username");
+				$this->stat["user"] = \ma\Access::user("username");
 			}
 		}
 	}
@@ -73,6 +73,12 @@ class Entry {
 		}
 
 		return false;
+	}
+
+
+	// get array data
+	public function array() {
+		return["data" => $this->data, "stat" => $this->stat];
 	}
 
 
@@ -111,14 +117,14 @@ class Entry {
 	}
 
 	
-	// return meta section value or meta array
-	public function meta ($key = false) {
+	// return stat section value or stat array
+	public function stat ($key = false) {
 
 		// return key value
 		if ($key) {
 
-			if (isset($this->meta[$key])) {
-				return $this->meta[$key];
+			if (isset($this->stat[$key])) {
+				return $this->stat[$key];
 			}
 			else {
 				return false;
@@ -127,7 +133,7 @@ class Entry {
 
 		// return array
 		else {
-			return $this->meta;
+			return $this->stat;
 		}
 	}
 
@@ -171,7 +177,7 @@ class Entry {
 		$ini .= "\n";
 
 		$ini .= "\n";
-		$ini .= "[meta]\n";
+		$ini .= "[stat]\n";
 		$ini .= 'time="' . date("Y-m-dTH:i:s", time()) . "\"\n";
 		$ini .= "timestamp=" . time();
 
@@ -195,7 +201,7 @@ class Entry {
 			$ret .= ucfirst(key($keyval)) . ": " . $keyval[key($keyval)] . "\n";
 		}
 
-		$ret .= "\nUser: " . $this->meta("user") . " - Time: " . View::htime($this->meta("timestamp"));
+		$ret .= "\nUser: " . $this->stat("user") . " - Time: " . View::htime($this->stat("timestamp"));
 
 		return $ret;
 	}

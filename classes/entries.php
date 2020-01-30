@@ -23,8 +23,8 @@ class Entries {
 					$data = parse_ini_file($path . '/' . $file, true);
 
 					if($data) {
-						self::$entries[$idx] = $data;
-						// self::$entries[] = new Entry($data);
+						// self::$entries[$idx] = $data;
+						self::$entries[] = new Entry($data);
 
 						$idx++;
 					}
@@ -55,6 +55,21 @@ class Entries {
 	}
 
 
+	// get assoc array
+	public static function array($idx = false) {
+
+		$ret = [];
+		$d = self::get($idx);
+
+		foreach ($d as $entry) {
+
+			$ret[] = $entry->array();
+		}
+
+		return $ret;
+	}
+
+
 	// filter entries by key, value
 	// type: data or meta
 	// key: meta:field 				uses the memberaccess user nameas value
@@ -79,7 +94,7 @@ class Entries {
 
 
 					// filter by meta entry
-					case "meta":
+					case "stat":
 
 						// memberaccess supported
 						// get username
@@ -87,7 +102,7 @@ class Entries {
 							$value = \ma\Access::user()->username();
 						}
 
-						if (isset($entry["meta"][$key]) && $entry["meta"][$key] == $value) {
+						if (isset($entry["stat"][$key]) && $entry["stat"][$key] == $value) {
 							$filtered[] = $entry;
 						}
 

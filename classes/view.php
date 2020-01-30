@@ -21,7 +21,7 @@ class View {
 		if (file_exists($xsl_path)) {
 
 	        // Converts PHP Array to XML with the root element being 'root-element-here'
-	        $xml = Array2XML::createXML('records', Entries::get());
+	        $xml = Array2XML::createXML('records', Entries::array());
 
 			// load xsl
 

@@ -63,19 +63,19 @@ function form($form = false, $format = false, $filter = false) {
 
 		// load data
 		$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
-		form\Entries::load($path);
-
+		// form\Entries::load($path);
 
 		// return script include
 		$ret .= '<script type="text/javascript" src="' . FORM_BASE . 'script/form.js"></script>';
 
 
-		// parse xml > add sources
+		form\Admin::fetch($path);
+
+
+		// parse xml > add ajax sources
 		// form\Parse::load($path);
 		// form\Parse::parse($attr);
 
-
-		form\Admin::fetch(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/");
 		$ret .= form\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
 	}
 
