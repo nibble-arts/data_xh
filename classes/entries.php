@@ -23,7 +23,12 @@ class Entries {
 					$data = parse_ini_file($path . '/' . $file, true);
 
 					if($data) {
-						// self::$entries[$idx] = $data;
+
+						// no id > add stat[id]
+						if (!isset($data["stat"]["id"])) {
+							$data["stat"]["id"] = $idx;
+						}
+
 						self::$entries[] = new Entry($data);
 
 						$idx++;
@@ -61,9 +66,12 @@ class Entries {
 		$ret = [];
 		$d = self::get($idx);
 
-		foreach ($d as $entry) {
+		if (is_array($d)) {
+			
+			foreach ($d as $entry) {
 
-			$ret[] = $entry->array();
+				$ret[] = $entry->array();
+			}
 		}
 
 		return $ret;
@@ -76,8 +84,24 @@ class Entries {
 	//      data: key = value 		compares the key value
 	public static function filter($type, $key, $value) {
 
-		$filter = explode(":", $key);
 		$filtered = [];
+
+		// get source: data or stat
+		$filter = explode(":", $key);
+
+		// get value
+		$values = explode("@", $value);
+		// select source
+		// @ http > get from session
+		if (count($values) > 1) {
+
+			switch($values[1]) {
+				case "http":
+
+					$value = Session::param($values[0]);
+					break;
+			}
+		}
 
 		// valid key
 		if ($type && $key) {
@@ -101,8 +125,9 @@ class Entries {
 						if ($key == "user" && class_exists("\ma\Access") && \ma\Access::user()) {
 							$value = \ma\Access::user()->username();
 						}
-
-						if (isset($entry["stat"][$key]) && $entry["stat"][$key] == $value) {
+// debug($entry);
+// debug($value);
+						if ($entry->stat($key) && $entry->stat($key) == $value) {
 							$filtered[] = $entry;
 						}
 

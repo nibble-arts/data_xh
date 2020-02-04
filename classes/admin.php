@@ -58,7 +58,7 @@ class Admin {
 
 			// filter entries by key=value
 			preg_match("/([^\:]+):([^\=]+)[\=]?(.*)/", $attr["filter"], $matches);
-debug($matches);
+
 			if (count ($matches) > 2) {
 				Entries::filter($matches[1], $matches[2], $matches[3]);
 			}

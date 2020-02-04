@@ -19,7 +19,6 @@ class View {
 
 		$xsl_path = Config::form_content() . $form . "." . $xsl;
 
-
 		if (file_exists($xsl_path)) {
 
 	        // Converts PHP Array to XML with the root element being 'root-element-here'

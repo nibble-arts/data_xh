@@ -6,4 +6,4 @@ $plugin_cf['form']['format_path']="plugins/format";
 $plugin_cf['form']['mail_sender']="noreply@filmautoren.at";
 $plugin_cf['form']['mail_address']="thomas.winkler@iggmp.net";
 $plugin_cf['form']['mail_subject']="StM Umfrage";
-$plugin_cf['form']['url_detail']="Wettbewerbe/Nennung/Nennung-bearbeiten";
+$plugin_cf['form']['url_detail']="Wettbewerbe/Wettbewerbs-Nennung/Nennung-bearbeiten";

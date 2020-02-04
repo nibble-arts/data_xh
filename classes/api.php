@@ -5,7 +5,7 @@ namespace form;
 class Api {
 
 	public static function fetch($definition) {
-
+		
 		if ($definition) {
 
 			$data =  Source::fetch($definition);
