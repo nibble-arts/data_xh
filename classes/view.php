@@ -12,6 +12,8 @@ class View {
 
 		global $su;
 
+		$result = "";
+
 
 // debug(Entries::get());
 
@@ -50,7 +52,7 @@ class View {
 		}
 
 		else {
-			Message::failure("failformat");
+			Message::failure("fail_noformat");
 
 			return $result;
 		}
