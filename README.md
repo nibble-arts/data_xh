@@ -1,6 +1,17 @@
 # CMSimple-XH Form-Plugin
 The form plugin for the CMSpimle-XH framework offers a simple way to create forms, input data and send the result by mail, to a database backend or save it as a file.
 
+# New version
+## Definition
+A form is stored in a subdirectory with the name of the form. The format xsl files are stored in the directory.
+
+
+1. Load form definition (XSL-file)
+2. Load data using the source library
+3. Call the XSL transformation
+4. Parse the resulting XML
+5. Render to output
+
 The form is defined and stored in the admin backend and used with a simple plugin call on a page.
 	{{{form("form_name")}}}
 
