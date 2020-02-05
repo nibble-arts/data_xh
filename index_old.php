@@ -30,7 +30,7 @@ spl_autoload_register(function ($path) {
 
 
 form\Main::init($plugin_cf, $plugin_tx);
-// form\Api::fetch(form\Session::param("source"));
+form\Api::fetch(form\Session::param("source"));
 
 
 // plugin to create a form and send the result to an email address
@@ -38,18 +38,12 @@ function form($form = false, $format = false, $filter = false) {
 
 	global $onload, $su, $f;
 
-	form\Form::init($form);
-die();
-
-
-
 	$ret = "";
 	$xsl = false; // output format
 	$target = false; // output target (json, display, printer)
 
 	// execute form actions
 	form\Main::action($form);
-
 
 	// check form name
 	if (!$form) {

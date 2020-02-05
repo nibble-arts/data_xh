@@ -18,6 +18,13 @@ class Main {
 	}
 
 
+	public static function load($form) {
+
+		Form::init();
+die();
+	}
+
+
 	// execute save action
 	public static function action ($form) {
 
