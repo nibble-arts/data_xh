@@ -13,6 +13,9 @@ $plugin_tx['form']['email_sent']="Eine Email wurde versandt";
 $plugin_tx['form']['email_fail']="Fehler beim Versenden der Email";
 
 $plugin_tx['form']['fail_noform']="Formular nicht gefunden";
+
+$plugin_tx['form']['form_nofields']="Formdefinition enthält keine Felder";
+
 $plugin_tx['form']['fail_formpath']="Formular-Verzeichnis nicht gefunden";
 $plugin_tx['form']['fail_data_mkdir']="Formular-Verzeichnis konnte nicht erstellt werden";
 $plugin_tx['form']['fail_download_mkdir']="Download-Verzeichnis konnte nicht erstellt werden";

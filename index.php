@@ -23,7 +23,7 @@ spl_autoload_register(function ($path) {
 
 		$path = "classes/" . str_replace("form\\", "", strtolower($path)) . ".php";
 		$path = str_replace("\\", "/", $path);
-		
+
 		include_once $path; 
 	}
 });
@@ -38,7 +38,7 @@ function form($form = false, $format = false, $filter = false) {
 
 	global $onload, $su, $f;
 
-	form\Form::init($form);
+	form\Main::load($form);
 die();
 
 

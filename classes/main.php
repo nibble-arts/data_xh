@@ -20,7 +20,11 @@ class Main {
 
 	public static function load($form) {
 
-		Form::init();
+		Form::init($form);
+
+		while (($field = Form::get()) !== false) {
+			debug($field->render());
+		}
 die();
 	}
 

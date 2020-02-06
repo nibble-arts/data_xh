@@ -1,6 +1,6 @@
 <?php
 
-$plugin_cf['form']['form_content']="plugins/form/content/";
+$plugin_cf['form']['form_content']="plugins/form/content/plugins/form";
 $plugin_cf['form']['form_path']="plugins/form";
 $plugin_cf['form']['format_path']="plugins/format";
 $plugin_cf['form']['mail_sender']="noreply@filmautoren.at";
