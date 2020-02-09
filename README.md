@@ -1,16 +1,82 @@
 # CMSimple-XH Form-Plugin
-The form plugin for the CMSpimle-XH framework offers a simple way to create forms, input data and send the result by mail, to a database backend or save it as a file.
+The form plugin for the CMSpimle-XH framework offers a simple way to create forms, automatically fill out with data from a source likes a file or database, input data and send the result by mail, to a database backend or save it as a file. The XSL format definition makes it flexible to create simple forms, lists or print forms.
+
+The nibble-arts memberaccess_xh is supported to add user information or restrict data access.
 
 # New version
 ## Definition
-A form is stored in a subdirectory with the name of the form. The format xsl files are stored in the directory.
+A form is stored in a subdirectory with the name of the form. The form definition uses the INI-file format named form.ini with three sections:
 
+1. fields: A list of field definitions
+2. source: Source definitions for access of extern data sources to fill the form fields a data list for a select field
+3. check: optional field format check routine
 
-1. Load form definition (XSL-file)
-2. Load data using the source library
-3. Call the XSL transformation
-4. Parse the resulting XML
+The ini file and format xsl files are stored in the directory. The plugin call activates the following process:
+
+1. Load form definition (INI-file)
+2. If a _self source is defined, load data
+3. Create a xml file with the form definition and data
+4. Load the format XSL transformation
+5. Call the XSL transformation
 5. Render to output
+
+### Fields Definition Section
+
+	input fields:
+		fieldName = "input, textarea, select, checkbox, radio, hidden"
+
+	A mandatory field is marked with a '>mandatory' at the end of the string
+	fieldName = "type>mandatory"
+
+A fixed default value can be set using '>value=string' after the type definition 
+
+	fieldName = "type>value=default string>mandatory
+	
+The field name automatically is formed using the post prefix setting in three config file.
+Example:
+
+	name = "text>value=Forename>mandatory"
+	
+	<input type="text" name="form_name" value="Forename"/>
+	
+### Source Definition Section
+
+	_self:
+		The primary data for the form fields.
+
+For linked field, like source or radiobuttons, an external source can be defined. It has to have the same fieldName.
+
+	The source string format is:
+		query@source
+
+	Queries
+		field=value
+
+			^ boolean and
+			, boolean or
+			or before and, no brackets
+
+An Asterisk as query returns all records.
+
+		*@source
+		
+The values in a query string can be the value of another field, marked with the $ character before the fieldName. The source is loaded using an ajax call, when the referenced field has a value.
+
+		field=$fieldName
+
+The fields to be loaded from the external source are listed after a > character. The fields are returened in an array. An Astrisk returns all fields.
+The field content can be rendered in a format after an additional > character. In this case a string is returned for each entry. The fieldNames can be used in the format string encapsuled in curly breakets.
+	
+	@source>field1,field2>Format as {field1}, {field2}
+
+### Input Format Check Section
+
+For each field a input format check can be added, using the same fieldName. A field check makes three field not mandatory. Two methods are available:
+
+	count:#       Check is positive, when the number of characters is reached.
+	regex:		Check is positive, when the regular expression is positive.
+
+# Old Version
 
 The form is defined and stored in the admin backend and used with a simple plugin call on a page.
 	{{{form("form_name")}}}

@@ -14,7 +14,7 @@ class Form {
 
 		self::reset();
 
-		$path = Path::create([Config::form_content(), $form . ".ini"]);
+		$path = Path::create([Config::form_content(), $form, "form.ini"]);
 
 		if (file_exists($path)) {
 			$data = parse_ini_file($path, true);
@@ -36,7 +36,7 @@ class Form {
 						$check = $data["check"][$name];
 					}
 
-					self::$fields[] = new Field($name, $def, $source, $check);
+					self::$fields[$name] = new Field($name, $def, $source, $check);
 				}
 
 				// if _self source, load initial data
@@ -63,6 +63,18 @@ class Form {
 	// set loaded data for form
 	public static function set($data) {
 
+		if (is_array($data)) {
+			
+			// iterate data > save data from existing fields
+			foreach($data as $key => $entry) {
+				if (self::field_exists($key)) {
+					self::$fields[$key]->addData($entry);
+				}
+				
+				else {
+					Message::failure("data parser: field " . $key . " doesn't exist");
+			}
+		}
 	}
 
 	// reset cursor
@@ -70,11 +82,17 @@ class Form {
 		self::$cursor = 0;
 	}
 
-	// get field by id / cursor
-	public static function get($idx = false) {
+	// check if field exists
+	public static function field_exists($name) {
+		return isset(self::$fields[$name]);
+	}
+	
+	// get field by name
+	// if no name, get iterate with cursor
+	public static function get($name = false) {
 
-		if ($idx && isset(self::$fields[$idx])) {
-			return self::$fields[$idx];
+		if ($name != false && isset(self::$fields[$name])) {
+			return self::$fields[$name];
 		}
 
 		elseif (isset(self::$fields[self::$cursor])) {
@@ -82,6 +100,20 @@ class Form {
 		}
 
 		return false;
+	}
+	
+	// render form to xml
+	public static function xml() {
+		
+		$ret = '<>';
+		
+		if (self::$fields) {
+			foreach (self::$fields as $field) {
+				
+			}
+			
+			Array2XML::createXML("form", $ary);
+		}
 	}
 }
 

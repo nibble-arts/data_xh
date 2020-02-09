@@ -7,7 +7,9 @@ class Field {
 	private $name;
 	private $type;
 	private $mandatory = false;
-	private $check;
+	private $check = false;
+	
+	private $value;
 
 	// construct field object
 	public function __construct($name, $type, $source, $check) {
@@ -31,7 +33,16 @@ class Field {
 		return $this->name;
 	}
 
-	// get name
+	// set/get values
+	public function value($value = false) {
+		if ($value !== false) {
+			self::$value = $value;
+		}
+		
+		return self::$value;
+	}
+		
+	// get check
 	public function check() {
 		return $this->check;
 	}
@@ -49,100 +60,22 @@ class Field {
 	// render field
 	public function render($value = false) {
 
-
-		switch ($this->type) {
-
-			case "input":
-				$ret = $this->input($value);
-				break;
-
-			case "checkbox":
-				$ret = $this->checkbox($checkbox);
-				break;
-
-			case "radio":
-				$ret = $this->radio($value);
-				break;
-
-			case "select":
-				$ret = $this->select($value);
-				break;
-
-			case "hidden":
-				$ret = $this->hidden($value);
-				break;
-
-			case "textarea";
-				$ret = $this->textarea($value);
-				break;
-
-			default:
-				$ret = $this->type;
-		}
-
-		return $ret;
-	}
-
-
-	// input field
-	private function input($value) {
-
-		$ret = '<div class="form_label">' . ucfirst($this->name) . '</div>';
-
-		$ret .= '<div class="form_value">';
-
-			$ret .= ' <input type="text"';
-				$ret .= $this->attributes($value);
-			$ret .= '/>';
-
-		$ret .= '</div>';
-
-		return $ret;
-	}
-
-	// radio field
-	private function radio($value) {
-
-	}
-
-	// checkbox field
-	private function checkbox($value) {
-
-	}
-
-	// select field
-	private function select($value) {
-
-	}
-
-	// hidden field
-	private function hidden($value) {
-		return '<input type="hidden" name="form_' . $this->name . '" value="' . $this->mandatory . '">';
-	}
-
-	// textarea field
-	private function textarea($value) {
-
-	}
-
-	// add attributes
-	private function attributes($value) {
-
-		$ret = 'name="form_' . $this->name . '"';
-
-		if ($value) {
-			$ret .= ' value="' . $value . '"';
-		}
-
-		if ($this->source) {
-			$ret .= ' source="' . $this->source . '"';
-		}
-
-		if ($this->check) {
-			$ret .= ' check="' . $this->check . '"';
-		}
-
-		return $ret;
+		$ret = '<' . $this->name . '>';
+			$ret .= '<type>' . $this->type . '</type>';
+			
+			// add mandatory option
+			if ($this->mandatory) {
+				$ret .= '<mandatory>' .= $this->mandatory . '</mandatoty>';
+			}
+			
+			// add check string
+			if ($this->check) {
+				$ret .= '<check>' .= $this->check . '</check>';
+			}
+			
+			$ret .= '<value>' . $value . '</value>';
+			
+		$ret .= '</' . $name . '>';
 	}
 }
 
