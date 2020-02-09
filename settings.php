@@ -1,7 +1,5 @@
 <?php
 
-// define ('FORM_PATH', $plugin_cf["form"]["form_path"]);
-
 define ('FORM_FORMS', $plugin_tx['form']['forms']);
 
 define ('FORM_FAIL_READ', $plugin_tx['form']['fail_fileread']);

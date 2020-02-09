@@ -8,9 +8,7 @@
 
 define("FORM_CONTENT_BASE", $pth["folder"]["content"]);
 define("FORM_DOWNLOADS_BASE", $pth["folder"]["downloads"]);
-
 define("FORM_BASE", $pth["folder"]["plugin"]);
-define("FORM_PATH", $plugin_cf["form"]["form_path"]);
 
 
 // init class autoloader
@@ -29,8 +27,11 @@ spl_autoload_register(function ($path) {
 });
 
 
+// init plugin
 form\Main::init($plugin_cf, $plugin_tx);
-// form\Api::fetch(form\Session::param("source"));
+
+// execute plugin call
+form\Api::fetch(form\Session::param("source"));
 
 
 // plugin to create a form and send the result to an email address
@@ -38,7 +39,10 @@ function form($form = false, $format = false, $filter = false) {
 
 	global $onload, $su, $f;
 
+	// execute form actions
+	form\Main::action($form);
 	form\Main::load($form);
+	form\Main::render();
 die();
 
 
@@ -47,8 +51,6 @@ die();
 	$xsl = false; // output format
 	$target = false; // output target (json, display, printer)
 
-	// execute form actions
-	form\Main::action($form);
 
 
 	// check form name
@@ -68,7 +70,7 @@ die();
 
 
 		// load data
-		$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
+		$path = form\Path(FORM_CONTENT_BASE, Config::form_path(), $form);
 		// form\Entries::load($path);
 
 		// return script include
@@ -90,60 +92,7 @@ die();
 	}
 
 
-
-// TODO parse parameters
-// form("definition","disp:format/print:format","filter")
-
-
-
-
-
-
-
-
-/*	// create form definition path and load entries
-	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form . ".xml";
-
-
-
-
-	$ret = "";
-	$ret_send = "";
-
-
-
-	// add to onload
-	$onload .= "form_init();";*/
-
-
 	$ret .= form\Message::render();
-
-
-/*	// if form exist, render
-	if (form\Parse::exists()) {
-
-		switch (strtolower($function)) {
-
-			// admin
-			case "administration":
-				form\Admin::fetch(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/");
-				$ret .= form\Admin::render($form, $attr);
-				break;
-
-
-			// show form
-			default:
-				$ret .= form\Parse::serialise();
-				break;
-
-		}
-	}
-
-
-	// no form definition found
-	else {
-		$ret .= '<div class="xh_fail">Form definition not found</div>';
-	}*/
 
 	return $ret;
 }

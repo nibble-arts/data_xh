@@ -9,10 +9,10 @@ class Source {
 
 
 	// fetch data from source
-	public static function fetch ($definition = false) {
+	public static function fetch ($query = false) {
 
-		if ($definition) {
-			return self::parse($definition);
+		if ($query) {
+			return self::parse($query);
 		}
 	}
 	
@@ -28,15 +28,15 @@ class Source {
 	}
 	
 
-	// Parse source definition
-	private static function parse($definition) {
+	// Parse source query
+	private static function parse($query) {
 
 		$ret = ["data" => ""];
 
-		$parts = explode (":", $definition);
+		$parts = explode (":", $query);
 
 		if (count ($parts) > 1) {
-			
+
 			$className = "form\\source\\" . ucfirst(trim($parts[0]));
 
 			// call source class
@@ -52,7 +52,7 @@ class Source {
 			}
 		}
 		
-		// source definition not correct
+		// source query not correct
 		else {
 			Message::failure ("source_definition_error");
 		}

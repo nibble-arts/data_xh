@@ -19,8 +19,10 @@ class File {
 		$ret = "";
 		self::split($definition);
 
-		$path = FORM_CONTENT_BASE . FORM_PATH . "/file." . self::$request["file"] . ".ini";
+		$path = \form\Path::create([\form\Config::file_content_path(), "file." . self::$request["file"] . ".ini"]);
 
+
+		// load file
 		if (file_exists($path)) {
 
 			self::$data = parse_ini_file($path, true);
@@ -45,6 +47,7 @@ class File {
 
 			$bool_or = [];
 
+			// iterate ands
 			foreach ($and as $or) {
 				$bool_or = array_merge($bool_or, self::get_records($or));
 			}
@@ -186,7 +189,6 @@ class File {
 		$bool = explode("^", $query);
 
 		for ($i = 0;$i < count($bool); $i++) {
-
 			$bool[$i] = explode(",", $bool[$i]);
 		}
 

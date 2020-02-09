@@ -5,8 +5,9 @@ namespace form;
 class Form {
 
 	private static $fields = false;
+	private static $_self = false;
+
 	private static $cursor;
-	private static $data;
 
 
 	// load form definition and create fields
@@ -17,10 +18,13 @@ class Form {
 		$path = Path::create([Config::form_content(), $form, "form.ini"]);
 
 		if (file_exists($path)) {
+
 			$data = parse_ini_file($path, true);
 
+			// fields found
 			if (isset($data["fields"])) {
 
+				// iterate fields
 				foreach ($data["fields"] as $name => $def) {
 
 					$source = false;
@@ -39,9 +43,10 @@ class Form {
 					self::$fields[$name] = new Field($name, $def, $source, $check);
 				}
 
-				// if _self source, load initial data
-
-
+				// add _self source
+				if (isset($data["source"]["_self"])) {
+					self::$_self = $data["source"]["_self"];
+				}
 			}
 
 			// no field section found
@@ -60,26 +65,17 @@ class Form {
 		}
 	}
 
-	// set loaded data for form
-	public static function set($data) {
-
-		if (is_array($data)) {
-			
-			// iterate data > save data from existing fields
-			foreach($data as $key => $entry) {
-				if (self::field_exists($key)) {
-					self::$fields[$key]->addData($entry);
-				}
-				
-				else {
-					Message::failure("data parser: field " . $key . " doesn't exist");
-			}
-		}
-	}
 
 	// reset cursor
 	public static function reset() {
 		self::$cursor = 0;
+	}
+
+
+	// get source by name
+	public static function get_self() {
+
+		return self::$_self;
 	}
 
 	// check if field exists
@@ -87,6 +83,7 @@ class Form {
 		return isset(self::$fields[$name]);
 	}
 	
+
 	// get field by name
 	// if no name, get iterate with cursor
 	public static function get($name = false) {
@@ -102,18 +99,23 @@ class Form {
 		return false;
 	}
 	
+
 	// render form to xml
 	public static function xml() {
 		
-		$ret = '<>';
-		
-		if (self::$fields) {
-			foreach (self::$fields as $field) {
-				
+		$ret .= '<fields>';
+
+			if (self::$fields) {
+
+				foreach (self::$fields as $field) {
+					$ret .= $field->render();
+				}
+	
 			}
-			
-			Array2XML::createXML("form", $ary);
-		}
+
+		$ret .= '</fields>';
+
+		return $ret;
 	}
 }
 

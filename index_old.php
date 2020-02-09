@@ -10,7 +10,6 @@ define("FORM_CONTENT_BASE", $pth["folder"]["content"]);
 define("FORM_DOWNLOADS_BASE", $pth["folder"]["downloads"]);
 
 define("FORM_BASE", $pth["folder"]["plugin"]);
-define("FORM_PATH", $plugin_cf["form"]["form_path"]);
 
 
 // init class autoloader
@@ -62,7 +61,7 @@ function form($form = false, $format = false, $filter = false) {
 
 
 		// load data
-		$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form;
+		$path = FORM_CONTENT_BASE . Config::form_path() . "/" . $form;
 		// form\Entries::load($path);
 
 		// return script include
@@ -96,7 +95,7 @@ function form($form = false, $format = false, $filter = false) {
 
 
 /*	// create form definition path and load entries
-	$path = FORM_CONTENT_BASE . FORM_PATH . "/" . $form . ".xml";
+	$path = FORM_CONTENT_BASE . Config::form_path() . "/" . $form . ".xml";
 
 
 
@@ -120,7 +119,7 @@ function form($form = false, $format = false, $filter = false) {
 
 			// admin
 			case "administration":
-				form\Admin::fetch(FORM_CONTENT_BASE . FORM_PATH . "/" . $form . "/");
+				form\Admin::fetch(FORM_CONTENT_BASE . Config::form_path() . "/" . $form . "/");
 				$ret .= form\Admin::render($form, $attr);
 				break;
 

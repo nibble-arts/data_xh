@@ -4,11 +4,11 @@ namespace form;
 
 class Api {
 
-	public static function fetch($definition) {
-		
-		if ($definition) {
+	public static function fetch($query) {
 
-			$data =  Source::fetch($definition);
+		if ($query) {
+
+			$data =  Source::fetch($query);
 
 			echo json_encode($data);
 

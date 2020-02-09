@@ -10,6 +10,7 @@ class Path {
 
 	public static function create($path) {
 
+		// combine path
 		if (is_array($path)) {
 
 			array_walk($path, function (&$part, $idx) {
