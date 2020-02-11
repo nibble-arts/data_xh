@@ -39,57 +39,62 @@ function form($form = false, $format = false, $filter = false) {
 
 	global $onload, $su, $f;
 
+	$ret = "";
+
 	// execute form actions
 	form\Main::action($form);
 	form\Main::load($form);
-	form\Main::render();
-die();
+
+	return form\Main::render($format);
+
+
+// die();
 
 
 
-	$ret = "";
-	$xsl = false; // output format
-	$target = false; // output target (json, display, printer)
+	// $ret = "";
+	// $xsl = false; // output format
+	// $target = false; // output target (json, display, printer)
 
 
 
-	// check form name
-	if (!$form) {
-		form\Message::failure("fail_noform");
-	}
+	// // check form name
+	// if (!$form) {
+	// 	form\Message::failure("fail_noform");
+	// }
 
-	elseif ($format) {
+	// elseif ($format) {
 
-		// parse format: format[@target] - target is optional (display is default)
-		if (preg_match('/([a-z0-9_]+)\@?(.*)/i', $format, $match)) {
+	// 	// parse format: format[@target] - target is optional (display is default)
+	// 	if (preg_match('/([a-z0-9_]+)\@?(.*)/i', $format, $match)) {
 
-			$xsl = $match[1];
-			$target = $match[2];
+	// 		$xsl = $match[1];
+	// 		$target = $match[2];
 
-		}
-
-
-		// load data
-		$path = form\Path(FORM_CONTENT_BASE, Config::form_path(), $form);
-		// form\Entries::load($path);
-
-		// return script include
-		$ret .= '<script type="text/javascript" src="' . FORM_BASE . 'script/form.js"></script>';
+	// 	}
 
 
-		form\Admin::fetch($path);
+	// 	// load data
+	// 	$path = form\Path(FORM_CONTENT_BASE, Config::form_path(), $form);
+	// 	// form\Entries::load($path);
+
+	// 	// return script include
+	// 	$ret .= '<script type="text/javascript" src="' . FORM_BASE . 'script/form.js"></script>';
 
 
-		// parse xml > add ajax sources
-		// form\Parse::load($path);
-		// form\Parse::parse($attr);
+	// 	form\Admin::fetch($path);
 
-		$ret .= form\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
-	}
 
-	else {
-		form\Message::failure("fail_noformat");
-	}
+	// 	// parse xml > add ajax sources
+	// 	// form\Parse::load($path);
+	// 	// form\Parse::parse($attr);
+
+	// 	$ret .= form\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
+	// }
+
+	// else {
+	// 	form\Message::failure("fail_noformat");
+	// }
 
 
 	$ret .= form\Message::render();

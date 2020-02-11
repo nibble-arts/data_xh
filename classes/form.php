@@ -103,7 +103,7 @@ class Form {
 	// render form to xml
 	public static function xml() {
 		
-		$ret .= '<fields>';
+		$ret = '<fields>';
 
 			if (self::$fields) {
 
