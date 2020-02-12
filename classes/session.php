@@ -2,11 +2,15 @@
 
 /* the session class provide access to the
  * http parameters and the cookies.
- * @version: 1.1
+ * @version: 1.2
  * @author: Thomas H Winkler
  * @copyright: 2018-2020
  */
- 
+
+/*
+ * V1.2 uri function added
+ */
+
 namespace form;
 
 class Session {

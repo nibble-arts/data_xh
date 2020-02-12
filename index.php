@@ -30,8 +30,8 @@ spl_autoload_register(function ($path) {
 // init plugin
 form\Main::init($plugin_cf, $plugin_tx);
 
-// execute plugin call
-form\Api::fetch(form\Session::param("source"));
+// execute api access
+form\Api::fetch();
 
 
 // plugin to create a form and send the result to an email address

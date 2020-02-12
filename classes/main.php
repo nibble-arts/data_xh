@@ -64,10 +64,10 @@ class Main {
 // debug($urlbase);
 // debug($_SERVER);
 
-			$uri = \form\Path::create($urlbase) . "?Test&source=" . $query;
+			$uri = \form\Path::create($urlbase) . "?Test&action=select&source=" . $query;
 			$data = json_decode(file_get_contents($uri), true);
 
-			debug($uri);
+debug($uri);
 			// convert to xml
 			$data_xml = Array2XML::createXML("data", $data);
 
