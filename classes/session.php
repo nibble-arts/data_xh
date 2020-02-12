@@ -17,6 +17,8 @@ class Session {
 	private static $cookies;	// cookie values
 	private static $session;	// session values
 
+	private static $page;
+
 	static $adm;
 	static $edit;
 
@@ -36,6 +38,11 @@ class Session {
 
 		self::$adm = $adm;
 		self::$edit = $edit;
+
+		$server = Path::create([$_SERVER['HTTP_HOST'], $_SERVER['SCRIPT_NAME']]);
+
+		self::$page['root'] = pathinfo($server, PATHINFO_DIRNAME);
+		self::$page['script'] = pathinfo($server, PATHINFO_BASENAME);
 	}
 	
 	
@@ -171,6 +178,17 @@ class Session {
 		else {
 			return false;
 		}
+	}
+
+
+	// get page root uri
+	public static function uri($param) {
+
+		if (isset(self::$page[$param])) {
+			return self::$page[$param];
+		}
+
+		return false;
 	}
 
 

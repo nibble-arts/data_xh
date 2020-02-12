@@ -24,6 +24,8 @@ class Main {
 
 	public static function load($form) {
 
+		global $su;
+
 		self::$form = $form;
 
 		$query = false;
@@ -56,9 +58,16 @@ class Main {
 			$query = self::variables($query);
 
 			// load data from api
-			$uri = \form\Path::create([$_SERVER['SCRIPT_URI']]) . "?source=" . $query;
+			// $urlbase = $_SERVER['HTTP_REFERER'];
+			$urlbase = Path::create([Session::uri('root')]);
+
+// debug($urlbase);
+// debug($_SERVER);
+
+			$uri = \form\Path::create($urlbase) . "?Test&source=" . $query;
 			$data = json_decode(file_get_contents($uri), true);
 
+			debug($uri);
 			// convert to xml
 			$data_xml = Array2XML::createXML("data", $data);
 
