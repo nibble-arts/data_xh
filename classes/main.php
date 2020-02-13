@@ -41,39 +41,32 @@ class Main {
 		$data_xml = new \DOMDocument("1.0", "UTF-8");
 		$data_xml->loadXML("<data></data>");
 
-		// ========================
+		// ===============================================
 		// load form
 		Form::init(self::$form);
 
 		$field_xml->loadXML(Form::xml());
 
-		// ========================
+
+		// ===============================================
 		// load data
 		$query = Form::get_self();
 
-		// create source uri for api and load data
-		if ($query) {
+		// parse variables
+		$query = self::variables($query);
 
-			// parse variables
-			$query = self::variables($query);
+		// load data from api
+		// $urlbase = $_SERVER['HTTP_REFERER'];
+		$urlbase = Path::create([Session::uri('root')]);
 
-			// load data from api
-			// $urlbase = $_SERVER['HTTP_REFERER'];
-			$urlbase = Path::create([Session::uri('root')]);
+		$uri = "http://" . \form\Path::create($urlbase) . "?Test&action=select&source=" . $query;
+		$data = json_decode(file_get_contents($uri), true);
 
-// debug($urlbase);
-// debug($_SERVER);
+		// convert to xml
+		$data_xml = Array2XML::createXML("data", $data);
 
-			$uri = \form\Path::create($urlbase) . "?Test&action=select&source=" . $query;
-			$data = json_decode(file_get_contents($uri), true);
 
-debug($uri);
-			// convert to xml
-			$data_xml = Array2XML::createXML("data", $data);
-
-		}
-
-		// ========================
+		// ===============================================
 		// combine xmls
 		$root = self::$xml->getElementsByTagName("form")->item(0);
 
@@ -123,6 +116,11 @@ debug($uri);
 			// create xslt processor
 			$t = new \XSLTProcessor();
 			$t->importStylesheet($xslt);
+
+			// add parameters
+			$t->setParameter("", "url", Config::url_detail());
+			$t->setParameter("", "form", self::$form);
+
 
 			// transform
 			$result = $t->transformToXml(self::$xml);

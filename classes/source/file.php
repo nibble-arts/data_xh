@@ -16,15 +16,13 @@ class File {
 	//		or before and, no brackets
 	public static function fetch ($definition) {
 
-		$ret = "";
+		$ret = [];
 		self::split($definition);
 
 		$path = \form\Path::create([\form\Config::file_content_path(), "file." . self::$request["file"] . ".ini"]);
 
-
 		// load file
 		if (file_exists($path)) {
-
 			self::$data = parse_ini_file($path, true);
 			$ret = self::query();
 		}

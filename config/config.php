@@ -8,4 +8,4 @@ $plugin_cf['form']['mail_address']="thomas.winkler@iggmp.net";
 $plugin_cf['form']['mail_subject']="StM Umfrage";
 $plugin_cf['form']['url_detail']="Wettbewerbe/Wettbewerbs-Nennung/Nennung-bearbeiten";
 $plugin_cf['form']['post_prefix']="_formsubmit_";
-$plugin_cf['form']['file_content_path']="content/plugins/form/";
+$plugin_cf['form']['file_content_path']="plugins/form/content/plugins/form";

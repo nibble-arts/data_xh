@@ -11,9 +11,7 @@ class Source {
 	// fetch data from source
 	public static function fetch ($query = false) {
 
-		if ($query) {
-			return self::parse($query);
-		}
+		return self::parse($query);
 	}
 	
 
