@@ -3,7 +3,7 @@
 
 	<xsl:output method="html"/>
 
-	<xsl:param name="url"/>
+	<xsl:param name="uri"/>
 	<xsl:param name="form"/>
 
 
@@ -45,13 +45,13 @@
 						<a>
 							<xsl:attribute name="href">
 								<xsl:text>?</xsl:text>
-								<xsl:value-of select="$url"/>
-								<xsl:text>&amp;action=detail</xsl:text>
-								<xsl:text>&amp;id=</xsl:text>
+								<xsl:value-of select="$uri"/>
+								<!-- <xsl:text>&amp;action=detail</xsl:text> -->
+								<xsl:text>&amp;query=id=</xsl:text>
 								<xsl:value-of select="$id"/>
-								<xsl:text>&amp;form=</xsl:text>
+<!-- 								<xsl:text>&amp;form=</xsl:text>
 								<xsl:value-of select="$form"/>
-							</xsl:attribute>
+ -->							</xsl:attribute>
 
 							<xsl:value-of select="$id"/>
 						</a>

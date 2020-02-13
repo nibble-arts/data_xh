@@ -64,3 +64,33 @@ form {
 	text-align: center;
 	vertical-align: top;
 }
+
+.form_form {
+	border: none;
+}
+
+.form_detail_block {
+	border: 1px solid grey;
+	padding: 5px;
+	margin: 0 0 10px 0;
+}
+
+.form_detail_line {
+}
+
+.form_detail_label {
+	float: left;
+	text-align: right;
+	width: 150px;
+	margin-right: 10px;
+	/*border: 1px dotted red;*/
+	font-weight: 500;
+}
+
+.form_detail_value {
+	text-align: left;
+}
+
+.form_submit {
+	margin-right: 10px;
+}

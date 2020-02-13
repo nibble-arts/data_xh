@@ -8,6 +8,7 @@ class Field {
 	private $type;
 	private $mandatory = false;
 	private $check = false;
+	private $source = false;
 
 
 	// construct field object
@@ -43,6 +44,11 @@ class Field {
 			// add check string
 			if ($this->check) {
 				$ret .= '<check>' . $this->check . '</check>';
+			}
+			
+			// add source string
+			if ($this->source) {
+				$ret .= '<source>' . $this->source . '</source>';
 			}
 			
 			// add value if present

@@ -10,7 +10,6 @@ class Source {
 
 	// fetch data from source
 	public static function fetch ($query = false) {
-
 		return self::parse($query);
 	}
 	

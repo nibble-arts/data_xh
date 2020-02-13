@@ -34,12 +34,23 @@ form\Main::init($plugin_cf, $plugin_tx);
 form\Api::fetch();
 
 
+// ===============================================================
 // plugin to create a form and send the result to an email address
-function form($form = false, $format = false, $filter = false) {
+function form($form = false, $format = false, $query = false) {
 
 	global $onload, $su, $f;
 
 	$ret = "";
+
+	// override form name from http
+	// if (form\Session::param("form")) {
+	// 	$form = form\Session::param("form");
+	// }
+
+	// override query from plugin call
+	if (!form\Session::param("query")) {
+		form\Session::set_param("query", $query);
+	}
 
 	// execute form actions
 	form\Main::action($form);

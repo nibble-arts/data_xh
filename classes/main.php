@@ -17,18 +17,15 @@ class Main {
 		Config::init($config["form"]);
 		Text::init($text["form"]);
 
-		// Parse::init();
-
 	}
 
 
-	public static function load($form) {
+	public static function load($form, $queryString = false) {
 
 		global $su;
 
 		self::$form = $form;
 
-		$query = false;
 		$data = false;
 		$xsl = false;
 
@@ -49,17 +46,16 @@ class Main {
 
 
 		// ===============================================
-		// load data
+		// load initial data
 		$query = Form::get_self();
 
 		// parse variables
-		$query = self::variables($query);
+		$query = self::variables($query, $queryString);
 
 		// load data from api
-		// $urlbase = $_SERVER['HTTP_REFERER'];
 		$urlbase = Path::create([Session::uri('root')]);
 
-		$uri = "http://" . \form\Path::create($urlbase) . "?Test&action=select&source=" . $query;
+		$uri = "http://" . \form\Path::create($urlbase) . "?&action=select&source=" . $query;
 		$data = json_decode(file_get_contents($uri), true);
 
 		// convert to xml
@@ -91,8 +87,9 @@ class Main {
 
 			$var = $match[1];
 
-			if (Session::param($match[1])) {
-				$query = str_replace($match[0], Session::param($match[1]), $query);
+
+			if (Session::param($var)) {
+				$query = str_replace($match[0], Session::param($var), $query);
 			}
 		}
 
@@ -102,6 +99,8 @@ class Main {
 
 	// render form with format
 	public static function render($format) {
+
+		global $onload;
 
 		$result = "";
 
@@ -118,9 +117,13 @@ class Main {
 			$t->importStylesheet($xslt);
 
 			// add parameters
-			$t->setParameter("", "url", Config::url_detail());
+			$t->setParameter("", "uri", Config::url_detail());
 			$t->setParameter("", "form", self::$form);
 
+			// add referer
+			if (isset($_SERVER['HTTP_REFERER'])) {
+				$t->setParameter("", "return", $_SERVER['HTTP_REFERER']);
+			}
 
 			// transform
 			$result = $t->transformToXml(self::$xml);
@@ -131,6 +134,13 @@ class Main {
 			Message::failure("fail_noform");
 		}
 
+
+		// add javascript start 
+		$onload .= "form_init();";
+
+		// add messages
+		$result = Message::render() . $result;
+
 		return $result;
 	}
 
@@ -139,9 +149,13 @@ class Main {
 	// execute save action
 	public static function action ($form) {
 
-		if (Session::post("action")) {
 
+		// new save action
+		if (Session::post("form_action") && (Session::post("form_button") == "speichern")) {
+
+			Message::success("data_save");
 		}
+
 
 		// check for action
 		if (Session::post("_formsubmit_")) {
