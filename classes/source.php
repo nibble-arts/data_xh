@@ -14,6 +14,15 @@ class Source {
 	}
 	
 
+	// updata data of source
+	public static function update ($query, $data) {
+debug($query);
+debug($data);
+
+		return true;
+	}
+
+
 	// get source query string without format
 	public static function get_query () {
 
@@ -55,6 +64,12 @@ class Source {
 		}
 
 		return $ret;
+	}
+
+
+	// parse query string
+	private static function parse_query() {
+		
 	}
 }
 

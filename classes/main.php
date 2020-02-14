@@ -20,7 +20,7 @@ class Main {
 	}
 
 
-	public static function load($form, $queryString = false) {
+	public static function load($form) {
 
 		global $su;
 
@@ -50,7 +50,7 @@ class Main {
 		$query = Form::get_self();
 
 		// parse variables
-		$query = self::variables($query, $queryString);
+		$query = self::variables($query);
 
 		// load data from api
 		$urlbase = Path::create([Session::uri('root')]);
@@ -79,18 +79,23 @@ class Main {
 	}
 
 
-	// parse uri variables
-	public static function variables($query) {
+	// parse parameter variables
+	// param overrides http parameter
+	public static function variables($query, $param = false) {
 
 		// check for variable string
 		if (preg_match('/\$([^\,\^\@\b]+)/', $query, $match)) {
 
 			$var = $match[1];
 
+			if (isset($param[$var])) {
+				$query = str_replace($match[0], $param[$var], $query);
+			}
 
-			if (Session::param($var)) {
+			elseif (Session::param($var)) {
 				$query = str_replace($match[0], Session::param($var), $query);
 			}
+
 		}
 
 		return $query;
@@ -119,6 +124,7 @@ class Main {
 			// add parameters
 			$t->setParameter("", "uri", Config::url_detail());
 			$t->setParameter("", "form", self::$form);
+			$t->setParameter("", "prefix", Config::post_prefix());
 
 			// add referer
 			if (isset($_SERVER['HTTP_REFERER'])) {
@@ -142,60 +148,6 @@ class Main {
 		$result = Message::render() . $result;
 
 		return $result;
-	}
-
-
-
-	// execute save action
-	public static function action ($form) {
-
-
-		// new save action
-		if (Session::post("form_action") && (Session::post("form_button") == "speichern")) {
-
-			Message::success("data_save");
-		}
-
-
-		// check for action
-		if (Session::post("_formsubmit_")) {
-
-			$data = [];
-			$keys = Session::get_param_keys();
-
-			// get valus from post_prefix* keys
-			foreach ($keys as $key) {
-
-				if (($pos = strpos($key, Config::post_prefix())) !== false) {
-					$data[substr($key, $pos + strlen(Config::post_prefix()))] = Session::post($key);
-				}
-			}
-
-			$entry = new Entry($data);
-			$entry->save(FORM_CONTENT_BASE . Config::form_path() . "/" . $form . "/", time() ."_" . $form . ".ini");
-
-
-//TODO get email metadata from xml
-			
-			if (class_exists ("\ma\Access") && \ma\Access::logged()) {
-
-				$receiver = \ma\Access::user("email");
-				$subject = "Wettbewerbsnennung";
-
-				$message = "Ihre Nennung ist eingegangen\n\n" . $entry->render();
-
-				$email = new Mail("noreply@filmautoren.at");
-
-				if ($email->send($receiver, $subject, $message)) {
-					Message::success("email_sent");
-				}
-				else {
-					Message::failure("email_fail");
-				}
-			}
-
-			Session::remove_http();
-		}
 	}
 }
 

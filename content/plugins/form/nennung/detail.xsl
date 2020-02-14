@@ -5,6 +5,7 @@
 
 	<xsl:param name="uri"/>
 	<xsl:param name="form"/>
+	<xsl:param name="prefix"/>
 	<xsl:param name="return"/>
 
 
@@ -44,8 +45,10 @@
 
 					<xsl:variable name="n" select="name(.)"/>
 					<xsl:variable name="name">
+						<xsl:value-of select="$prefix"/>
+						<xsl:text>_</xsl:text>
 						<xsl:value-of select="$id"/>
-						<xsl:text>_form_</xsl:text>
+						<xsl:text>_</xsl:text>
 						<xsl:value-of select="$n"/>
 					</xsl:variable>
 
@@ -79,10 +82,21 @@
 				<input type="submit" class="form_submit" name="form_button" value="speichern"/>
 				<input type="submit" class="form_submit" name="form_button" value="abbrechen"/>
 
-				<input type="hidden" name="form_action" value="form_save"/> 
 			</div>
 
 		</div>
+
+		<input type="hidden" name="form_action" value="form_insert"/>
+
+		<input type="hidden" value="{$id}">
+			<xsl:attribute name="name">
+				<xsl:value-of select="$prefix"/>
+				<xsl:text>_</xsl:text>
+				<xsl:value-of select="$id"/>
+				<xsl:text>_id</xsl:text>
+			</xsl:attribute>
+		</input>
+
 
 	</xsl:template>
 

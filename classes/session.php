@@ -135,7 +135,7 @@ class Session {
 	
 
 	// remove POST
-	public static function remove_http() {
+	public static function remove_http($filter = false) {
 
 		self::$get = false;
 		self::$post = false;

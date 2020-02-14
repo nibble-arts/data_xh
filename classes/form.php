@@ -74,7 +74,6 @@ class Form {
 
 	// get source by name
 	public static function get_self() {
-
 		return self::$_self;
 	}
 

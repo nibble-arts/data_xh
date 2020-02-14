@@ -53,8 +53,8 @@ function form($form = false, $format = false, $query = false) {
 	}
 
 	// execute form actions
-	form\Main::action($form);
 	form\Main::load($form);
+	form\Action::execute($form);
 
 	return form\Main::render($format);
 
