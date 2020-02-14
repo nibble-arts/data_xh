@@ -2,11 +2,26 @@
 
 namespace form\source;
 
+
 class File {
 
 
-	private static $data;
-	private static $request = [];
+	private $data;
+	private $request = [];
+
+
+	public function __construct($definition) {
+
+		$this->split($definition);
+
+		$path = \form\Path::create([\form\Config::file_content_path(), "file." . $this->request["file"] . ".ini"]);
+
+		// load file
+		if (file_exists($path)) {
+			$this->data = parse_ini_file($path, true);
+		}
+	}
+
 
 	// fetch data from file
 	// definition format:
@@ -14,32 +29,26 @@ class File {
 	//		^ boolean and
 	//		, boolean or
 	//		or before and, no brackets
-	public static function fetch ($definition) {
-
-		$ret = [];
-		self::split($definition);
-
-		$path = \form\Path::create([\form\Config::file_content_path(), "file." . self::$request["file"] . ".ini"]);
-
-		// load file
-		if (file_exists($path)) {
-			self::$data = parse_ini_file($path, true);
-			$ret = self::query();
-		}
+	public function fetch () {
 
 		return [
-			"data" => $ret,
-			"request" => self::$request
+			"data" => $this->query(),
+			"request" => $this->request
 		];
 	}
 
 
+	public function update ($data) {
+
+	}
+
+
 	// find in data
-	private static function query () {
+	private function query () {
 
 		$ret = [];
 		$bool_and = [];
-		$parts = self::split_query(self::$request["query"]);
+		$parts = $this->split_query($this->request["query"]);
 
 		foreach ($parts as $and) {
 
@@ -47,7 +56,9 @@ class File {
 
 			// iterate ands
 			foreach ($and as $or) {
-				$bool_or = array_merge($bool_or, self::get_records($or));
+				if (is_array($this->get_records($or))) {
+					$bool_or = array_merge($bool_or, $this->get_records($or));
+				}
 			}
 
 			// set first and element
@@ -63,11 +74,11 @@ class File {
 
 		// fetch data
 		foreach ($bool_and as $idx) {
-			$new = self::get_record($idx);
+			$new = $this->get_record($idx);
 			$ret[$idx] = $new;
 		}
 
-		if (self::$request["format"]) {
+		if ($this->request["format"]) {
 			$ret = implode("|", $ret);
 		}
 
@@ -77,16 +88,16 @@ class File {
 
 	// return a record
 	// optional fields array, select fields to return
-	private static function get_record ($idx, $fields = false) {
+	private function get_record ($idx, $fields = false) {
 
-		$fields = self::$request["display"];
-		$format = self::$request["format"];
+		$fields = $this->request["display"];
+		$format = $this->request["format"];
 
 		$disp = array_filter(explode(",", $fields));
 
 		// get record data
-		if (isset(self::$data[$idx])) {
-			$data = self::$data[$idx];
+		if (isset($this->data[$idx])) {
+			$data = $this->data[$idx];
 		}
 
 		// display fields defined
@@ -110,7 +121,7 @@ class File {
 
 		// format fields
 		if ($format) {
-			$ret = self::format($ret, $format);
+			$ret = $this->format($ret, $format);
 		}
 
 		return $ret;
@@ -118,28 +129,28 @@ class File {
 
 
 	// query data and return an array of record ids
-	private static function get_records ($query) {
+	private function get_records ($query) {
 
 		// return all data
 		if ($query == "*") {
-			return array_keys(self::$data);
+			return array_keys($this->data);
 		}
 
 		// get field/value pair
 		$equ = explode("=", $query);
 
 		if (count($equ) > 1) {
-			return self::get_ids($equ[0], $equ[1]);
+			return $this->get_ids($equ[0], $equ[1]);
 		}
 	}
 
 
 	// get record by field, value
-	private static function get_ids ($field, $value) {
+	private function get_ids ($field, $value) {
 
 		$ret = [];
 
-		foreach (self::$data as $key => $entry) {
+		foreach ($this->data as $key => $entry) {
 //TODO add truncation
 			if (isset($entry[$field]) && ($entry[$field] == $value || $value == "*")) {
 
@@ -153,26 +164,26 @@ class File {
 
 
 	// split definition
-	private static function split ($definition) {
+	private function split ($definition) {
 
 		$ret = [];
 
 		preg_match("/([^\@]+)@([^\>]+)>?(.*)/", $definition, $matches);
 
-		self::$request["type"] = "file";
+		$this->request["type"] = "file";
 
-		self::$request["query"] = $matches[1];
-		self::$request["file"] = $matches[2];
-		self::$request["display"] = $matches[3];
-		self::$request["format"] = "";
+		$this->request["query"] = $matches[1];
+		$this->request["file"] = $matches[2];
+		$this->request["display"] = $matches[3];
+		$this->request["format"] = "";
 
 		// split display and format
-		preg_match("$([^\>]+)>?(.*)$", self::$request["display"], $matches);
+		preg_match("$([^\>]+)>?(.*)$", $this->request["display"], $matches);
 
 		// format
-		if ($matches[2]) {
-			self::$request["display"] = $matches[1];
-			self::$request["format"] = $matches[2];
+		if (count($matches) > 1 && $matches[2]) {
+			$this->request["display"] = $matches[1];
+			$this->request["format"] = $matches[2];
 		}
 
 	}
@@ -182,7 +193,7 @@ class File {
 	// comma separated => or
 	// whitespace separated => and
 	//   array[ and [ or, or ], and [ or, or ] ]
-	private static function split_query ($query) {
+	private function split_query ($query) {
 
 		$bool = explode("^", $query);
 
@@ -196,7 +207,7 @@ class File {
 
 	// format fields by format string
 	//		fields in curly brackets are replaced by the vale
-	private static function format ($fields, $format) {
+	private function format ($fields, $format) {
 
 		$ret = "";
 		$cursor = 0;
@@ -232,7 +243,7 @@ class File {
 
 	// write file
 	// Entry $data
-	public static function write ($name, $data) {
+	public function write ($name, $data) {
 
 		// debug($name);
 		// debug($data);

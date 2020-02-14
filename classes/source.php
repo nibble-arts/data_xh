@@ -6,18 +6,62 @@ class Source {
 	
 
 	private static $data = false;
+	private static $plugin = false;
+
+
+	// load data source by query
+	public static function load($query) {
+
+		$ret = ["data" => ""];
+
+		// has query
+		if ($query) {
+
+			$parts = explode (":", $query);
+
+			if (count ($parts) > 1) {
+
+				$className = "form\\source\\" . ucfirst(trim($parts[0]));
+
+				// call source class > load data
+				if (class_exists($className)) {
+
+					self::$plugin = new $className(trim($parts[1]));
+					self::$data = self::$plugin->fetch();
+				}
+				
+				// class not found
+				else {
+					Message::failure ("source_class_missing");
+				}
+			}
+			
+			// source query not correct
+			else {
+				Message::failure ("source_definition_error");
+			}
+		}
+	}
 
 
 	// fetch data from source
-	public static function fetch ($query = false) {
-		return self::parse($query);
+	public static function fetch () {
+
+		if (isset(self::$data["data"])) {
+			return self::$data["data"];
+		}
+
+		return ["data" => ""];
 	}
 	
 
 	// updata data of source
 	public static function update ($query, $data) {
-debug($query);
-debug($data);
+
+// debug($query);
+// debug($data);
+
+debug(self::fetch());
 
 		return true;
 	}
@@ -29,47 +73,9 @@ debug($data);
 		if (self::$data) {
 
 			$request = self::$data["request"];
+
 			return $request["type"] . ":" . $request["query"] . "@" . $request["file"] . ">" . $request["display"];
 		}
-	}
-	
-
-	// Parse source query
-	private static function parse($query) {
-
-		$ret = ["data" => ""];
-
-		$parts = explode (":", $query);
-
-		if (count ($parts) > 1) {
-
-			$className = "form\\source\\" . ucfirst(trim($parts[0]));
-
-			// call source class
-			if (class_exists($className)) {
-				self::$data = $className::fetch(trim($parts[1]));
-				$ret = self::$data["data"];
-			}
-			
-			// class not found
-			// return empty string
-			else {
-				Message::failure ("source_class_missing");
-			}
-		}
-		
-		// source query not correct
-		else {
-			Message::failure ("source_definition_error");
-		}
-
-		return $ret;
-	}
-
-
-	// parse query string
-	private static function parse_query() {
-		
 	}
 }
 

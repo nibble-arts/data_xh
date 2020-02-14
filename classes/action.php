@@ -8,11 +8,10 @@ class Action {
 	public static function execute ($form) {
 
 
+		// Source::load(Form::get_self());
+
 		// new save action
 		if (Session::post("form_action") == "form_insert" && (Session::post("form_button") == "speichern")) {
-
-			// debug(Session::debug());
-
 
 			$data = [];
 			$keys = Session::get_param_keys();
@@ -35,13 +34,28 @@ class Action {
 			}
 
 			// update data
-			if (Source::update(Form::get_self(), $data)) {
-				Message::success("data_save");
-			}
+			$options = array(
+		    	'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($data)
+		    ));
 
-			else {
-				Message::failure("fail_filewrite");
-			}
+			$params = ["action" => "update", "query" => ""];
+
+			$url = "https://devel.iggmp.net/voefa";
+
+			$context = stream_context_create($options, $params);
+
+			$result = file_get_contents($url, false, $context);
+debug($result);
+			// if (Source::update(Form::get_self(), $data)) {
+			// 	Message::success("data_save");
+			// }
+
+			// else {
+			// 	Message::failure("fail_filewrite");
+			// }
 
 //TODO add remove_http with wildcards
 			// Session::remove_http(Config::post_prefix());

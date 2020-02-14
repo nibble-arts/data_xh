@@ -8,11 +8,18 @@ class Api {
 
 		$query = Session::param("source");
 
+		Source::load($query);
+
 		switch (Session::param("action")) {
 			
 			case "insert":
-
+debug("insert");
+debug(Session::debug());
 				Message::success("insert");
+
+				echo "";
+				die();
+
 				break;
 				
 			case "update":
@@ -29,7 +36,7 @@ class Api {
 			// default:
 				if ($query) {
 
-					$data =  Source::fetch($query);
+					$data =  Source::fetch();
 
 					echo json_encode($data);
 		
@@ -37,6 +44,7 @@ class Api {
 				}
 				break;
 		}
+
 	}
 }
 
