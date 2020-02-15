@@ -12,34 +12,27 @@ class Source {
 	// load data source by query
 	public static function load($query) {
 
-		$ret = ["data" => ""];
-
 		// has query
-		if ($query) {
+		if (is_object($query)) {
 
-			$parts = explode (":", $query);
+			$className = "form\\source\\" . ucfirst($query->type());
 
-			if (count ($parts) > 1) {
+			// call source class > load data
+			if (class_exists($className)) {
 
-				$className = "form\\source\\" . ucfirst(trim($parts[0]));
-
-				// call source class > load data
-				if (class_exists($className)) {
-
-					self::$plugin = new $className(trim($parts[1]));
-					self::$data = self::$plugin->fetch();
-				}
-				
-				// class not found
-				else {
-					Message::failure ("source_class_missing");
-				}
+				self::$plugin = new $className($query);
+				self::$data = self::$plugin->fetch();
 			}
 			
-			// source query not correct
+			// class not found
 			else {
-				Message::failure ("source_definition_error");
+				Message::failure ("source_class_missing");
 			}
+		}
+		
+		// source query not correct
+		else {
+			Message::failure ("source_definition_error");
 		}
 	}
 

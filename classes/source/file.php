@@ -7,19 +7,20 @@ class File {
 
 
 	private $data;
-	private $request = [];
+	private $query;
 
 
-	public function __construct($definition) {
+	public function __construct($query) {
 
-		$this->split($definition);
+		$this->query = $query;
 
-		$path = \form\Path::create([\form\Config::file_content_path(), "file." . $this->request["file"] . ".ini"]);
+		$path = \form\Path::create([\form\Config::file_content_path(), "file." . $query->source() . ".ini"]);
 
 		// load file
 		if (file_exists($path)) {
 			$this->data = parse_ini_file($path, true);
 		}
+
 	}
 
 
@@ -32,8 +33,8 @@ class File {
 	public function fetch () {
 
 		return [
-			"data" => $this->query(),
-			"request" => $this->request
+			"data" => $this->data,
+			"request" => $this->query()
 		];
 	}
 
@@ -48,7 +49,7 @@ class File {
 
 		$ret = [];
 		$bool_and = [];
-		$parts = $this->split_query($this->request["query"]);
+		$parts = $this->query->query();
 
 		foreach ($parts as $and) {
 
@@ -78,7 +79,7 @@ class File {
 			$ret[$idx] = $new;
 		}
 
-		if ($this->request["format"]) {
+		if ($this->query->format()) {
 			$ret = implode("|", $ret);
 		}
 
@@ -90,8 +91,8 @@ class File {
 	// optional fields array, select fields to return
 	private function get_record ($idx, $fields = false) {
 
-		$fields = $this->request["display"];
-		$format = $this->request["format"];
+		$fields = $this->query->fields();
+		$format = $this->query->format();
 
 		$disp = array_filter(explode(",", $fields));
 
@@ -160,48 +161,6 @@ class File {
 		}
 
 		return $ret;
-	}
-
-
-	// split definition
-	private function split ($definition) {
-
-		$ret = [];
-
-		preg_match("/([^\@]+)@([^\>]+)>?(.*)/", $definition, $matches);
-
-		$this->request["type"] = "file";
-
-		$this->request["query"] = $matches[1];
-		$this->request["file"] = $matches[2];
-		$this->request["display"] = $matches[3];
-		$this->request["format"] = "";
-
-		// split display and format
-		preg_match("$([^\>]+)>?(.*)$", $this->request["display"], $matches);
-
-		// format
-		if (count($matches) > 1 && $matches[2]) {
-			$this->request["display"] = $matches[1];
-			$this->request["format"] = $matches[2];
-		}
-
-	}
-
-
-	// split query string
-	// comma separated => or
-	// whitespace separated => and
-	//   array[ and [ or, or ], and [ or, or ] ]
-	private function split_query ($query) {
-
-		$bool = explode("^", $query);
-
-		for ($i = 0;$i < count($bool); $i++) {
-			$bool[$i] = explode(",", $bool[$i]);
-		}
-
-		return $bool;
 	}
 
 

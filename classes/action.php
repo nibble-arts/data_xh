@@ -11,7 +11,7 @@ class Action {
 		// Source::load(Form::get_self());
 
 		// new save action
-		if (Session::post("form_action") == "form_insert" && (Session::post("form_button") == "speichern")) {
+		if (Session::post("form_action") == "form_update" && (Session::post("form_button") == "speichern")) {
 
 			$data = [];
 			$keys = Session::get_param_keys();
@@ -33,22 +33,31 @@ class Action {
 				}
 			}
 
-			// update data
-			$options = array(
-		    	'http' => array(
-		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-		        'method'  => 'POST',
-		        'content' => http_build_query($data)
-		    ));
+// 			$query = new Query(Form::get_self());
+// 			$query->set_query("*");
 
-			$params = ["action" => "update", "query" => ""];
+// 			Source::load($query->query());
 
-			$url = "https://devel.iggmp.net/voefa";
+// debug(Source::fetch());
 
-			$context = stream_context_create($options, $params);
+// 			debug($data);
 
-			$result = file_get_contents($url, false, $context);
-debug($result);
+
+			// // update data
+			// $options = array(
+		 //    	'http' => array(
+		 //        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		 //        'method'  => 'POST',
+		 //        'content' => http_build_query($data)
+		 //    ));
+
+			// $params = ["action" => "update", "query" => ""];
+
+			// $url = "https://devel.iggmp.net/voefa";
+
+			// $context = stream_context_create($options, $params);
+// 			$result = file_get_contents($url, false, $context);
+// debug($result);
 			// if (Source::update(Form::get_self(), $data)) {
 			// 	Message::success("data_save");
 			// }

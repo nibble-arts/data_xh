@@ -6,7 +6,7 @@ class Api {
 
 	public static function fetch() {
 
-		$query = Session::param("source");
+		$query = new Query(Session::param("source"));
 
 		Source::load($query);
 

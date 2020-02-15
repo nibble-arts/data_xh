@@ -86,7 +86,7 @@
 
 		</div>
 
-		<input type="hidden" name="form_action" value="form_insert"/>
+		<input type="hidden" name="form_action" value="form_update"/>
 
 		<input type="hidden" value="{$id}">
 			<xsl:attribute name="name">

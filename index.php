@@ -56,7 +56,7 @@ function form($form = false, $format = false, $query = false) {
 	form\Main::load($form);
 	form\Action::execute($form);
 
-	return form\Main::render($format);
+	$ret = form\Main::render($format);
 
 
 // die();

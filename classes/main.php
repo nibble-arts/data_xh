@@ -47,15 +47,14 @@ class Main {
 
 		// ===============================================
 		// load initial data
-		$query = Form::get_self();
-
-		// parse variables
-		$query = self::variables($query);
+		// parse query and variables
+		$q = new Query(Form::get_self());
+		$q->parse();
 
 		// load data from api
 		$urlbase = Path::create([Session::uri('root')]);
 
-		$uri = "http://" . \form\Path::create($urlbase) . "?&action=select&source=" . $query;
+		$uri = "http://" . \form\Path::create($urlbase) . "?&action=select&source=" . $q->definition();
 		$data = json_decode(file_get_contents($uri), true);
 
 		// convert to xml
@@ -78,28 +77,6 @@ class Main {
 
 	}
 
-
-	// parse parameter variables
-	// param overrides http parameter
-	public static function variables($query, $param = false) {
-
-		// check for variable string
-		if (preg_match('/\$([^\,\^\@\b]+)/', $query, $match)) {
-
-			$var = $match[1];
-
-			if (isset($param[$var])) {
-				$query = str_replace($match[0], $param[$var], $query);
-			}
-
-			elseif (Session::param($var)) {
-				$query = str_replace($match[0], Session::param($var), $query);
-			}
-
-		}
-
-		return $query;
-	}
 
 
 	// render form with format
