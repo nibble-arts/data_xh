@@ -9,7 +9,7 @@ class File {
 	private $data;
 	private $query;
 
-
+	// create with query object
 	public function __construct($query) {
 
 		$this->query = $query;
