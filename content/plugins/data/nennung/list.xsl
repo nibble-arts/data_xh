@@ -42,19 +42,16 @@
 				<xsl:choose>
 
 					<xsl:when test="$id != ''">
-						<a>
+<!-- 						<a>
 							<xsl:attribute name="href">
 								<xsl:text>?</xsl:text>
 								<xsl:value-of select="$uri"/>
-								<!-- <xsl:text>&amp;action=detail</xsl:text> -->
 								<xsl:text>&amp;query=id=</xsl:text>
 								<xsl:value-of select="$id"/>
-<!-- 								<xsl:text>&amp;form=</xsl:text>
-								<xsl:value-of select="$form"/>
- -->							</xsl:attribute>
-
+							</xsl:attribute>
+ -->
 							<xsl:value-of select="$id"/>
-						</a>
+						<!-- </a> -->
 					</xsl:when>
 
 					<xsl:otherwise>
