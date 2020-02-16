@@ -6,9 +6,9 @@
 }*/
 
 
-define("FORM_CONTENT_BASE", $pth["folder"]["content"]);
-define("FORM_DOWNLOADS_BASE", $pth["folder"]["downloads"]);
-define("FORM_BASE", $pth["folder"]["plugin"]);
+define("DATA_CONTENT_BASE", $pth["folder"]["content"]);
+define("DATA_DOWNLOADS_BASE", $pth["folder"]["downloads"]);
+define("DATA_BASE", $pth["folder"]["plugin"]);
 
 
 // init class autoloader
@@ -17,9 +17,9 @@ define("FORM_BASE", $pth["folder"]["plugin"]);
 
 spl_autoload_register(function ($path) {
 
-	if ($path && strpos($path, "form\\") !== false) {
+	if ($path && strpos($path, "data\\") !== false) {
 
-		$path = "classes/" . str_replace("form\\", "", strtolower($path)) . ".php";
+		$path = "classes/" . str_replace("data\\", "", strtolower($path)) . ".php";
 		$path = str_replace("\\", "/", $path);
 
 		include_once $path; 
@@ -28,35 +28,35 @@ spl_autoload_register(function ($path) {
 
 
 // init plugin
-form\Main::init($plugin_cf, $plugin_tx);
+data\Main::init($plugin_cf, $plugin_tx);
 
 // execute api access
-form\Api::fetch();
+data\Api::fetch();
 
 
 // ===============================================================
 // plugin to create a form and send the result to an email address
-function form($form = false, $format = false, $query = false) {
+function data($form = false, $format = false, $query = false) {
 
 	global $onload, $su, $f;
 
 	$ret = "";
 
 	// override form name from http
-	// if (form\Session::param("form")) {
-	// 	$form = form\Session::param("form");
+	// if (data\Session::param("form")) {
+	// 	$form = data\Session::param("form");
 	// }
 
 	// override query from plugin call
-	if (!form\Session::param("query")) {
-		form\Session::set_param("query", $query);
+	if (!data\Session::param("query")) {
+		data\Session::set_param("query", $query);
 	}
 
 	// execute form actions
-	form\Main::load($form);
-	form\Action::execute($form);
+	data\Main::load($form);
+	data\Action::execute($form);
 
-	$ret = form\Main::render($format);
+	$ret = data\Main::render($format);
 
 
 // die();
@@ -71,7 +71,7 @@ function form($form = false, $format = false, $query = false) {
 
 	// // check form name
 	// if (!$form) {
-	// 	form\Message::failure("fail_noform");
+	// 	data\Message::failure("fail_noform");
 	// }
 
 	// elseif ($format) {
@@ -86,29 +86,29 @@ function form($form = false, $format = false, $query = false) {
 
 
 	// 	// load data
-	// 	$path = form\Path(FORM_CONTENT_BASE, Config::form_path(), $form);
-	// 	// form\Entries::load($path);
+	// 	$path = data\Path(DATA_CONTENT_BASE, Config::form_path(), $form);
+	// 	// data\Entries::load($path);
 
 	// 	// return script include
-	// 	$ret .= '<script type="text/javascript" src="' . FORM_BASE . 'script/form.js"></script>';
+	// 	$ret .= '<script type="text/javascript" src="' . DATA_BASE . 'script/form.js"></script>';
 
 
-	// 	form\Admin::fetch($path);
+	// 	data\Admin::fetch($path);
 
 
 	// 	// parse xml > add ajax sources
-	// 	// form\Parse::load($path);
-	// 	// form\Parse::parse($attr);
+	// 	// data\Parse::load($path);
+	// 	// data\Parse::parse($attr);
 
-	// 	$ret .= form\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
+	// 	$ret .= data\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
 	// }
 
 	// else {
-	// 	form\Message::failure("fail_noformat");
+	// 	data\Message::failure("fail_noformat");
 	// }
 
 
-	$ret .= form\Message::render();
+	$ret .= data\Message::render();
 
 	return $ret;
 }

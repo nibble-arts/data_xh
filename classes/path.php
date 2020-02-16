@@ -4,7 +4,7 @@
  * create a path from an array
  */
 
-namespace form;
+namespace data;
 
 class Path {
 

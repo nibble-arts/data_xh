@@ -1,11 +1,11 @@
 <?php
 
-$plugin_cf['form']['form_content']="plugins/form/content/plugins/form";
-$plugin_cf['form']['form_path']="plugins/form";
-$plugin_cf['form']['format_path']="plugins/format";
-$plugin_cf['form']['mail_sender']="noreply@filmautoren.at";
-$plugin_cf['form']['mail_address']="thomas.winkler@iggmp.net";
-$plugin_cf['form']['mail_subject']="StM Umfrage";
-$plugin_cf['form']['url_detail']="Wettbewerbe/Wettbewerbs-Nennung/Nennung-bearbeiten";
-$plugin_cf['form']['post_prefix']="_formsubmit";
-$plugin_cf['form']['file_content_path']="plugins/form/content/plugins/form";
+$plugin_cf['data']['form_content']="plugins/data/content/plugins/form";
+$plugin_cf['data']['form_path']="plugins/data";
+$plugin_cf['data']['format_path']="plugins/format";
+$plugin_cf['data']['mail_sender']="noreply@filmautoren.at";
+$plugin_cf['data']['mail_address']="thomas.winkler@iggmp.net";
+$plugin_cf['data']['mail_subject']="StM Umfrage";
+$plugin_cf['data']['url_detail']="Wettbewerbe/Wettbewerbs-Nennung/Nennung-bearbeiten";
+$plugin_cf['data']['post_prefix']="_formsubmit";
+$plugin_cf['data']['file_content_path']="plugins/data/content/plugins/form";

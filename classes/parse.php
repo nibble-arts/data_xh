@@ -1,6 +1,6 @@
 <?php
 
-namespace form;
+namespace data;
 
 class Parse {
 	

@@ -28,7 +28,7 @@ body {
 
 @media all {
 
-	.form_bewertung_page {
+	.data_bewertung_page {
 		display: grid;
 		grid-template-columns: repeat(5 1fr);
 		grid-template-rows: 40pt 40pt 100pt 30pt 150mm 30pt;
@@ -47,56 +47,56 @@ body {
 		page-break-after: always;
 	}
 
-	.form_bewertung_title {
+	.data_bewertung_title {
 		grid-area: title;
 	}
 
-	.form_bewertung_film {
+	.data_bewertung_film {
 		grid-area: film;
 		border: 1px solid black;
 		padding: 3pt;
 	}
 
-	.form_bewertung_laufzeit {
+	.data_bewertung_laufzeit {
 		grid-area: laufzeit;
 		border: 1px solid black;
 		padding: 3pt;
 	}
 
-	.form_bewertung_autor {
+	.data_bewertung_autor {
 		grid-area: autor;
 		border: 1px solid black;
 		padding: 3pt;
 	}
 
-	.form_bewertung_abstract {
+	.data_bewertung_abstract {
 		grid-area: abstract;
 		border: 1px solid black;
 		padding: 3pt;
 	}
 
-	.form_bewertung_subtitle {
+	.data_bewertung_subtitle {
 		grid-area: subtitle;
 	}
 
-	.form_bewertung_notes {
+	.data_bewertung_notes {
 		grid-area: notes;
 		border: 1px solid black;
 	}
 
-	.form_bewertung_noten {
+	.data_bewertung_noten {
 		grid-area: noten;
 		border: 1px solid black;
 		padding: 3pt;
 	}
 
-	.form_bewertung_stm {
+	.data_bewertung_stm {
 		grid-area: stm;
 		border: 1px solid black;
 		padding: 3pt;
 	}
 
-	.form_bewertung_sonderpreis {
+	.data_bewertung_sonderpreis {
 		grid-area: sonderpreis;
 		border: 1px solid black;
 		padding: 3pt;

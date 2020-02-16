@@ -1,6 +1,6 @@
 <?php
 
-namespace form;
+namespace data;
 
 
 class Main {
@@ -14,8 +14,8 @@ class Main {
 
 		// load plugin data
 		Session::load();
-		Config::init($config["form"]);
-		Text::init($text["form"]);
+		Config::init($config["data"]);
+		Text::init($text["data"]);
 
 	}
 
@@ -54,7 +54,7 @@ class Main {
 		// load data from api
 		$urlbase = Path::create([Session::uri('root')]);
 
-		$uri = "http://" . \form\Path::create($urlbase) . "?&action=select&source=" . $q->definition();
+		$uri = "http://" . \data\Path::create($urlbase) . "?&action=select&source=" . $q->definition();
 		$data = json_decode(file_get_contents($uri), true);
 
 		// convert to xml

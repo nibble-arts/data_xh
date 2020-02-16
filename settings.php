@@ -49,7 +49,7 @@ function form_settings($action, $admin, $plugin) {
 
 
 		// create path
-		$path = FORM_CONTENT_BASE . FORM_MAIL_PATH . "/" . $file;
+		$path = DATA_CONTENT_BASE . FORM_MAIL_PATH . "/" . $file;
 
 
 
@@ -87,8 +87,8 @@ function form_settings($action, $admin, $plugin) {
 
 				$delPath = explode("_", $type)[0] . "/" . $file;
 
-				if (file_exists(FORM_CONTENT_BASE . $delPath)) {
-					unlink(FORM_CONTENT_BASE . $delPath);
+				if (file_exists(DATA_CONTENT_BASE . $delPath)) {
+					unlink(DATA_CONTENT_BASE . $delPath);
 				}
 
 			}
@@ -99,7 +99,7 @@ function form_settings($action, $admin, $plugin) {
 
 
 			// check form path
-			if (file_exists(FORM_CONTENT_BASE . FORM_MAIL_PATH)) {
+			if (file_exists(DATA_CONTENT_BASE . FORM_MAIL_PATH)) {
 				$o .= "<h4>" . FORM_MAIL_FORMS . "</h4>";
 				$o .= form_mail_list_files(FORM_MAIL_PATH);
 			}
@@ -135,7 +135,7 @@ function form_mail_list_files($type) {
 
 	$ret = "";
 
-	if ($handler = opendir(FORM_CONTENT_BASE . $type)) {
+	if ($handler = opendir(DATA_CONTENT_BASE . $type)) {
 
 		// new file
 		$ret .= '<form method="post" action="?form_mail" accept-charset="UTF-8">';
@@ -177,7 +177,7 @@ function form_mail_edit_data($type, $file) {
 
 	$ret = "";
 	
-	$data = file_get_contents(FORM_CONTENT_BASE . FORM_MAIL_PATH . "/" . $file);
+	$data = file_get_contents(DATA_CONTENT_BASE . FORM_MAIL_PATH . "/" . $file);
 
 	if ($data === false) {
 		$ret .= '<div class="xh_fail">' . str_replace("%s", form_mail_set_slash($type, true) . $file, FORM_MAIL_FAIL_READ) . '</div>';

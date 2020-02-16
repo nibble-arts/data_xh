@@ -9,7 +9,7 @@
  * @copyright: 2018-2020
  */
 
-namespace form;
+namespace data;
 
 class Message {
 

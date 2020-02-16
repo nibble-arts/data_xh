@@ -7,7 +7,7 @@
  * init with text array
  */
 
-namespace form;
+namespace data;
 
 class Text {
 	

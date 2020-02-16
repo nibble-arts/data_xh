@@ -3,7 +3,7 @@
 /*
  * acces the informational from the memberaccess plugin
  */
-namespace form\source;
+namespace data\source;
 
 class Access {
 

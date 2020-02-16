@@ -14,7 +14,7 @@
 
 		<script type="text/javascript" src="plugins/form/script/form.js"/>
 
-		<form method="post" class="form_form">
+		<form method="post" class="data_form">
 			<xsl:attribute name="action">
 				<xsl:value-of select="$return"/>
 			</xsl:attribute>
@@ -32,16 +32,16 @@
 		<xsl:variable name="id" select="id"/>
 		<xsl:variable name="data" select="."/>
 
-		<div class="form_detail_block">
+		<div class="data_detail_block">
 
-			<div class="form_detail_line">
-				<div class="form_detail_label">ID</div>
-				<div class="form_detail_value"><xsl:value-of select="$data/id"/></div>
+			<div class="data_detail_line">
+				<div class="data_detail_label">ID</div>
+				<div class="data_detail_value"><xsl:value-of select="$data/id"/></div>
 			</div>
 
 			<xsl:for-each select="//fields/*">
 
-				<div class="form_detail_line">
+				<div class="data_detail_line">
 
 					<xsl:variable name="n" select="name(.)"/>
 					<xsl:variable name="name">
@@ -52,11 +52,11 @@
 						<xsl:value-of select="$n"/>
 					</xsl:variable>
 
-					<div class="form_detail_label">
+					<div class="data_detail_label">
 						<xsl:value-of select="$n"/>
 					</div>
 
-					<div class="form_detail_value">
+					<div class="data_detail_value">
 
 						<xsl:call-template name="content">
 							<xsl:with-param name="value">
@@ -78,15 +78,15 @@
 
 			</xsl:for-each>
 
-			<div class="form_detail_line">
-				<input type="submit" class="form_submit" name="form_button" value="speichern"/>
-				<input type="submit" class="form_submit" name="form_button" value="abbrechen"/>
+			<div class="data_detail_line">
+				<input type="submit" class="data_submit" name="data_button" value="speichern"/>
+				<input type="submit" class="data_submit" name="data_button" value="abbrechen"/>
 
 			</div>
 
 		</div>
 
-		<input type="hidden" name="form_action" value="form_update"/>
+		<input type="hidden" name="data_action" value="data_update"/>
 
 		<input type="hidden" value="{$id}">
 			<xsl:attribute name="name">

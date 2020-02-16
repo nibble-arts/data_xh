@@ -1,6 +1,6 @@
 <?php
 
-namespace form;
+namespace data;
 
 /**
  * Array2XML: A class to convert array in PHP to XML

@@ -11,7 +11,7 @@
  * V1.2 uri function added
  */
 
-namespace form;
+namespace data;
 
 class Session {
 	

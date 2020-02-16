@@ -1,7 +1,7 @@
 <?php
 
 
-namespace form;
+namespace data;
 
 
 class Admin {
@@ -91,8 +91,8 @@ class Admin {
 
 		// save csv file
 		// create download directory
-		if (!file_exists(FORM_DOWNLOADS_BASE . Config::form_path())) {
-			if (!mkdir(FORM_DOWNLOADS_BASE . Config::form_path(), 0777, true)) {
+		if (!file_exists(DATA_DOWNLOADS_BASE . Config::data_path())) {
+			if (!mkdir(DATA_DOWNLOADS_BASE . Config::data_path(), 0777, true)) {
 				Message::failure("fail_download_mkdir");
 			}
 		}
@@ -101,14 +101,14 @@ class Admin {
 		if ($csv) {
 			
 			// write data
-			file_put_contents(FORM_DOWNLOADS_BASE . Config::form_path() . '/' . $form . '_result_utf8.csv', $csv);
+			file_put_contents(DATA_DOWNLOADS_BASE . Config::data_path() . '/' . $form . '_result_utf8.csv', $csv);
 
-			file_put_contents(FORM_DOWNLOADS_BASE . Config::form_path() . '/' . $form . '_result.csv', mb_convert_encoding($csv, "Windows-1252"));
+			file_put_contents(DATA_DOWNLOADS_BASE . Config::data_path() . '/' . $form . '_result.csv', mb_convert_encoding($csv, "Windows-1252"));
 
 			// add download link
-			$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . Config::form_path() . '/' . $form . '_result.csv">Als CSV-File herunterladen</a></p>';
+			$ret .= '<p><a href="' . DATA_DOWNLOADS_BASE . Config::data_path() . '/' . $form . '_result.csv">Als CSV-File herunterladen</a></p>';
 
-			$ret .= '<p><a href="' . FORM_DOWNLOADS_BASE . Config::form_path() . '/' . $form . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
+			$ret .= '<p><a href="' . DATA_DOWNLOADS_BASE . Config::data_path() . '/' . $form . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
 		}
 
 

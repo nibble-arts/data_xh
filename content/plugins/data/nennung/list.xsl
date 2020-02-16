@@ -10,14 +10,14 @@
 	<!-- match all nodes -->
 	<xsl:template match="/">
 
-		<table class="form_list_table">
+		<table class="data_list_table">
 
 			<!-- add header -->
 			<tr>
-				<th class="form_list_head">ID</th>
+				<th class="data_list_head">ID</th>
 
 				<xsl:for-each select="//fields/*">
-					<th class="form_list_head">
+					<th class="data_list_head">
 						<xsl:copy-of select="name(.)"/>
 					</th>
 				</xsl:for-each>
@@ -38,7 +38,7 @@
 
 
 		<tr>
-			<td class="form_list_cell">
+			<td class="data_list_cell">
 				<xsl:choose>
 
 					<xsl:when test="$id != ''">
@@ -68,7 +68,7 @@
 
 				<xsl:variable name="n" select="name(.)"/>
 
-				<td class="form_list_cell">
+				<td class="data_list_cell">
 						<xsl:value-of select="$data/*[name() = $n]"/>
 				</td>
 			</xsl:for-each>
