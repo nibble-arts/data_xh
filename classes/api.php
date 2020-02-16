@@ -6,45 +6,49 @@ class Api {
 
 	public static function fetch() {
 
-		$query = new Query(Session::param("source"));
+		if (Session::param("action")) {
 
-		Source::load($query);
+			// create query object from parameter source
+			$query = new Query(Session::param("source"));
 
-		switch (Session::param("action")) {
-			
-			case "insert":
-debug("insert");
-debug(Session::debug());
-				Message::success("insert");
+			// load source data
+			Source::load($query);
 
-				echo "";
-				die();
-
-				break;
+			switch (Session::param("action")) {
 				
-			case "update":
+				case "insert":
+	debug("insert");
+	debug(Session::debug());
+					Message::success("insert");
 
-				Message::success("update");
-				break;
-			
-			case "delete":
-
-				Message::success("delete");
-				break;
-				
-			case "select":
-			// default:
-				if ($query) {
-
-					$data =  Source::fetch();
-
-					echo json_encode($data);
-		
+					echo "";
 					die();
-				}
-				break;
-		}
 
+					break;
+					
+				case "update":
+
+					Message::success("update");
+					break;
+				
+				case "delete":
+
+					Message::success("delete");
+					break;
+					
+				case "select":
+				// default:
+					if ($query) {
+
+						$data =  Source::fetch();
+
+						echo json_encode($data);
+			
+						die();
+					}
+					break;
+			}
+		}
 	}
 }
 
