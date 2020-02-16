@@ -10,6 +10,7 @@
 	<!-- match all nodes -->
 	<xsl:template match="/">
 
+		<xsl:value-of select="count(//data/*)"/><xsl:text> Nennungen</xsl:text>
 		<table class="data_list_table">
 
 			<!-- add header -->
