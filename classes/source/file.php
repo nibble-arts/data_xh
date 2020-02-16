@@ -14,7 +14,7 @@ class File {
 
 		$this->query = $query;
 
-		$path = \form\Path::create([\form\Config::file_content_path(), "file." . $query->source() . ".ini"]);
+		$path = \data\Path::create([\data\Config::file_content_path(), "file." . $query->source() . ".ini"]);
 
 		// load file
 		if (file_exists($path)) {

@@ -3,19 +3,19 @@
  */
 
 // init form plugin script
-function form_init() {
+function data_init() {
 
 	update();
 
 	// add events
 	// bind event to input changes
-	jQuery('.form_input')
+	jQuery('.data_input')
 		.keyup(function (e) {
 			update();
 		});
 
 	// bind event to selections
-	jQuery('.form_select,.form_checkbox,.form_radio')
+	jQuery('.data_select,.data_checkbox,.data_radio')
 		.change(function (e) {
 			update();
 		});
@@ -49,7 +49,7 @@ function update() {
 	});
 
 	update_hide();
-	form_check_submit();
+	data_check_submit();
 }
 
 
@@ -94,14 +94,14 @@ function update_input_text(obj, val, check) {
 
 				if (val.length >= check_ary[1]) {
 					jQuery(obj)
-						.removeClass("form_mandatory")
-						.addClass("form_mand_ok");
+						.removeClass("data_mandatory")
+						.addClass("data_mand_ok");
 				}
 
 				else {
 					jQuery(obj)
-						.removeClass("form_mand_ok")
-						.addClass("form_mandatory");
+						.removeClass("data_mand_ok")
+						.addClass("data_mandatory");
 				}
 				break;
 
@@ -113,14 +113,14 @@ function update_input_text(obj, val, check) {
 
 				if (reg != null) {
 					jQuery(obj)
-						.removeClass("form_mandatory")
-						.addClass("form_mand_ok");
+						.removeClass("data_mandatory")
+						.addClass("data_mand_ok");
 				}
 
 				else {
 					jQuery(obj)
-						.removeClass("form_mand_ok")
-						.addClass("form_mandatory");
+						.removeClass("data_mand_ok")
+						.addClass("data_mandatory");
 				}
 				break;
 		}
@@ -136,15 +136,15 @@ function update_input_checkbox(obj, val, check) {
 		if (obj.attr('checked') !== undefined) {
 
 			jQuery(obj)
-				.removeClass("form_mandatory")
-				.addClass("form_mand_ok");
+				.removeClass("data_mandatory")
+				.addClass("data_mand_ok");
 		}
 
 		else {
 
 			jQuery(obj)
-				.removeClass("form_mand_ok")
-				.addClass("form_mandatory");
+				.removeClass("data_mand_ok")
+				.addClass("data_mandatory");
 		}
 	}
 }
@@ -203,7 +203,7 @@ function update_sel_content(obj) {
 			jQuery.each(variables, function (k, v) {
 				
 				// get form field value by variable name
-				val = jQuery("[name='_form_" + v.substring(1) + "']").val();
+				val = jQuery("[name='_data_" + v.substring(1) + "']").val();
 
 				// value found
 				if (val) {
@@ -292,14 +292,14 @@ function update_select(obj) {
 
 		if (sel[0].value) {
 			jQuery(obj)
-				.removeClass("form_mandatory")
-				.addClass("form_mand_ok");
+				.removeClass("data_mandatory")
+				.addClass("data_mand_ok");
 		}
 
 		else {
 			jQuery(obj)
-				.removeClass("form_mand_ok")
-				.addClass("form_mandatory");
+				.removeClass("data_mand_ok")
+				.addClass("data_mandatory");
 		}
 	}
 }
@@ -323,7 +323,7 @@ function set_hide(name) {
 	var source = jQuery("[hide='"+name+"']");
 	var nodes = jQuery("[cond='"+name+"'][mandatory]");
 
-	if (nodes.length == jQuery(".form_mand_ok[cond='"+name+"']").length) {
+	if (nodes.length == jQuery(".data_mand_ok[cond='"+name+"']").length) {
 		jQuery(source).show();
 	}
 
@@ -334,7 +334,7 @@ function set_hide(name) {
 
 
 // insert data into form
-function form_insert_data(fields, values) {
+function data_insert_data(fields, values) {
 
 	var fields = fields.split("|");
 	var values = values.split("|");
@@ -344,17 +344,17 @@ function form_insert_data(fields, values) {
 
 		jQuery('*[name="'+fields[idx]+'"]')
 			.attr("value", values[idx])
-			.removeClass("form_mandatory")
-			.addClass("form_mand_ok");
+			.removeClass("data_mandatory")
+			.addClass("data_mand_ok");
 	})
 }
 
 
-function form_check_submit() {
+function data_check_submit() {
 
 	// check all mandatory
 	// enable submit
-	if(jQuery('.form_mandatory:visible').length == 0) {
+	if(jQuery('.data_mandatory:visible').length == 0) {
 		jQuery('input[type="submit"]')
 			.removeAttr("disabled","disabled");
 	}

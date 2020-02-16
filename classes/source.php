@@ -15,7 +15,7 @@ class Source {
 		// has query
 		if (is_object($query)) {
 
-			$className = "form\\source\\" . ucfirst($query->type());
+			$className = "data\\source\\" . ucfirst($query->type());
 
 			// call source class > load data
 			if (class_exists($className)) {

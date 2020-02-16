@@ -12,7 +12,7 @@
 	<!-- match all nodes -->
 	<xsl:template match="/">
 
-		<script type="text/javascript" src="plugins/form/script/form.js"/>
+		<script type="text/javascript" src="plugins/data/script/form.js"/>
 
 		<form method="post" class="data_form">
 			<xsl:attribute name="action">

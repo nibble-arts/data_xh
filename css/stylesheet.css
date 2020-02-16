@@ -1,27 +1,27 @@
-.form_form {
+.data_form {
 	border: 1px solid grey;
 	padding: 10px;
 }
 
-.form_line {
+.data_line {
 	margin-bottom: 10px;
 }
 
-.form_label {
+.data_label {
 	font-size: 100%;
 	float: left;
 	margin-right: 10px;
 }
 
-.form_legend {
+.data_legend {
 	font-size: 100%;
 	font-style: italic;
 }
 
-.form_value {
+.data_value {
 }
 
-.form_block {
+.data_block {
 	border: 1px dashed grey;
 	padding: 5px;
 	margin: 10px 0 10px 0;
@@ -33,52 +33,52 @@ form {
 	margin-bottom: 10px;
 }
 
-.form_mandatory {
+.data_mandatory {
 	background-color: lightyellow;
 }
 
-.form_mand_ok {
+.data_mand_ok {
 	background-color: #d0ffd0;
 }
 
-.form_list_table {
+.data_list_table {
 	border: 1px solid #a0a0a0;
 	border-spacing: 0px;
 	border-collapse: collapse;  
 	width: 100%;
 }
 
-.form_list_cell, .form_list_head {
+.data_list_cell, .data_list_head {
 	border: 1px solid #a0a0a0;
 	padding: 3px;
 }
 
-.form_list_head {
+.data_list_head {
 	writing-mode: vertical-lr;
     white-space:nowrap;
 	text-orientation: mixed;
 	min-width: 25px;
 }
 
-.form_list_cell {
+.data_list_cell {
 	text-align: center;
 	vertical-align: top;
 }
 
-.form_form {
+.data_form {
 	border: none;
 }
 
-.form_detail_block {
+.data_detail_block {
 	border: 1px solid grey;
 	padding: 5px;
 	margin: 0 0 10px 0;
 }
 
-.form_detail_line {
+.data_detail_line {
 }
 
-.form_detail_label {
+.data_detail_label {
 	float: left;
 	text-align: right;
 	width: 150px;
@@ -87,10 +87,10 @@ form {
 	font-weight: 500;
 }
 
-.form_detail_value {
+.data_detail_value {
 	text-align: left;
 }
 
-.form_submit {
+.data_submit {
 	margin-right: 10px;
 }

@@ -29,9 +29,9 @@ if (function_exists('XH_registerStandardPluginMenuItems')) {
     XH_registerStandardPluginMenuItems(true);
 }
 
-if (function_exists('form') 
-    && XH_wantsPluginAdministration('form') 
-    || isset($form) && $form == 'true')
+if (function_exists('data') 
+    && XH_wantsPluginAdministration('data') 
+    || isset($data) && $data == 'true')
 {
 
 

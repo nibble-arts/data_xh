@@ -19,7 +19,7 @@ class Dir {
 
 		$this->query = $query;
 
-		$path = \form\Path::create([\form\Config::file_content_path(), "dir." . $query->source()]);
+		$path = \data\Path::create([\data\Config::file_content_path(), "dir." . $query->source()]);
 
 		$dir = scandir($path);
 
@@ -32,7 +32,7 @@ class Dir {
 			if (pathinfo($file, PATHINFO_EXTENSION) == "ini") {
 
 				// load file
-				$d = parse_ini_file(\form\Path::create([$path, $file]), true);
+				$d = parse_ini_file(\data\Path::create([$path, $file]), true);
 
 				$this->data[$idx] = $d["data"];
 				$this->data[$idx]["id"] = $idx;

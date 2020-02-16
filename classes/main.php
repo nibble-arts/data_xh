@@ -38,6 +38,7 @@ class Main {
 		$data_xml = new \DOMDocument("1.0", "UTF-8");
 		$data_xml->loadXML("<data></data>");
 
+
 		// ===============================================
 		// load form
 		Form::init(self::$form);
