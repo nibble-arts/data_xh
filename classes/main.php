@@ -80,13 +80,16 @@ class Main {
 
 
 	// render form with format
+	// format@target
 	public static function render($format) {
 
 		global $onload;
 
 		$result = "";
 
-		$path = Path::create([Config::form_content(),  self::$form, $format . ".xsl"]);
+		$form_array = explode("@", $format);
+
+		$path = Path::create([Config::form_content(),  self::$form, $form_array[0] . ".xsl"]);
 
 		if (file_exists($path)) {
 
@@ -117,6 +120,28 @@ class Main {
 			Message::failure("fail_noform");
 		}
 
+
+		// check for target
+		if (count($form_array) > 1) {
+
+			switch ($form_array[1]) {
+
+				case "print":
+				case "printer":
+
+					$header = '<!DOCTYPE html><head><title>' . $form_array[0] . '</title><meta charset="utf-8"/></head>';
+
+					// add stylesheet
+					$css_path = Path::create([Config::form_content(), self::$form, $form_array[0] . '.css']);
+					
+					$css_link = '<link href="' . $css_path . '" type="text/css" rel="stylesheet">' . $result;
+
+					$result = $header . $css_link;
+
+					echo $result;
+					die();
+			}
+		}
 
 		// add javascript start 
 		$onload .= "form_init();";

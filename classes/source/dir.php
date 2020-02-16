@@ -3,7 +3,12 @@
 namespace form\source;
 
 
-class File {
+/*
+ * source plugin DIR
+ * load single files per record from subdirectory
+ *		dir name: dir.name
+ */
+class Dir {
 
 
 	private $data;
@@ -14,11 +19,24 @@ class File {
 
 		$this->query = $query;
 
-		$path = \form\Path::create([\form\Config::file_content_path(), "file." . $query->source() . ".ini"]);
+		$path = \form\Path::create([\form\Config::file_content_path(), "dir." . $query->source()]);
 
-		// load file
-		if (file_exists($path)) {
-			$this->data = parse_ini_file($path, true);
+		$dir = scandir($path);
+
+		$temp_array = [];
+
+		// iterate diretory
+		foreach ($dir as $idx => $file) {
+
+			// is ini file
+			if (pathinfo($file, PATHINFO_EXTENSION) == "ini") {
+
+				// load file
+				$d = parse_ini_file(\form\Path::create([$path, $file]), true);
+
+				$this->data[$idx] = $d["data"];
+				$this->data[$idx]["id"] = $idx;
+			}
 		}
 	}
 

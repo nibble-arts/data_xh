@@ -6,7 +6,7 @@ class Api {
 
 	public static function fetch() {
 
-		if (Session::param("action")) {
+		if (Session::param("action") && Session::param("source")) {
 
 			// create query object from parameter source
 			$query = new Query(Session::param("source"));

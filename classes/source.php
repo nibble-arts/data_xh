@@ -26,7 +26,7 @@ class Source {
 			
 			// class not found
 			else {
-				debug($query);
+				// debug($query);
 				Message::failure ("source_class_missing");
 			}
 		}

@@ -9,7 +9,7 @@ class File {
 	private $data;
 	private $query;
 
-	// create with query object
+
 	public function __construct($query) {
 
 		$this->query = $query;
@@ -20,6 +20,7 @@ class File {
 		if (file_exists($path)) {
 			$this->data = parse_ini_file($path, true);
 		}
+
 	}
 
 
@@ -32,8 +33,8 @@ class File {
 	public function fetch () {
 
 		return [
-			"data" => $this->query(),
-			"request" => $this->query
+			"data" => $this->data,
+			"request" => $this->query()
 		];
 	}
 
@@ -56,7 +57,6 @@ class File {
 
 			// iterate ands
 			foreach ($and as $or) {
-
 				if (is_array($this->get_records($or))) {
 					$bool_or = array_merge($bool_or, $this->get_records($or));
 				}
@@ -90,7 +90,7 @@ class File {
 	// return a record
 	// optional fields array, select fields to return
 	private function get_record ($idx, $fields = false) {
-// debug($this->query->fields());
+
 		$fields = $this->query->fields();
 		$format = $this->query->format();
 
