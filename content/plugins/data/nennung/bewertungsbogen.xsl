@@ -44,6 +44,10 @@
 				<div class="subtitle"><xsl:value-of select="title"/></div>
 			</div>
 
+			<div class="data_bewertung_nummer">
+				<div class="label">Vorführnummer</div>
+			</div>
+
 			<div class="data_bewertung_laufzeit">
 				<div class="label">Laufzeit</div>
 				<div class="text"><xsl:value-of select="time"/> Minuten</div>

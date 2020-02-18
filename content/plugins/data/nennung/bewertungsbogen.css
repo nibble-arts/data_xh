@@ -34,7 +34,7 @@ body {
 		grid-template-rows: 40pt 40pt 100pt 30pt 150mm 30pt;
 
 		grid-template-areas:
-			"title title title title title"
+			"title title title title nummer"
 			"film film film laufzeit autor"
 			"abstract abstract abstract abstract abstract"
 			"subtitle subtitle subtitle subtitle subtitle"
@@ -53,6 +53,12 @@ body {
 
 	.data_bewertung_film {
 		grid-area: film;
+		border: 1px solid black;
+		padding: 3pt;
+	}
+
+	.data_bewertung_nummer {
+		grid-area: nummer;
 		border: 1px solid black;
 		padding: 3pt;
 	}
