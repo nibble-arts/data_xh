@@ -141,6 +141,11 @@ class Main {
 
 					echo $result;
 					die();
+
+				case "file":
+					$result = File::save($form_array[0], $result);
+
+					break;
 			}
 		}
 

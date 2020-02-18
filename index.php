@@ -58,56 +58,6 @@ function data($form = false, $format = false, $query = false) {
 
 	$ret = data\Main::render($format);
 
-
-// die();
-
-
-
-	// $ret = "";
-	// $xsl = false; // output format
-	// $target = false; // output target (json, display, printer)
-
-
-
-	// // check form name
-	// if (!$form) {
-	// 	data\Message::failure("fail_noform");
-	// }
-
-	// elseif ($format) {
-
-	// 	// parse format: format[@target] - target is optional (display is default)
-	// 	if (preg_match('/([a-z0-9_]+)\@?(.*)/i', $format, $match)) {
-
-	// 		$xsl = $match[1];
-	// 		$target = $match[2];
-
-	// 	}
-
-
-	// 	// load data
-	// 	$path = data\Path(DATA_CONTENT_BASE, Config::form_path(), $form);
-	// 	// data\Entries::load($path);
-
-	// 	// return script include
-	// 	$ret .= '<script type="text/javascript" src="' . DATA_BASE . 'script/form.js"></script>';
-
-
-	// 	data\Admin::fetch($path);
-
-
-	// 	// parse xml > add ajax sources
-	// 	// data\Parse::load($path);
-	// 	// data\Parse::parse($attr);
-
-	// 	$ret .= data\Admin::render($form, ["format" => $xsl, "filter" => $filter, "target" => $target]);
-	// }
-
-	// else {
-	// 	data\Message::failure("fail_noformat");
-	// }
-
-
 	$ret .= data\Message::render();
 
 	return $ret;

@@ -125,8 +125,7 @@ class Entries {
 						if ($key == "user" && class_exists("\ma\Access") && \ma\Access::user()) {
 							$value = \ma\Access::user()->username();
 						}
-// debug($entry);
-// debug($value);
+
 						if ($entry->stat($key) && $entry->stat($key) == $value) {
 							$filtered[] = $entry;
 						}
