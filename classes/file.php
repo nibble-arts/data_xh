@@ -34,11 +34,13 @@ class File {
 			file_put_contents($path . '_result.csv', mb_convert_encoding($data, "Windows-1252"));
 
 			// add download link
-			$ret .= '<p><a href="' . $path . '_result.csv">Als Windows CSV-File herunterladen</a></p>';
+			$ret .= '<ul>';
+			$ret .= '<li><a href="' . $path . '_result.csv">Als Windows CSV-File herunterladen</a></li>';
 
-			$ret .= '<p><a href="' . $path . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></p>';
+			$ret .= '<li><a href="' . $path . '_result_utf8.csv">Als UTF-8 kodiertes CSV-File herunterladen</a></li>';
 		}
 
+$ret .= '</ul>';
 		return $ret;
 	}
 }

@@ -134,7 +134,7 @@ class Main {
 
 					// add stylesheet
 					$css_path = Path::create([Config::form_content(), self::$form, $form_array[0] . '.css']);
-					
+
 					$css_link = '<link href="' . $css_path . '" type="text/css" rel="stylesheet">' . $result;
 
 					$result = $header . $css_link;

@@ -35,6 +35,7 @@ class Dir {
 				$d = parse_ini_file(\data\Path::create([$path, $file]), true);
 
 				$this->data[$idx] = $d["data"];
+				$this->data[$idx]["_timestamp"] = substr($file, 0, strpos($file, '_'));
 				$this->data[$idx]["id"] = $idx;
 			}
 		}
