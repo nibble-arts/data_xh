@@ -246,7 +246,7 @@ function update_sel_content(obj) {
 
 			// make ajax call
 			jQuery.ajax({
-				"url": "?source=" + ajax,
+				"url": "?action=select&source=" + ajax,
 				"dataType": "json",
 				"success": function(result) {
 
@@ -259,7 +259,7 @@ function update_sel_content(obj) {
 						
 						// add empty first option
 						obj.append("<option></option>");
-console.log(result);
+
 						jQuery.each(result, function () {
 							obj.append("<option value=\"" + this.value + "\">" + this.name + "</option>");
 						})
@@ -284,9 +284,8 @@ console.log(result);
 // update select fields
 function update_select(obj) {
 
-	// select = jQuery('select[name="filmblock"]').attr("fields");
 	var sel = obj.children('option:selected');
-
+console.log(sel);
 	// has children
 	if (sel.length) {
 
