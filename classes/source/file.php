@@ -90,11 +90,11 @@ class File {
 	// return a record
 	// optional fields array, select fields to return
 	private function get_record ($idx, $fields = false) {
-// debug($this->query->fields());
-		$fields = $this->query->fields();
-		$format = $this->query->format();
 
-		$disp = array_filter(explode(",", $fields));
+		$fields = $this->query->fields();
+		$alias = $this->query->alias();
+		$format = $this->query->format();
+		// $disp = array_filter(explode(",", $fields)); deprecated: fields in array
 
 		// get record data
 		if (isset($this->data[$idx])) {
@@ -102,16 +102,27 @@ class File {
 		}
 
 		// display fields defined
-		if (count($disp)) {
+		if (count($fields)) {
 
 			// iterate display fields
-			foreach ($disp as $field) {
+			// use alias
+			foreach ($fields as $idx => $field) {
 
 				// field exists > fetch data
 				if (isset($data[$field])) {
-					$ret[$field] = $data[$field];
-				}
 
+					// user alias
+					if ($alias[$idx]) {
+						$alias_name = $alias[$idx];
+					}
+
+					// use field name
+					else {
+						$alias_name = $field;
+					}
+
+					$ret[$alias_name] = $data[$field];
+				}
 			}
 		}
 

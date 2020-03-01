@@ -62,7 +62,7 @@ function update_input(obj) {
 
 	switch (type) {
 
-		case "text":
+		case "input":
 			update_input_text(obj, val, check);
 			break;
 
@@ -159,7 +159,7 @@ function update_input_radio(obj, val, check) {
 // update content
 function update_content() {
 
-	var nodes = jQuery("[ajax]");
+	var nodes = jQuery("[source]");
 	var obj;
 
 	// iterate nodes
@@ -183,9 +183,11 @@ function update_content() {
 // update select content via ajax
 function update_sel_content(obj) {
 
-	var ajax = jQuery(obj).attr("ajax"); // ajax api string
-	var ajaxvalue; // ajax value field name
-	var ajaxVal = (obj.attr("ajaxVal") ? obj.attr("ajaxVal") : false); // ajax variable values
+	// get source string
+	var ajax = jQuery(obj).attr("source"); // ajax api string
+
+	// get stored value
+	var ajaxVal = (obj.attr("ajaxVal") ? obj.attr("ajaxVal") : false); // stored current ajax value
 	var update = false;
 	var variables;
 	var val;
@@ -197,7 +199,8 @@ function update_sel_content(obj) {
 		variables = ajax.match(/\$([^\@\,\^]+)/gm);
 
 		// variables found
-		if (variables.length > 0) {
+		// replace variables with values
+		if (variables && variables.length > 0) {
 
 			// iterate values
 			jQuery.each(variables, function (k, v) {
@@ -214,7 +217,7 @@ function update_sel_content(obj) {
 						// split multiple values
 						ajaxVal = ajaxVal.split("|");
 						
-						// value has changed
+						// value has changed > update
 						if (val != ajaxVal[k]) {
 							update = true;
 						}
@@ -234,48 +237,45 @@ function update_sel_content(obj) {
 					}
 				}
 			});
+		}
 
 
-			// no stored values or values changed
-			// fetch values via ajax
-			if (!ajaxVal || update) {
+		// no stored values or values changed
+		// fetch values via ajax
+		if (!ajaxVal || update) {
 
+			// make ajax call
+			jQuery.ajax({
+				"url": "?source=" + ajax,
+				"dataType": "json",
+				"success": function(result) {
 
-				// make ajax call
-				jQuery.ajax({
-					"url": "?source=" + ajax,
-					"dataType": "json",
-					"success": function(result) {
+					// add options to select
+					if (result != "") {
 
-						// add options to select
-						if (result != "") {
-
-							// remove options
-							obj.empty();
-							obj.removeAttr("disabled");
-							
-							// add empty first option
-							obj.append("<option></option>");
-
-							ajaxvalue = obj.attr("ajaxvalue");
-
-							jQuery.each(result, function () {
-								obj.append("<option value=\"" + this[ajaxvalue] + "\">" + this.name + "</option>");
-							})
-						}
-
-						// no data > disable
-						else {
-							// remove options
-							obj.empty();
-							obj.removeAttr("ajaxVal");
-							obj.attr("disabled", "disabled");
-						}
-
-						update_select(obj);
+						// remove options
+						obj.empty();
+						obj.removeAttr("disabled");
+						
+						// add empty first option
+						obj.append("<option></option>");
+console.log(result);
+						jQuery.each(result, function () {
+							obj.append("<option value=\"" + this.value + "\">" + this.name + "</option>");
+						})
 					}
-				});
-			}
+
+					// no data > disable
+					else {
+						// remove options
+						obj.empty();
+						obj.removeAttr("ajaxVal");
+						obj.attr("disabled", "disabled");
+					}
+
+					update_select(obj);
+				}
+			});
 		}
 	}
 }

@@ -31,17 +31,51 @@ class Query {
 			$this->request["type"] = $parts[0];
 			$this->request["source"] = $matches[2];
 			$this->request["fields"] = $matches[3];
+			$this->request["alias"] = "";
 			$this->request["format"] = "";
 
 			// split display and format
 			preg_match("$([^\>]+)>?(.*)$", $this->request["fields"], $matches);
+
 
 			// add format
 			if (count($matches) > 1 && $matches[2]) {
 				$this->request["fields"] = $matches[1];
 				$this->request["format"] = $matches[2];
 			}
+
+			// add aliases
+			list($this->request["fields"], $this->request["alias"]) = $this->alias($this->request["fields"]);
 		}
+	}
+
+
+	// get aliases
+	private function alias($field_string) {
+
+		$f = [];
+		$a = [];
+
+		$fields = explode(",", $field_string);
+
+		foreach ($fields as $field) {
+
+			if ($field) {
+
+				// has alias
+				if (preg_match("$([^\ ]+)\ as\ (.*)$", $field, $match)) {
+					$f[] = $match[1];
+					$a[] = $match[2];
+				}
+
+				else {
+					$f[] = $field;
+					$a[] = "";
+				}
+			}
+		}
+
+		return [$f, $a];
 	}
 
 

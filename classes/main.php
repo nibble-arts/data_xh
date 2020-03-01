@@ -150,7 +150,7 @@ class Main {
 		}
 
 		// add javascript start 
-		$onload .= "form_init();";
+		$onload .= "data_init();";
 
 		// add messages
 		$result = Message::render() . $result;

@@ -19,7 +19,6 @@ class Source {
 
 			// call source class > load data
 			if (class_exists($className)) {
-
 				self::$plugin = new $className($query);
 				self::$data = self::$plugin->fetch();
 			}
