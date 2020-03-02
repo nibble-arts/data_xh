@@ -1,4 +1,4 @@
-# CMSimple-XH Form-Plugin
+# CMSimple-XH Data-Plugin
 The form plugin for the CMSpimle-XH framework offers a simple way to create forms, automatically fill out with data from a source likes a file or database, input data and send the result by mail, to a database backend or save it as a file. The XSL format definition makes it flexible to create simple forms, lists or print forms.
 
 The nibble-arts memberaccess_xh is supported to add user information or restrict data access.

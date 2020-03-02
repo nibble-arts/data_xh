@@ -18,10 +18,10 @@ class Api {
 				
 				case "insert":
 	debug("insert");
-	debug(Session::debug());
+	// debug(Session::debug());
 					Message::success("insert");
 
-					echo "";
+					// echo "";
 					die();
 
 					break;
@@ -40,15 +40,19 @@ class Api {
 				// default:
 					if ($query) {
 
-						$data =  Source::fetch();
-
+						$data = Source::fetch();
 						echo json_encode($data);
-			
-						die();
 					}
+
 					break;
 			}
+
+			// stop execution
+			die();
 		}
+
+		// remove source from http parameters
+		// Session::remove_http("source");
 	}
 }
 

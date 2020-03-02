@@ -285,7 +285,7 @@ function update_sel_content(obj) {
 function update_select(obj) {
 
 	var sel = obj.children('option:selected');
-console.log(sel);
+
 	// has children
 	if (sel.length) {
 

@@ -54,7 +54,7 @@ class Source {
 // debug($query);
 // debug($data);
 
-debug(self::fetch());
+// debug(self::fetch());
 
 		return true;
 	}
