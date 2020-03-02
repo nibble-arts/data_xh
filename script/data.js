@@ -206,7 +206,7 @@ function update_sel_content(obj) {
 			jQuery.each(variables, function (k, v) {
 				
 				// get form field value by variable name
-				val = jQuery("[name='_data_" + v.substring(1) + "']").val();
+				val = jQuery("[name='_formsubmit_" + v.substring(1) + "']").val();
 
 				// value found
 				if (val) {
